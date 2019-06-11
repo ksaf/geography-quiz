@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- app_id -->
+    <string name="app_id" translatable="false">702734709546</string>
+    <!-- package_name -->
+    <string name="package_name" translatable="false">com.orestis.velen.quiz</string>
+    <!-- achievement Great! -->
+    <string name="achievement_great" translatable="false">CgkIquaC8rkUEAIQAg</string>
+    <!-- achievement Clicked! -->
+    <string name="achievement_clicked" translatable="false">CgkIquaC8rkUEAIQAw</string>
+    <!-- achievement Right! -->
+    <string name="achievement_right" translatable="false">CgkIquaC8rkUEAIQBA</string>
+    <!-- leaderboard Top Scorers -->
+    <string name="leaderboard_top_scorers" translatable="false">CgkIquaC8rkUEAIQBQ</string>
+</resources>
