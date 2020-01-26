@@ -1,6 +1,8 @@
 package com.orestis.velen.quiz.victoryFragment;
 
+import android.content.Intent;
 import android.graphics.Typeface;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
@@ -14,6 +16,8 @@ import android.widget.TextView;
 import com.orestis.velen.quiz.R;
 import com.orestis.velen.quiz.leveling.LevelExperienceMetricsFactory;
 import com.orestis.velen.quiz.leveling.LevelUpListener;
+import com.orestis.velen.quiz.mainMenu.MainMenuActivity;
+import com.orestis.velen.quiz.player.PlayerSession;
 import com.orestis.velen.quiz.player.Player;
 import com.orestis.velen.quiz.questions.Difficulty;
 import com.orestis.velen.quiz.remainingTime.CountDownTextHandler;
@@ -21,7 +25,6 @@ import com.orestis.velen.quiz.repositories.GameTheme;
 
 import java.text.DecimalFormat;
 
-import static com.orestis.velen.quiz.R.string.level;
 import static com.orestis.velen.quiz.victoryFragment.RewardPhase.BONUS_REWARD;
 import static com.orestis.velen.quiz.victoryFragment.RewardPhase.COMPLETION_REWARD;
 import static com.orestis.velen.quiz.victoryFragment.RewardPhase.TIME_REWARD;
@@ -57,7 +60,7 @@ public class VictoryFragment extends Fragment implements LevelUpListener, Victor
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         completionBonusTxt = view.findViewById(R.id.completionBonusTxt);
         timeLeftBonusTxt = view.findViewById(R.id.timeLeftBonusTxt);
-        bonusSizeTxt = view.findViewById(R.id.bonusSizeTxt);
+        bonusSizeTxt = view.findViewById(R.id.streakBonusTxt);
         completionBonusStaticTxt = view.findViewById(R.id.completionBonusStaticTxt);
         timeBonusStaticTxt = view.findViewById(R.id.timeBonusStaticTxt);
         bounusStaticTxt = view.findViewById(R.id.bounusStaticTxt);
@@ -77,7 +80,9 @@ public class VictoryFragment extends Fragment implements LevelUpListener, Victor
 
         setTextsBold(COMPLETION_REWARD);
 
-        levelText.setText(getString(level) + player.getCurrentLevel());
+        levelText.setText("level" + player.getCurrentLevel());
+        Drawable draw = getResources().getDrawable(R.drawable.main_menu_progress_bar);
+        progressBar.setProgressDrawable(draw);
         progressBar.setMax(player.getXpToLevel());
         progressBar.setProgress(player.getCurrentXP());
 
@@ -130,7 +135,7 @@ public class VictoryFragment extends Fragment implements LevelUpListener, Victor
         getActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                levelText.setText(getString(level) + player.getCurrentLevel());
+                levelText.setText("level" + player.getCurrentLevel());
             }
         });
 
@@ -183,7 +188,11 @@ public class VictoryFragment extends Fragment implements LevelUpListener, Victor
                         revealScoreBtn.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
-
+                                Intent intent = new Intent(VictoryFragment.this.getActivity(), MainMenuActivity.class);
+                                PlayerSession.getInstance().setRecoveredPlayer(player);
+                                VictoryFragment.this.getActivity().startActivity(intent);
+                                VictoryFragment.this.getActivity().finish();
+                                VictoryFragment.this.getActivity().overridePendingTransition(0, 0);
                             }
                         });
                     }

@@ -10,6 +10,7 @@
     <ProgressBar
         android:id="@+id/levelBar"
         style="?android:attr/progressBarStyleHorizontal"
+        android:progressDrawable="@drawable/main_menu_progress_bar"
         android:layout_width="0dp"
         android:layout_height="50dp"
         android:layout_marginBottom="8dp"

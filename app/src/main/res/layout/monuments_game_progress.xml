@@ -16,51 +16,90 @@
         app:layout_constraintStart_toStartOf="@+id/guideline12"
         app:layout_constraintTop_toTopOf="parent">
 
+        <android.support.constraint.Guideline
+            android:id="@+id/guideline21"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.4" />
+
+        <android.support.constraint.Guideline
+            android:id="@+id/guideline20"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.2" />
+
         <android.support.v7.widget.AppCompatTextView
             android:id="@+id/accumBonusTxt"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
+            android:layout_height="0dp"
+            android:layout_marginBottom="2dp"
             android:layout_marginStart="8dp"
+            android:fontFamily="@font/starzy"
+            android:minLines="2"
             android:text="TextView"
             android:textAlignment="center"
+            android:textAllCaps="true"
             android:textColor="#000000"
-            android:textSize="21sp"
-            app:autoSizeMaxTextSize="21sp"
-            app:autoSizeMinTextSize="14sp"
-            app:autoSizeStepGranularity="2sp"
+            android:textSize="22sp"
+            app:autoSizeMaxTextSize="22sp"
+            app:autoSizeMinTextSize="8sp"
+            app:autoSizeStepGranularity="1sp"
             app:autoSizeTextType="uniform"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/guideline22" />
 
-        <TextView
+        <android.support.v7.widget.AppCompatTextView
             android:id="@+id/questionProgressTxt"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="2dp"
+            android:fontFamily="@font/starzy"
             android:text="TextView"
             android:textAlignment="center"
+            android:textAllCaps="true"
             android:textColor="#000000"
-            android:textSize="21sp"
+            android:textSize="22sp"
+            app:autoSizeMaxTextSize="22sp"
+            app:autoSizeMinTextSize="8sp"
+            app:autoSizeStepGranularity="1sp"
+            app:autoSizeTextType="uniform"
+            app:layout_constraintBottom_toTopOf="@+id/guideline20"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
+        <android.support.v7.widget.AppCompatTextView
             android:id="@+id/currentQuestionNumberTxt"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
             android:layout_marginTop="2dp"
+            android:fontFamily="@font/starzy"
             android:text="TextView"
             android:textAlignment="center"
+            android:textAllCaps="true"
             android:textColor="#000000"
-            android:textSize="21sp"
+            android:textSize="22sp"
+            app:autoSizeMaxTextSize="22sp"
+            app:autoSizeMinTextSize="8sp"
+            app:autoSizeStepGranularity="1sp"
+            app:autoSizeTextType="uniform"
+            app:layout_constraintBottom_toTopOf="@+id/guideline21"
             app:layout_constraintEnd_toEndOf="@+id/questionProgressTxt"
             app:layout_constraintStart_toStartOf="@+id/questionProgressTxt"
             app:layout_constraintTop_toBottomOf="@+id/questionProgressTxt" />
+
+        <android.support.constraint.Guideline
+            android:id="@+id/guideline22"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.7" />
 
     </android.support.constraint.ConstraintLayout>
 

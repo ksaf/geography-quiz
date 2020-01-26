@@ -12,8 +12,10 @@ import com.orestis.velen.quiz.answerButtons.AnswerButtonsHandler;
 import com.orestis.velen.quiz.answerButtons.AnswerChoice;
 import com.orestis.velen.quiz.helpPowers.ChargeChangeListener;
 import com.orestis.velen.quiz.helpPowers.PowerType;
+import com.orestis.velen.quiz.pinpoint.MapTouchListener;
 import com.orestis.velen.quiz.player.Player;
 import com.orestis.velen.quiz.questions.QuestionHandler;
+import com.orestis.velen.quiz.sound.SoundPoolHelper;
 
 import java.util.HashMap;
 
@@ -30,29 +32,43 @@ public class ShieldButton implements ChargeChangeListener {
     private int charges;
     private TextView shieldTextView;
     private Context context;
+    private MapTouchListener mapTouchListener;
+    private ImageView helpPowerUsedImg;
+    private ImageView helpPowerUsedImgBg;
+    private SoundPoolHelper soundHelper;
 
     private ShieldButton(){}
 
     private void enableButton() {
-        charges = player.getPowers().get(PowerType.SHIELD).getCharges();
+        charges = player.getPowers().get(PowerType.SHIELD).charges();
         shieldTextView = shieldBtnLayout.findViewById(R.id.shieldCharges);
         shieldTextView.setText(String.valueOf(charges));
+        ShieldPowerConfig shieldPowerConfig = new ShieldPowerConfig(player);
         if(charges < 1) {
             shieldBtnLayout.setEnabled(false);
         }
-        shieldBtnLayout.setOnClickListener(new ShieldClickListener(questionHandler, answerButtons,
-                shieldOnIcon, shieldBreakingIcon, shieldOverlay, answerButtonsHandler, true, this, context));
+        if(answerButtons != null) {
+            shieldBtnLayout.setOnClickListener(new ShieldClickListener(questionHandler, answerButtons,
+                    shieldOnIcon, shieldBreakingIcon, shieldOverlay, answerButtonsHandler, shieldPowerConfig,
+                    this, context, helpPowerUsedImg, helpPowerUsedImgBg));
+        } else if (mapTouchListener != null){
+            shieldBtnLayout.setOnClickListener(new ShieldOnMapClickListener(questionHandler,
+                    shieldOnIcon, shieldBreakingIcon, shieldOverlay, shieldPowerConfig,
+                    this, context, mapTouchListener, helpPowerUsedImg, helpPowerUsedImgBg));
+        }
+
     }
 
     @Override
     public void onChargeDecreased() {
+        soundHelper.playInGamePowerEnableSound();
         charges--;
         shieldTextView.setText(String.valueOf(charges));
     }
 
     @Override
     public void onChargeDurationEnd() {
-        shieldBtnLayout.setEnabled(charges > 1);
+        shieldBtnLayout.setEnabled(charges >= 1);
     }
 
     public static class Builder {
@@ -66,6 +82,10 @@ public class ShieldButton implements ChargeChangeListener {
         private ImageView shieldBreakingIcon;
         private FrameLayout shieldOverlay;
         private Context context;
+        private MapTouchListener mapTouchListener;
+        private ImageView helpPowerUsedImg;
+        private ImageView helpPowerUsedImgBg;
+        private SoundPoolHelper soundHelper;
 
         public Builder useLayout(ConstraintLayout shieldBtnLayout) {
             this.shieldBtnLayout = shieldBtnLayout;
@@ -77,12 +97,22 @@ public class ShieldButton implements ChargeChangeListener {
             return this;
         }
 
+        public Builder useHelpPowerUsedImg(ImageView helpPowerUsedImg) {
+            this.helpPowerUsedImg = helpPowerUsedImg;
+            return this;
+        }
+
+        public Builder useHelpPowerUsedImgBg(ImageView helpPowerUsedImgBg) {
+            this.helpPowerUsedImgBg = helpPowerUsedImgBg;
+            return this;
+        }
+
         public Builder useShieldBreakingIcon(ImageView shieldBreakingIcon) {
             this.shieldBreakingIcon = shieldBreakingIcon;
             return this;
         }
 
-        public Builder useshieldOverlay(FrameLayout shieldOverlay) {
+        public Builder useShieldOverlay(FrameLayout shieldOverlay) {
             this.shieldOverlay = shieldOverlay;
             return this;
         }
@@ -112,6 +142,16 @@ public class ShieldButton implements ChargeChangeListener {
             return this;
         }
 
+        public Builder withMapTouchListener(MapTouchListener mapTouchListener) {
+            this.mapTouchListener = mapTouchListener;
+            return this;
+        }
+
+        public Builder withSoundPoolHelper(SoundPoolHelper soundHelper) {
+            this.soundHelper = soundHelper;
+            return this;
+        }
+
         public ShieldButton enable() {
             ShieldButton shieldButton = new ShieldButton();
             shieldButton.questionHandler = this.questionHandler;
@@ -123,6 +163,10 @@ public class ShieldButton implements ChargeChangeListener {
             shieldButton.shieldBreakingIcon = this.shieldBreakingIcon;
             shieldButton.shieldOverlay = this.shieldOverlay;
             shieldButton.context = this.context;
+            shieldButton.mapTouchListener = this.mapTouchListener;
+            shieldButton.helpPowerUsedImg = this.helpPowerUsedImg;
+            shieldButton.helpPowerUsedImgBg = this.helpPowerUsedImgBg;
+            shieldButton.soundHelper = this.soundHelper;
             shieldButton.enableButton();
             return shieldButton;
         }

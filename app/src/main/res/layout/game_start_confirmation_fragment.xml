@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/settings_background">
+
+    <Button
+        android:id="@+id/close_game_start_confirmation"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:background="@drawable/close_button_selector"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/beginGameTypeText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="32dp"
+        android:fontFamily="@font/normal"
+        android:text="Start a game of flags?"
+        android:textAlignment="center"
+        android:textColor="#333"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/game_start"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="32dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:theme="@style/AppTheme.PrimaryColoredButton"
+        android:fontFamily="@font/normal"
+        android:text="@string/start"
+        android:textColor="#fff"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/difficultyLevel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:fontFamily="@font/normal"
+        android:text="Normal"
+        android:textColor="#333"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toTopOf="@+id/game_start"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/beginGameTypeText"
+        app:layout_constraintVertical_bias="0.6" />
+
+    <Button
+        android:id="@+id/rightDifficultyBtn"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_marginStart="8dp"
+        android:background="@drawable/right_button_selector"
+        app:layout_constraintBottom_toBottomOf="@+id/difficultyLevel"
+        app:layout_constraintStart_toEndOf="@+id/difficultyLevel"
+        app:layout_constraintTop_toTopOf="@+id/difficultyLevel" />
+
+    <Button
+        android:id="@+id/leftDifficultyBtn"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_marginEnd="8dp"
+        android:background="@drawable/left_button_selector"
+        app:layout_constraintBottom_toBottomOf="@+id/difficultyLevel"
+        app:layout_constraintEnd_toStartOf="@+id/difficultyLevel"
+        app:layout_constraintTop_toTopOf="@+id/difficultyLevel" />
+
+    <TextView
+        android:id="@+id/gameStartXpBoostEnabledTxt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:fontFamily="@font/normal"
+        android:text="@string/gameStartXpBoostEnabled"
+        android:textStyle="italic"
+        app:layout_constraintBottom_toTopOf="@+id/difficultyLevel"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/beginGameTypeText" />
+
+</android.support.constraint.ConstraintLayout>

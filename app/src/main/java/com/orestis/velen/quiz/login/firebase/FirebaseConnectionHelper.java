@@ -32,21 +32,26 @@ public class FirebaseConnectionHelper {
     }
 
     private void firebaseAuthWithCredential(Activity activity, AuthCredential credential, final FirebaseConnectedListener connectedListener) {
-        auth.signInWithCredential(credential)
-                .addOnCompleteListener(activity, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            // Sign in success, update UI with the signed-in userDBRef's information
-                            Log.d("FirebaseConnection", "signInWithCredential:success");
-                            FirebaseUser user = auth.getCurrentUser();
-                            connectedListener.onFirebaseConnected(user);
-                        } else {
-                            // If sign in fails, display a message to the userDBRef.
-                            Log.w("FirebaseConnection", "signInWithCredential:failure", task.getException());
-                            connectedListener.onFirebaseError();
+        FirebaseUser user = auth.getCurrentUser();
+        if(user != null) {
+            connectedListener.onWasAlreadyConnectedToFirebase(user);
+        } else {
+            auth.signInWithCredential(credential)
+                    .addOnCompleteListener(activity, new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+                            if (task.isSuccessful()) {
+                                // Sign in success, update UI with the signed-in userDBRef's information
+                                Log.d("FirebaseConnection", "signInWithCredential:success");
+                                FirebaseUser user = auth.getCurrentUser();
+                                connectedListener.onFirebaseConnected(user);
+                            } else {
+                                // If sign in fails, display a message to the userDBRef.
+                                Log.w("FirebaseConnection", "signInWithCredential:failure", task.getException());
+                                connectedListener.onFirebaseError();
+                            }
                         }
-                    }
-                });
+                    });
+        }
     }
 }

@@ -5,4 +5,10 @@
         <item name="windowNoTitle">true</item>
         <item name="android:statusBarColor">@android:color/transparent</item>
     </style>
+
+    <style name="AppTheme.PrimaryColoredButton" parent="Widget.AppCompat.Button.Colored">
+        <item name="colorButtonNormal">#ee9f3c</item>
+        <item name="android:textColor">#fff</item>
+    </style>
+
 </resources>

@@ -1,7 +1,6 @@
 package com.orestis.velen.quiz.pinpoint;
 
 import android.content.Context;
-import android.util.Log;
 import android.widget.ImageView;
 
 import com.orestis.velen.quiz.questions.Question;
@@ -23,9 +22,7 @@ public class MonumentImageHandler implements QuestionChangedListener {
 
     @Override
     public void onQuestionChanged(Question newQuestion) {
-        Log.d("question: ", newQuestion.getCorrectAnswer());
-        int resID = context.getResources().getIdentifier(newQuestion.getCorrectAnswer() , "drawable", context.getPackageName());
-        landmark.setImageResource(resID);
+        landmark.setImageResource(newQuestion.getCorrectAnswer().getItemDrawableId(context, false));
         frameResizeHandler.onFrameResizeRequired();
     }
 }

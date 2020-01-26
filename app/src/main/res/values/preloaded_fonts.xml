@@ -1,7 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <array name="preloaded_fonts" translatable="false">
+    <array name="preloaded_fonts" translatable="true">
         <item>@font/abhaya_libre</item>
+        <item>@font/aclonica</item>
+        <item>@font/acme</item>
         <item>@font/adamina</item>
+        <item>@font/almendra_sc</item>
+        <item>@font/bangers</item>
     </array>
 </resources>

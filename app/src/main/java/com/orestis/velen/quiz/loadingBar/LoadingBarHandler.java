@@ -3,6 +3,7 @@ package com.orestis.velen.quiz.loadingBar;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.orestis.velen.quiz.R;
 
@@ -21,11 +22,18 @@ public class LoadingBarHandler implements TimeIntervalListener, LoadingBarAnimat
     private LoadingBarStateListener barStateListener;
     private int progressBeforeFreezeStatusChange;
     private boolean isFrozen = false;
+    private boolean gameHasEnded = false;
+    private TextView countDownText;
+    private TimeLeftTextCountDownTimer timeLeftTextCountDownTimer;
 
     public LoadingBarHandler(ProgressBar bar, TimerDirection direction, LoadingBarStateListener barStateListener) {
         this.bar = bar;
         this.direction = direction;
         this.barStateListener = barStateListener;
+    }
+
+    public void setCountDownText(TextView countDownText) {
+        this.countDownText = countDownText;
     }
 
     public void startLoadingBar(long duration) {
@@ -47,9 +55,13 @@ public class LoadingBarHandler implements TimeIntervalListener, LoadingBarAnimat
     }
 
     public void resumeLoadingBar(){
-        if(!isFrozen) {
+        if(!isFrozen && !gameHasEnded) {
             countTimer = new CountTimer(this, direction, timeToStartFrom, 1000/FRAMES_PER_SECOND);
             countTimer.start();
+            if(countDownText != null) {
+                timeLeftTextCountDownTimer = new TimeLeftTextCountDownTimer(countDownText, timeToStartFrom, 1000);
+                timeLeftTextCountDownTimer.start();
+            }
         }
         barStateListener.onLoadingBarFillAnimationEnd();
     }
@@ -73,6 +85,9 @@ public class LoadingBarHandler implements TimeIntervalListener, LoadingBarAnimat
         }
         timeToStartFrom += bonusTime;
         countTimer.cancel();
+        if(countDownText != null) {
+            timeLeftTextCountDownTimer.cancel();
+        }
         LoadingBarAnimation anim = new LoadingBarAnimation(bar, bar.getProgress(), timeToStartFrom, this);
         anim.setDuration(msDuration);
         bar.startAnimation(anim);
@@ -81,13 +96,26 @@ public class LoadingBarHandler implements TimeIntervalListener, LoadingBarAnimat
     public void decrementLoadingBar(long penaltyTime, int msDuration){
         timeToStartFrom -= penaltyTime;
         countTimer.cancel();
+        if(countDownText != null) {
+            timeLeftTextCountDownTimer.cancel();
+        }
         LoadingBarAnimation anim = new LoadingBarAnimation(bar, timeToStartFrom + penaltyTime, timeToStartFrom, this);
         anim.setDuration(msDuration);
         bar.startAnimation(anim);
     }
 
     public void pauseLoadingBar(){
-        countTimer.cancel();
+        if (countTimer != null) {
+            countTimer.cancel();
+            if(countDownText != null) {
+                timeLeftTextCountDownTimer.cancel();
+            }
+        }
+    }
+
+    public void stopLoadingBar() {
+        gameHasEnded = true;
+        pauseLoadingBar();
     }
 
     public void freezeLoadingBar(Context context) {

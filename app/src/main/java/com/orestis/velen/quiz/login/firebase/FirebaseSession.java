@@ -29,8 +29,10 @@ public class FirebaseSession {
     }
 
     public void updatePlayer(Player player) {
-        userDbRef.setValue(player);
-        saveLastUpdateTime();
+        if(userDbRef != null) {
+            userDbRef.setValue(player);
+            saveLastUpdateTime();
+        }
     }
 
     public String getFirebaseUserId() {

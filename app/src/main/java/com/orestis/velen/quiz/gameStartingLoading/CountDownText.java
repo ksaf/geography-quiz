@@ -21,6 +21,6 @@ public class CountDownText extends CountDownTimer {
 
     @Override
     public void onFinish() {
-        endListener.onCountDownEnd();
+        endListener.onGameStartingScreenEnd();
     }
 }

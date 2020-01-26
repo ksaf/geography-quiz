@@ -89,6 +89,11 @@ public class GoogleSignInActivity extends AppCompatActivity implements FirebaseC
     }
 
     @Override
+    public void onWasAlreadyConnectedToFirebase(FirebaseUser firebaseUser) {
+        onFirebaseConnected(firebaseUser);
+    }
+
+    @Override
     public void onFirebaseConnected(FirebaseUser firebaseUser) {
         Intent output = new Intent();
         output.putExtra("firebaseUser", firebaseUser);

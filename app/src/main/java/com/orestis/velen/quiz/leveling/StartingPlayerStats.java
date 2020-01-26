@@ -9,28 +9,24 @@ public class StartingPlayerStats {
                 "  \"gameTheme\": \"GEOGRAPHY\",\n" +
                 "  \"powers\": {\n" +
                 "    \"SKIP\": {\n" +
-                "      \"available\": true,\n" +
-                "      \"charges\": 1,\n" +
-                "      \"powerLevel\": 1,\n" +
+                "      \"powerLevel\": 0,\n" +
                 "      \"powerType\": \"SKIP\"\n" +
                 "    }, \n" +
                 "    \"FIFTY_FIFTY\": {\n" +
-                "      \"available\": false,\n" +
-                "      \"charges\": 1,\n" +
-                "      \"powerLevel\": 1,\n" +
+                "      \"powerLevel\": 0,\n" +
                 "      \"powerType\": \"FIFTY_FIFTY\"\n" +
                 "    }, \n" +
                 "    \"SHIELD\": {\n" +
-                "      \"available\": false,\n" +
-                "      \"charges\": 1,\n" +
-                "      \"powerLevel\": 1,\n" +
+                "      \"powerLevel\": 0,\n" +
                 "      \"powerType\": \"SHIELD\"\n" +
                 "    },\n" +
                 "    \"FREEZE_TIME\": {\n" +
-                "      \"available\": false,\n" +
-                "      \"charges\": 1,\n" +
-                "      \"powerLevel\": 1,\n" +
+                "      \"powerLevel\": 0,\n" +
                 "      \"powerType\": \"FREEZE_TIME\"\n" +
+                "    },\n" +
+                "    \"EXTRA_TIME\": {\n" +
+                "      \"powerLevel\": 0,\n" +
+                "      \"powerType\": \"EXTRA_TIME\"\n" +
                 "    }\n" +
                 "  }\n" +
                 "}";

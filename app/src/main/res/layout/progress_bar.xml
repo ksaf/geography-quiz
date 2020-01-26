@@ -34,6 +34,7 @@
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
+        android:fontFamily="@font/normal"
         android:text="+2sec"
         android:textColor="#262626"
         android:textSize="25dp"
@@ -57,6 +58,27 @@
         android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="@+id/progressBar"
         app:layout_constraintStart_toEndOf="@+id/freezeImg"
+        app:layout_constraintTop_toTopOf="@+id/progressBar" />
+
+    <ImageView
+        android:id="@+id/countDownIcon"
+        android:layout_width="15dp"
+        android:layout_height="15dp"
+        android:layout_marginEnd="2dp"
+        app:layout_constraintBottom_toBottomOf="@+id/countDownTxt"
+        app:layout_constraintEnd_toStartOf="@+id/countDownTxt"
+        app:layout_constraintTop_toTopOf="@+id/countDownTxt"
+        app:srcCompat="@drawable/hourglass_icon" />
+
+    <TextView
+        android:id="@+id/countDownTxt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:fontFamily="@font/normal"
+        android:textColor="#fff"
+        app:layout_constraintBottom_toBottomOf="@+id/progressBar"
+        app:layout_constraintEnd_toEndOf="@+id/progressBar"
         app:layout_constraintTop_toTopOf="@+id/progressBar" />
 
     <FrameLayout

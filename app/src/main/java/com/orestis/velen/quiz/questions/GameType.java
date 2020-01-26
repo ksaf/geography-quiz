@@ -1,9 +1,9 @@
 package com.orestis.velen.quiz.questions;
 
 public enum GameType {
-    TYPE_A,
-    TYPE_B,
-    TYPE_C,
-    TYPE_D,
-    TYPE_E,
+    TYPE_OUTLINES,
+    TYPE_FLAGS,
+    TYPE_CAPITALS,
+    TYPE_OUTLINE_TO_FLAG,
+    TYPE_MONUMENTS,
 }

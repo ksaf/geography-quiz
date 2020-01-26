@@ -5,4 +5,5 @@ import com.google.firebase.auth.FirebaseUser;
 public interface FirebaseConnectedListener {
     void onFirebaseConnected(FirebaseUser firebaseUser);
     void onFirebaseError();
+    void onWasAlreadyConnectedToFirebase(FirebaseUser firebaseUser);
 }

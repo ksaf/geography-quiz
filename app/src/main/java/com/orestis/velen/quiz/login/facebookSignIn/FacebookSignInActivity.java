@@ -84,6 +84,11 @@ public class FacebookSignInActivity extends AppCompatActivity implements Firebas
     }
 
     @Override
+    public void onWasAlreadyConnectedToFirebase(FirebaseUser firebaseUser) {
+        onFirebaseConnected(firebaseUser);
+    }
+
+    @Override
     public void onFirebaseConnected(FirebaseUser firebaseUser) {
         Intent output = new Intent();
         output.putExtra("firebaseUser", firebaseUser);

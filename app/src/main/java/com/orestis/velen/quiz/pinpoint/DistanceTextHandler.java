@@ -11,6 +11,8 @@ public class DistanceTextHandler implements DisplayDistanceDurationEndListener{
     private TextView distanceText;
     private int displayDistanceDuration;
     private DisplayDistanceDurationEndListener endListener;
+    private String distance;
+    private boolean hasShield;
 
     public DistanceTextHandler(int displayDistanceDuration, TextView distanceText, DisplayDistanceDurationEndListener displayDistanceEndListener) {
         this.distanceText = distanceText;
@@ -18,7 +20,9 @@ public class DistanceTextHandler implements DisplayDistanceDurationEndListener{
         this.displayDistanceDuration = displayDistanceDuration;
     }
 
-    public void startShowDistanceTask(String distance) {
+    public void startShowDistanceTask(String distance, boolean hasShield) {
+        this.distance = distance;
+        this.hasShield = hasShield;
         distanceText.setVisibility(View.VISIBLE);
         distanceText.setText(distance);
         distanceText.setBackgroundResource(getBackgroundResource(distance));
@@ -43,6 +47,8 @@ public class DistanceTextHandler implements DisplayDistanceDurationEndListener{
     @Override
     public void onDisplayDistanceDurationEnd() {
         hideDistance();
-        endListener.onDisplayDistanceDurationEnd();
+        if(!(distance.toLowerCase().equals("far!") && hasShield)) {
+            endListener.onDisplayDistanceDurationEnd();
+        }
     }
 }

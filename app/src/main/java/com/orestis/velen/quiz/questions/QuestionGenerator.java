@@ -1,5 +1,6 @@
 package com.orestis.velen.quiz.questions;
 
+import com.orestis.velen.quiz.geography.DataItem;
 import com.orestis.velen.quiz.repositories.DataRepository;
 import com.orestis.velen.quiz.repositories.SampleSizeEndListener;
 
@@ -9,9 +10,9 @@ import java.util.List;
 import java.util.Random;
 
 public class QuestionGenerator {
-    private List<String> questionPoolData;
-    private List<String> answersPoolData;
-    private List<String> originalAnswersPoolData;
+    private List<DataItem> questionPoolData;
+    private List<DataItem> answersPoolData;
+    private List<DataItem> originalAnswersPoolData;
     private SampleSizeEndListener endListener;
 
     QuestionGenerator(Difficulty difficulty, GameType gameType, DataRepository repository, int sampleSize, SampleSizeEndListener endListener) {
@@ -25,24 +26,24 @@ public class QuestionGenerator {
 
     Question generateQuestion() {
         Question q;
-        List<String> answers = new ArrayList<>();
-        answers.addAll(Arrays.asList(new String[3]));
+        List<DataItem> answers = new ArrayList<>();
+        answers.addAll(Arrays.asList(new DataItem[3]));
         Random r = new Random();
         if(questionPoolData.size() < 1) {
             endListener.onSampleSizeEnd();
             return null;
         }
         int randQuestionSelected = r.nextInt(questionPoolData.size());
-        String question = questionPoolData.get(randQuestionSelected);
-        String correctAnswer = answersPoolData.get(randQuestionSelected);
+        DataItem question = questionPoolData.get(randQuestionSelected);
+        DataItem correctAnswer = answersPoolData.get(randQuestionSelected);
 
         if(questionPoolData.size()>0){
             questionPoolData.remove(question);
             answersPoolData.remove(correctAnswer);
         }
 
-        String answer2 = originalAnswersPoolData.get(r.nextInt(originalAnswersPoolData.size()));
-        String answer3 = originalAnswersPoolData.get(r.nextInt(originalAnswersPoolData.size()));
+        DataItem answer2 = originalAnswersPoolData.get(r.nextInt(originalAnswersPoolData.size()));
+        DataItem answer3 = originalAnswersPoolData.get(r.nextInt(originalAnswersPoolData.size()));
 
         while (answer2.equals(correctAnswer)){
             answer2 = originalAnswersPoolData.get(r.nextInt(originalAnswersPoolData.size()));

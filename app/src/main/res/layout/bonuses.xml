@@ -12,9 +12,10 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:text="Completion:"
-        android:textColor="#ffffff"
-        android:textSize="18sp"
+        android:fontFamily="@font/normal"
+        android:text="@string/completion_bonus"
+        android:textColor="#333"
+        android:textSize="16sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -24,9 +25,10 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:text="Time left:"
-        android:textColor="#ffffff"
-        android:textSize="18sp"
+        android:fontFamily="@font/normal"
+        android:text="@string/time_left"
+        android:textColor="#333"
+        android:textSize="16sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/completionBonusStaticTxt" />
 
@@ -36,9 +38,10 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:layout_marginTop="8dp"
+        android:fontFamily="@font/normal"
         android:text="TextView"
-        android:textColor="#ffffff"
-        android:textSize="18sp"
+        android:textColor="#333"
+        android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -48,9 +51,10 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:layout_marginTop="8dp"
+        android:fontFamily="@font/normal"
         android:text="TextView"
-        android:textColor="#ffffff"
-        android:textSize="18sp"
+        android:textColor="#333"
+        android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/completionBonusTxt" />
 
@@ -60,21 +64,74 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:text="Bonus:"
-        android:textColor="#ffffff"
-        android:textSize="18sp"
+        android:fontFamily="@font/normal"
+        android:text="@string/streak_bonus"
+        android:textColor="#333"
+        android:textSize="16sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/timeBonusStaticTxt" />
 
     <TextView
-        android:id="@+id/bonusSizeTxt"
+        android:id="@+id/streakBonusTxt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:layout_marginTop="8dp"
+        android:fontFamily="@font/normal"
         android:text="TextView"
-        android:textColor="#ffffff"
-        android:textSize="18sp"
+        android:textColor="#333"
+        android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/timeLeftBonusTxt" />
+
+    <View
+        android:id="@+id/line_separator"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:layout_marginTop="16dp"
+        android:background="#333"
+        app:layout_constraintEnd_toEndOf="@+id/streakBonusTxt"
+        app:layout_constraintStart_toStartOf="@+id/bounusStaticTxt"
+        app:layout_constraintTop_toBottomOf="@+id/bounusStaticTxt" />
+
+    <TextView
+        android:id="@+id/totalBonus"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginTop="16dp"
+        android:fontFamily="@font/normal"
+        android:text="1940"
+        android:textColor="#000"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/line_separator" />
+
+    <TextView
+        android:id="@+id/totalStaticTxt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
+        android:fontFamily="@font/normal"
+        android:text="@string/total"
+        android:textColor="#333"
+        android:textSize="16sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/line_separator" />
+
+    <TextView
+        android:id="@+id/highScoreTxt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:fontFamily="casual"
+        android:text="@string/high_score"
+        android:textColor="#ee9f3c"
+        android:textStyle="bold"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@+id/totalBonus"
+        app:layout_constraintEnd_toStartOf="@+id/totalBonus"
+        app:layout_constraintTop_toTopOf="@+id/totalBonus" />
 </android.support.constraint.ConstraintLayout>

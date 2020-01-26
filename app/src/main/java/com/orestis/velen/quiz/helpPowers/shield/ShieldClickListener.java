@@ -7,6 +7,7 @@ import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 
+import com.orestis.velen.quiz.R;
 import com.orestis.velen.quiz.answerButtons.AnswerButtonsHandler;
 import com.orestis.velen.quiz.answerButtons.AnswerChoice;
 import com.orestis.velen.quiz.helpPowers.ChargeChangeListener;
@@ -25,40 +26,65 @@ public class ShieldClickListener implements View.OnClickListener, ShieldEndListe
     private QuestionHandler questionHandler;
     private HashMap<AnswerChoice, Button> buttons;
     private AnswerButtonsHandler answerButtonsHandler;
-    private boolean keepShield;
-    private boolean isShieldEnabled = false;
+    protected boolean isShieldEnabled = false;
     private ImageView shieldImg;
     private ImageView shieldBreakingImg;
     private FrameLayout shieldGradient;
-    private ChargeChangeListener chargeChangeListener;
+    protected ChargeChangeListener chargeChangeListener;
     private Context context;
+    private ShieldPowerConfig shieldPowerConfig;
+    private int turnsShieldWasKeptOn;
+    private ImageView helpPowerUsedImg;
+    private ImageView helpPowerUsedImgBg;
 
-    public ShieldClickListener(QuestionHandler questionHandler, HashMap<AnswerChoice, Button> buttons,
-                               ImageView shieldImg, ImageView shieldBreakingImg, FrameLayout shieldGradient, AnswerButtonsHandler answerButtonsHandler,
-                               boolean keepShield, ChargeChangeListener chargeChangeListener, Context context) {
+    public ShieldClickListener(QuestionHandler questionHandler, ImageView shieldImg, ImageView shieldBreakingImg, FrameLayout shieldGradient,
+                               ShieldPowerConfig shieldPowerConfig, ChargeChangeListener chargeChangeListener, Context context,
+                               ImageView helpPowerUsedImg, ImageView helpPowerUsedImgBg) {
         this.questionHandler = questionHandler;
-        this.buttons = buttons;
-        this.answerButtonsHandler = answerButtonsHandler;
-        this.keepShield = keepShield;
+        this.shieldPowerConfig = shieldPowerConfig;
         this.shieldImg = shieldImg;
         this.shieldBreakingImg = shieldBreakingImg;
         this.shieldGradient = shieldGradient;
         this.chargeChangeListener = chargeChangeListener;
         this.context = context;
+        this.helpPowerUsedImg = helpPowerUsedImg;
+        this.helpPowerUsedImgBg = helpPowerUsedImgBg;
+        questionHandler.registerQuestionChangedListener(this);
+    }
+
+    public ShieldClickListener(QuestionHandler questionHandler, HashMap<AnswerChoice, Button> buttons,
+                               ImageView shieldImg, ImageView shieldBreakingImg, FrameLayout shieldGradient, AnswerButtonsHandler answerButtonsHandler,
+                               ShieldPowerConfig shieldPowerConfig, ChargeChangeListener chargeChangeListener, Context context,
+                               ImageView helpPowerUsedImg, ImageView helpPowerUsedImgBg) {
+        this.questionHandler = questionHandler;
+        this.buttons = buttons;
+        this.answerButtonsHandler = answerButtonsHandler;
+        this.shieldPowerConfig = shieldPowerConfig;
+        this.shieldImg = shieldImg;
+        this.shieldBreakingImg = shieldBreakingImg;
+        this.shieldGradient = shieldGradient;
+        this.chargeChangeListener = chargeChangeListener;
+        this.context = context;
+        this.helpPowerUsedImg = helpPowerUsedImg;
+        this.helpPowerUsedImgBg = helpPowerUsedImgBg;
         questionHandler.registerQuestionChangedListener(this);
     }
 
     @Override
     public void onClick(View view) {
         isShieldEnabled = true;
+        turnsShieldWasKeptOn = 0;
         view.setEnabled(false);
         shieldImg.setVisibility(View.VISIBLE);
         shieldGradient.setVisibility(View.VISIBLE);
-        stopCurrentQuestionMistake();
+        stopCurrentTurnsMistake();
         chargeChangeListener.onChargeDecreased();
+        PowerImageTask powerImageTask = new PowerImageTask(R.drawable.help_second_chance_button_default, helpPowerUsedImg,
+                helpPowerUsedImgBg, R.drawable.shield, 400);
+        powerImageTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
     }
 
-    private void stopCurrentQuestionMistake() {
+    protected void stopCurrentTurnsMistake() {
         AnswerChoice correctChoice = questionHandler.getCorrectAnswerChoice();
         switch (correctChoice) {
             case A:
@@ -74,15 +100,17 @@ public class ShieldClickListener implements View.OnClickListener, ShieldEndListe
     }
 
     private void overrideWrongAnswersListeners(AnswerChoice wrongChoice1, AnswerChoice wrongChoice2) {
-        buttons.get(wrongChoice1).setOnClickListener(new WrongChoiceClickListener(this, context, this));
-        buttons.get(wrongChoice2).setOnClickListener(new WrongChoiceClickListener(this, context, this));
+        buttons.get(wrongChoice1).setOnClickListener(new WrongChoiceClickListener(this, context, this, questionHandler, wrongChoice1));
+        buttons.get(wrongChoice2).setOnClickListener(new WrongChoiceClickListener(this, context, this, questionHandler, wrongChoice2));
     }
 
     @Override
     public void onExtraTryEnd() {
         isShieldEnabled = false;
         animateBreakingShield();
-        answerButtonsHandler.init();
+        if(answerButtonsHandler != null) {
+            answerButtonsHandler.init();
+        }
         chargeChangeListener.onChargeDurationEnd();
     }
 
@@ -90,17 +118,24 @@ public class ShieldClickListener implements View.OnClickListener, ShieldEndListe
     public void animateBreakingShield() {
         BreakingShieldTask task = new BreakingShieldTask(shieldImg, shieldBreakingImg, shieldGradient, 700);
         task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+        PowerImageTask powerImageTask = new PowerImageTask(R.drawable.help_second_chance_button_default, helpPowerUsedImg,
+                helpPowerUsedImgBg, R.drawable.shield_broken, 700);
+        powerImageTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
     }
 
     @Override
     public void onQuestionChanged(Question question) {
+        turnsShieldWasKeptOn++;
         if(!isShieldEnabled) {
             return;
         }
-        if(keepShield) {
-            answerButtonsHandler.init();
-            stopCurrentQuestionMistake();
+        if(turnsShieldWasKeptOn < shieldPowerConfig.getTurnsDuration()) {
+            if(answerButtonsHandler != null) {
+                answerButtonsHandler.init();
+            }
+            stopCurrentTurnsMistake();
         } else {
+            turnsShieldWasKeptOn = 0;
             onExtraTryEnd();
         }
     }

@@ -1,6 +1,7 @@
 package com.orestis.velen.quiz.login;
 
 import android.content.Context;
+import android.os.Handler;
 
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -8,6 +9,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
 import com.orestis.velen.quiz.login.firebase.FirebaseSession;
 import com.orestis.velen.quiz.login.localStorage.LocalStorageManager;
+import com.orestis.velen.quiz.mainMenu.PlayerRecoveredListener;
 import com.orestis.velen.quiz.player.Player;
 
 import static com.orestis.velen.quiz.login.firebase.FirebaseSession.LAST_UPDATE_TIME;
@@ -21,7 +23,7 @@ public class UserSession implements ValueEventListener {
     private boolean isLastUpdateTimeRecovered;
     private PlayerRecoveredListener playerRecoveredListener;
     private Player recoveredPlayer;
-    private boolean isPlayerRecovered;
+    private boolean isPlayerRecoveredFromFirebase;
 
     public static UserSession getInstance() {
         if(instance == null) {
@@ -30,10 +32,24 @@ public class UserSession implements ValueEventListener {
         return instance;
     }
 
-    public void recoverPlayer(FirebaseUser firebaseUser, PlayerRecoveredListener playerRecoveredListener, Context context) {
-        createStorageManagers(context);
-        firebaseSession.signIn(firebaseUser, this);
-        this.playerRecoveredListener = playerRecoveredListener;
+    public void recoverPlayerFromFirebase(FirebaseUser firebaseUser, final PlayerRecoveredListener playerRecoveredListener, final Context context) {
+        if(recoveredPlayer != null) {
+            playerRecoveredListener.onPlayerRecovered(recoveredPlayer, true);
+        } else {
+            createStorageManagers(context);
+            firebaseSession.signIn(firebaseUser, this);
+            this.playerRecoveredListener = playerRecoveredListener;
+            Handler handler = new Handler();
+            handler.postDelayed(new Runnable()
+            {
+                @Override
+                public void run() {
+                    if (!isPlayerRecoveredFromFirebase) {
+                        playerRecoveredListener.onPlayerRecoveryFromFirebaseFailed();
+                    }
+                }
+            }, 12000 );
+        }
     }
 
     public void recoverPlayerFromLocalStorage(PlayerRecoveredListener playerRecoveredListener, Context context) {
@@ -49,7 +65,7 @@ public class UserSession implements ValueEventListener {
         }
         if(dataSnapshot.getKey().equals(firebaseSession.getFirebaseUserId()) && recoveredPlayer == null) {
             recoveredPlayer = dataSnapshot.getValue(Player.class);
-            isPlayerRecovered = true;
+            isPlayerRecoveredFromFirebase = true;
             createPlayer();
         } else if(dataSnapshot.getKey().equals(LAST_UPDATE_TIME)) {
             lastUpdateTimeRecovered = dataSnapshot.getValue(String.class);
@@ -64,8 +80,14 @@ public class UserSession implements ValueEventListener {
         savePlayerToLocalStorage(player);
     }
 
+    public void resetCurrentPlayer() {
+        localStorageManager.removeLocalStorage();
+        savePlayer(localStorageManager.getPlayer());
+    }
+
     private void createPlayer() {
         if(areAllValuesRecoveredFromFirebase()) {
+            boolean isFirebaseEntryMoreRecent = isFirebaseEntryMoreRecent();
             if(areAllValuesRecoveredFromFirebaseNotNull() && isFirebaseEntryMoreRecent()) {
                 createPlayerFromFirebase();
                 savePlayerToLocalStorage(recoveredPlayer);
@@ -81,7 +103,7 @@ public class UserSession implements ValueEventListener {
     }
 
     private boolean areAllValuesRecoveredFromFirebase() {
-        return isPlayerRecovered && isLastUpdateTimeRecovered;
+        return isPlayerRecoveredFromFirebase && isLastUpdateTimeRecovered;
     }
 
     private boolean areAllValuesRecoveredFromFirebaseNotNull() {
@@ -94,12 +116,12 @@ public class UserSession implements ValueEventListener {
     }
 
     private void createPlayerFromFirebase() {
-        playerRecoveredListener.onPlayerRecovered(recoveredPlayer);
+        playerRecoveredListener.onPlayerRecovered(recoveredPlayer, false);
     }
 
     private void createPlayerFromLocalStorage() {
         recoveredPlayer = localStorageManager.getPlayer();
-        playerRecoveredListener.onPlayerRecovered(recoveredPlayer);
+        playerRecoveredListener.onPlayerRecovered(recoveredPlayer, true);
     }
 
     private void savePlayerToFirebase(Player player) {
@@ -111,11 +133,19 @@ public class UserSession implements ValueEventListener {
     }
 
     public void disconnectFromFirebase() {
-        isPlayerRecovered = true;
+        isPlayerRecoveredFromFirebase = true;
         lastUpdateTimeRecovered = null;
         isLastUpdateTimeRecovered = false;
         recoveredPlayer = null;
-        firebaseSession.signOut();
+//        firebaseSession.signOut();
+    }
+
+    public void saveXpBoostEnabledTime() {
+        localStorageManager.saveXpBoostEnabledTime();
+    }
+
+    public long getXpBoostEnabledTime() {
+        return localStorageManager.getXpBoostEnabledTime();
     }
 
     @Override

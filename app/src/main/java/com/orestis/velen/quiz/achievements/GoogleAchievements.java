@@ -8,8 +8,8 @@ import android.support.v7.app.AppCompatActivity;
 import com.google.android.gms.games.AchievementsClient;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.orestis.velen.quiz.login.SignInRequestHandler;
-import com.orestis.velen.quiz.login.errors.ConnectionError;
+import com.orestis.velen.quiz.mainMenu.SignInRequestHandler;
+import com.orestis.velen.quiz.mainMenu.errors.ConnectionError;
 import com.orestis.velen.quiz.login.googleSignIn.GoogleSession;
 
 public class GoogleAchievements {

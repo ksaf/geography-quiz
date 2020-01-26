@@ -1,5 +1,6 @@
 package com.orestis.velen.quiz.questionText;
 
+import android.content.Context;
 import android.graphics.Typeface;
 import android.widget.TextView;
 
@@ -14,14 +15,16 @@ public class QuestionTextHandler implements QuestionChangedListener {
     private TextView questionText;
     private QuestionAnnouncement questionAnnouncement;
     private GameType gameType;
+    private Context context;
 
-    public QuestionTextHandler(Typeface face, TextView questionText, QuestionHandler questionHandler, QuestionAnnouncement questionAnnouncement, GameType gameType) {
+    public QuestionTextHandler(Typeface face, TextView questionText, QuestionHandler questionHandler,
+                               QuestionAnnouncement questionAnnouncement, GameType gameType, Context context) {
+        this.context = context;
         this.face = face;
         this.questionText = questionText;
         this.questionAnnouncement = questionAnnouncement;
         this.gameType = gameType;
         questionHandler.registerQuestionChangedListener(this);
-        questionText.setTypeface(face);
     }
 
     public void setGameType(GameType gameType) {
@@ -30,6 +33,6 @@ public class QuestionTextHandler implements QuestionChangedListener {
 
     @Override
     public void onQuestionChanged(Question newQuestion) {
-        questionText.setText(questionAnnouncement.getQuestionAnnouncementForGameType(gameType, newQuestion));
+        questionText.setText(questionAnnouncement.getQuestionAnnouncementForGameType(gameType, newQuestion, context));
     }
 }

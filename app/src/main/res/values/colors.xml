@@ -5,4 +5,6 @@
     <color name="colorAccent">#FF4081</color>
     <color name="colorWood">#592b1f</color>
     <color name="colorDarkWood">#442a22</color>
+    <color name="white">#ffffff</color>
+    <color name="splashScreenBlue">#88ceeb</color>
 </resources>

@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@android:id/background"
+        android:gravity="center_vertical|fill_horizontal">
+        <shape android:shape="rectangle"
+            android:tint="?attr/colorControlNormal">
+            <corners android:radius="8dp"/>
+            <size android:height="20dp" />
+            <solid android:color="#90caf9" />
+        </shape>
+    </item>
+    <item android:id="@android:id/progress"
+        android:gravity="center_vertical|fill_horizontal">
+        <scale android:scaleWidth="100%">
+            <shape android:shape="rectangle"
+                android:tint="?attr/colorControlActivated">
+                <corners android:radius="8dp"/>
+                <size android:height="20dp" />
+                <solid android:color="#FEAC2E" />
+            </shape>
+        </scale>
+    </item>
+</layer-list>
+
+<!--<layer-list xmlns:android="http://schemas.android.com/apk/res/android">-->
+
+    <!--&lt;!&ndash; Define the background properties like color etc &ndash;&gt;-->
+    <!--<item android:id="@android:id/background">-->
+        <!--<shape>-->
+            <!--<gradient-->
+                <!--android:startColor="#aa000001"-->
+                <!--android:centerColor="#aa0b131e"-->
+                <!--android:centerY="1.0"-->
+                <!--android:endColor="#aa0d1522"-->
+                <!--android:angle="270"-->
+                <!--/>-->
+        <!--</shape>-->
+    <!--</item>-->
+
+    <!--&lt;!&ndash; Define the progress properties like start color, end color etc &ndash;&gt;-->
+    <!--<item android:id="@android:id/progress">-->
+        <!--<clip>-->
+            <!--<shape>-->
+                <!--<gradient-->
+                    <!--android:startColor="#FEAC2E"-->
+                    <!--android:centerColor="#FEAC2E"-->
+                    <!--android:centerY="1.0"-->
+                    <!--android:endColor="#06101d"-->
+                    <!--android:angle="270"-->
+                    <!--/>-->
+            <!--</shape>-->
+        <!--</clip>-->
+    <!--</item>-->
+<!--</layer-list>-->
+
+<!--<layer-list xmlns:android="http://schemas.android.com/apk/res/android">-->
+<!--<item android:id="@android:id/background">-->
+    <!--<shape>-->
+        <!--<corners android:radius="8dp"/>-->
+        <!--<solid android:color="#aa0d1522"/>-->
+    <!--</shape>-->
+<!--</item>-->
+
+<!--<item android:id="@android:id/progress"-->
+    <!--android:top="1dp"-->
+    <!--android:bottom="1dp"-->
+    <!--android:left="1dp"-->
+    <!--android:right="1dp">-->
+
+    <!--<scale android:scaleWidth="100%">-->
+        <!--<shape>-->
+            <!--<corners android:radius="8dp"/>-->
+            <!--<solid android:color="#FEAC2E"/>-->
+        <!--</shape>-->
+    <!--</scale>-->
+<!--</item>-->
+<!--</layer-list>-->
+
+<!--<layer-list xmlns:android="http://schemas.android.com/apk/res/android">-->
+<!--<item android:id="@android:id/background">-->
+    <!--<shape>-->
+        <!--<corners android:radius="8dp"/>-->
+        <!--<solid android:color="#fff"/>-->
+    <!--</shape>-->
+<!--</item>-->
+
+<!--<item android:id="@android:id/progress"-->
+    <!--android:top="1dp"-->
+    <!--android:bottom="1dp"-->
+    <!--android:left="1dp"-->
+    <!--android:right="1dp">-->
+
+    <!--<scale android:scaleWidth="100%">-->
+        <!--<shape>-->
+            <!--<corners android:radius="8dp"/>-->
+            <!--<solid android:color="@color/colorPrimaryDark"/>-->
+        <!--</shape>-->
+    <!--</scale>-->
+<!--</item>-->
+<!--</layer-list>-->

@@ -22,20 +22,57 @@ public class AnswerTextSizeHandler {
         buttons.get(A).post(new Runnable() {
             @Override
             public void run() {
-                if(buttons.get(A).getLineCount()>1){buttons.get(A).setTextSize(TypedValue.COMPLEX_UNIT_SP,20);}
+                fixMaxLines(buttons.get(A));
             }
         });
         buttons.get(B).post(new Runnable() {
             @Override
             public void run() {
-                if(buttons.get(B).getLineCount()>1){buttons.get(B).setTextSize(TypedValue.COMPLEX_UNIT_SP,20);}
+                fixMaxLines(buttons.get(B));
             }
         });
         buttons.get(C).post(new Runnable() {
             @Override
             public void run() {
-                if(buttons.get(C).getLineCount()>1){buttons.get(C).setTextSize(TypedValue.COMPLEX_UNIT_SP,20);}
+                fixMaxLines(buttons.get(C));
             }
         });
+    }
+
+    private void withLineCount(Button button) {
+        if(button.getLineCount()>1) {
+            button.setTextSize(TypedValue.COMPLEX_UNIT_SP,20);
+        }
+    }
+
+    private void fixMaxLines(Button button) {
+        String btnTxt = (String) button.getText();
+        int wordNo = countWords(btnTxt);
+        button.setMaxLines(wordNo);
+    }
+
+    private int countWords(String s){
+
+        int wordCount = 0;
+
+        boolean word = false;
+        int endOfLine = s.length() - 1;
+
+        for (int i = 0; i < s.length(); i++) {
+            // if the char is a letter, word = true.
+            if (Character.isLetter(s.charAt(i)) && i != endOfLine) {
+                word = true;
+                // if char isn't a letter and there have been letters before,
+                // counter goes up.
+            } else if (!Character.isLetter(s.charAt(i)) && word) {
+                wordCount++;
+                word = false;
+                // last word of String; if it doesn't end with a non letter, it
+                // wouldn't count without this.
+            } else if (Character.isLetter(s.charAt(i)) && i == endOfLine) {
+                wordCount++;
+            }
+        }
+        return wordCount;
     }
 }

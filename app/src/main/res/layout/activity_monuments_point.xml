@@ -4,15 +4,21 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/gameStartingContainer"
     tools:context="com.orestis.velen.quiz.pinpoint.MonumentsPointActivity">
 
 
     <ImageView
-        android:id="@+id/imageView7"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:id="@+id/background"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:scaleType="centerCrop"
-        app:srcCompat="@drawable/bg17" />
+        android:src="@drawable/bg17"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
 
     <include
         android:id="@+id/progrBoard"
@@ -58,6 +64,16 @@
             android:layout_marginTop="8dp"
             android:scaleType="fitXY"
             app:srcCompat="@drawable/africa_map" />
+
+        <ImageView
+            android:id="@+id/hideMapId"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:visibility="gone" />
 
         <TextView
             android:id="@+id/distanceText"
@@ -112,6 +128,44 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/guideline8" />
 
+    <ImageView
+        android:id="@+id/helpPowerUsedImgBg"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="@+id/mapBg"
+        app:layout_constraintTop_toTopOf="@+id/mapBg" />
+
+    <ImageView
+        android:id="@+id/helpPowerUsedImg"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:src="@drawable/shield"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="@+id/mapBg"
+        app:layout_constraintTop_toTopOf="@+id/mapBg" />
+
+    <ImageView
+        android:id="@+id/darkBg"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:clickable="true"
+        android:focusable="true"
+        android:background="#bb424242"/>
+
     <FrameLayout
         android:id="@+id/endGameScreenPlaceholder"
         android:layout_width="300dp"
@@ -126,6 +180,17 @@
         app:layout_constraintTop_toTopOf="parent">
 
     </FrameLayout>
+
+    <include
+        android:id="@+id/gameStarting"
+        layout="@layout/game_starting"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 
 </android.support.constraint.ConstraintLayout>

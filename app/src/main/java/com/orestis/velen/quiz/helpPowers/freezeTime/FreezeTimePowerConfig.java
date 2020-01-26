@@ -7,11 +7,11 @@ import static com.orestis.velen.quiz.helpPowers.PowerType.FREEZE_TIME;
 public class FreezeTimePowerConfig {
 
     private int powerLevel;
-    private FreezeTimePowerLevels freezeTimePowerLevels;
+    private FreezeTimePowerConfigs freezeTimePowerLevels;
 
     public FreezeTimePowerConfig(Player player) {
         this.powerLevel = player.getPowers().get(FREEZE_TIME).getPowerLevel();
-        this.freezeTimePowerLevels = new FreezeTimePowerLevels();
+        this.freezeTimePowerLevels = new FreezeTimePowerConfigs();
     }
 
     public int getTimeDuration() {

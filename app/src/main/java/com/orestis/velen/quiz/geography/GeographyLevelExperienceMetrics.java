@@ -21,7 +21,17 @@ public class GeographyLevelExperienceMetrics implements LevelExperienceMetrics {
         metrics.append(7, 7000);
         metrics.append(8, 8000);
         metrics.append(9, 9000);
-        metrics.append(10, 10000);
+        metrics.append(10, 11000);
+        metrics.append(11, 11000);
+        metrics.append(12, 12000);
+        metrics.append(13, 13000);
+        metrics.append(14, 14000);
+        metrics.append(15, 15000);
+        metrics.append(16, 16000);
+        metrics.append(17, 17000);
+        metrics.append(18, 18000);
+        metrics.append(19, 19000);
+        metrics.append(20, 20000);
     }
 
     public int getExperienceForLevelUp(int level) {
@@ -38,6 +48,19 @@ public class GeographyLevelExperienceMetrics implements LevelExperienceMetrics {
                 return 800;
             default:
                 return 200;
+        }
+    }
+
+    public int getExperienceForCorrectAnswer(Difficulty difficulty) {
+        switch (difficulty) {
+            case EASY:
+                return 20;
+            case NORMAL:
+                return 40;
+            case HARD:
+                return 80;
+            default:
+                return 20;
         }
     }
 
@@ -85,8 +108,8 @@ public class GeographyLevelExperienceMetrics implements LevelExperienceMetrics {
     @Override
     public int getStreakNeededForBonus(GameType gameType) {
         switch (gameType) {
-            case TYPE_D:
-                return 1;
+            case TYPE_OUTLINE_TO_FLAG:
+                return 3;
             default:
                 return 3;
         }

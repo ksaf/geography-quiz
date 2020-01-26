@@ -1,39 +1,30 @@
 package com.orestis.velen.quiz.questions;
 
-import com.orestis.velen.quiz.geography.Continents;
-import com.orestis.velen.quiz.pinpoint.Coordinates;
+import com.orestis.velen.quiz.geography.DataItem;
 
 import java.util.List;
 
 public class Question {
-    private List<String> availableAnswers;
-    private String correctAnswer;
-    private String questionString;
+    private List<DataItem> availableAnswers;
+    private DataItem correctAnswerItem;
+    private DataItem questionItem;
 
-    public Question(String questionString, String correctAnswer, List<String> availableAnswers) {
+    public Question(DataItem questionItem, DataItem correctAnswerItem, List<DataItem> availableAnswers) {
         this.availableAnswers = availableAnswers;
-        this.correctAnswer = correctAnswer;
-        this.questionString = questionString;
+        this.correctAnswerItem = correctAnswerItem;
+        this.questionItem = questionItem;
     }
 
-    public List<String> getAvailableAnswers() {
+    public List<DataItem> getAvailableAnswers() {
         return availableAnswers;
     }
 
-    public String getCorrectAnswer() {
-        return correctAnswer;
+    public DataItem getCorrectAnswer() {
+        return correctAnswerItem;
     }
 
-    public String getQuestionString() {
-        return questionString;
-    }
-
-    public Coordinates getCorrectCoordinates() {
-        return new Coordinates(correctAnswer);
-    }
-
-    public int getCorrectAnswerContinentResource() {
-        return Continents.getCorrectAnswerContinentResource(correctAnswer);
+    public DataItem getQuestionItem() {
+        return questionItem;
     }
 
 }

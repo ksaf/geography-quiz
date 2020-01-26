@@ -15,15 +15,16 @@ import android.view.animation.LinearInterpolator;
 import android.widget.TextView;
 
 import com.orestis.velen.quiz.R;
-import com.orestis.velen.quiz.login.BounceLoadingView;
+import com.orestis.velen.quiz.loadingScreen.BounceLoadingView;
 
-public class GameStartingScreen implements GameStartingEndListener{
+public class GameStartingScreen implements GameStartingEndListener {
 
     private BounceLoadingView bounceLoading;
     private TextView countText;
     private ViewGroup container;
     private Typeface face;
     private Context context;
+    private GameStartingEndListener endListener;
 
     private GameStartingScreen() {}
 
@@ -38,6 +39,9 @@ public class GameStartingScreen implements GameStartingEndListener{
             if(view.getId() != R.id.gameStarting && view.getId() != R.id.background) {
                 view.setScaleX(scale);
                 view.setScaleY(scale);
+            } else if (view.getId() == R.id.gameStarting) {
+                int visibility = scale == 0 ? View.VISIBLE : View.GONE;
+                view.setVisibility(visibility);
             }
         }
     }
@@ -56,7 +60,7 @@ public class GameStartingScreen implements GameStartingEndListener{
         countText.setVisibility(View.VISIBLE);
         bounceLoading.setVisibility(View.VISIBLE);
         DisplayMetrics metrics = context.getResources().getDisplayMetrics();
-        int size = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 120, metrics);
+        int size = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 80, metrics);
         for(int i = 1; i <= 11; i++) {
             int id = context.getResources().getIdentifier("landmark" + i, "drawable", context.getPackageName());
             Bitmap bm = BitmapFactory.decodeResource(context.getResources(), id);
@@ -86,18 +90,19 @@ public class GameStartingScreen implements GameStartingEndListener{
             viewAnimator = ViewCompat.animate(view)
                     .setStartDelay(50)
                     .alpha(1f)
-                    .setDuration(800);
+                    .setDuration(400);
 
             viewAnimator.setInterpolator(new LinearInterpolator()).start();
         }
     }
 
     @Override
-    public void onCountDownEnd() {
+    public void onGameStartingScreenEnd() {
         stopBounceLoading();
         setViewsScale(1f);
         setViewsAlpha(0f);
         animateUIAppearance();
+        endListener.onGameStartingScreenEnd();
     }
 
     public static class Builder {
@@ -107,6 +112,7 @@ public class GameStartingScreen implements GameStartingEndListener{
         private ViewGroup container;
         private Typeface face;
         private Context context;
+        private GameStartingEndListener endListener;
 
         public Builder useBounceLoadingView(BounceLoadingView bounceLoading) {
             this.bounceLoading = bounceLoading;
@@ -133,6 +139,11 @@ public class GameStartingScreen implements GameStartingEndListener{
             return this;
         }
 
+        public Builder withGameStartingEndListener(GameStartingEndListener endListener) {
+            this.endListener = endListener;
+            return this;
+        }
+
         public GameStartingScreen init() {
             GameStartingScreen gameStartingScreen = new GameStartingScreen();
             gameStartingScreen.bounceLoading = this.bounceLoading;
@@ -140,6 +151,7 @@ public class GameStartingScreen implements GameStartingEndListener{
             gameStartingScreen.container = this.container;
             gameStartingScreen.face = this.face;
             gameStartingScreen.context = this.context;
+            gameStartingScreen.endListener = this.endListener;
             gameStartingScreen.init();
             return gameStartingScreen;
         }

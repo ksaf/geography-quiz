@@ -7,14 +7,14 @@ import static com.orestis.velen.quiz.helpPowers.PowerType.SHIELD;
 public class ShieldPowerConfig {
 
     private int powerLevel;
-    private ShieldPowerLevels shieldPowerLevels;
+    private ShieldPowerConfigs shieldPowerLevels;
 
     public ShieldPowerConfig(Player player) {
         this.powerLevel = player.getPowers().get(SHIELD).getPowerLevel();
-        this.shieldPowerLevels = new ShieldPowerLevels();
+        this.shieldPowerLevels = new ShieldPowerConfigs();
     }
 
-    public int getTurnDuration() {
+    public int getTurnsDuration() {
         return shieldPowerLevels.getTurnDurationForPowerLevel(powerLevel);
     }
 }

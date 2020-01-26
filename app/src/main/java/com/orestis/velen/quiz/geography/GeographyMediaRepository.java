@@ -8,13 +8,13 @@ public class GeographyMediaRepository implements MediaRepository{
     @Override
     public String getImagePathFor(String questionDisplay, GameType gameType) {
         switch (gameType) {
-            case TYPE_A:
+            case TYPE_OUTLINES:
                 return questionDisplay;
-            case TYPE_B:
-                return questionDisplay;
-            case TYPE_C:
+            case TYPE_FLAGS:
                 return questionDisplay + "_flag";
-            case TYPE_D:
+            case TYPE_CAPITALS:
+                return questionDisplay;
+            case TYPE_OUTLINE_TO_FLAG:
                 return questionDisplay;
             default:
                 return questionDisplay;

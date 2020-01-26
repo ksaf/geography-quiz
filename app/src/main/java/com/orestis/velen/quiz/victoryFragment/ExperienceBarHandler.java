@@ -35,7 +35,9 @@ public class ExperienceBarHandler extends PreciseCountdown {
         this.currentProgress = player.getCurrentXP();
         xpRangesPassedAfterCurrent = player.addXP(score);
         this.endProgress = player.getCurrentXP();
-        this.progressToAdd = score / tickTimes;
+        if(tickTimes > 0) {
+            this.progressToAdd = score / tickTimes;
+        }
         this.progressBar.setMax(getCurrentXpRange());
     }
 
