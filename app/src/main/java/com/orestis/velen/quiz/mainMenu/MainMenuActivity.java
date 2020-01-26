@@ -36,6 +36,7 @@ import com.orestis.velen.quiz.adverts.XpBoostEnabledListener;
 import com.orestis.velen.quiz.adverts.XpBoostFragment;
 import com.orestis.velen.quiz.adverts.XpBoostFragmentActive;
 import com.orestis.velen.quiz.adverts.XpBoostTimeLeftTimer;
+import com.orestis.velen.quiz.capitals.CapitalsActivity;
 import com.orestis.velen.quiz.flags.FlagsActivity;
 import com.orestis.velen.quiz.language.LocaleHelper;
 import com.orestis.velen.quiz.leaderboard.GoogleLeaderboard;
@@ -50,7 +51,6 @@ import com.orestis.velen.quiz.menuGameTypeFragments.MapsMenuFragment;
 import com.orestis.velen.quiz.menuGameTypeFragments.MonumentsMenuFragment;
 import com.orestis.velen.quiz.menuGameTypeFragments.OutlineToFlagsMenuFragment;
 import com.orestis.velen.quiz.menuGameTypeFragments.ScreenSlidePagerAdapter;
-import com.orestis.velen.quiz.outlines.MainActivity;
 import com.orestis.velen.quiz.outlinesToFlags.OutlinesToFlagsActivity;
 import com.orestis.velen.quiz.pinpoint.CapitalsPointActivity;
 import com.orestis.velen.quiz.player.Player;
@@ -246,7 +246,7 @@ public class MainMenuActivity extends AppCompatActivity implements PlayerRecover
                 gameTypeString = getString(R.string.mapToFlag);
                 break;
             case GAME_TYPE_OUTLINES:
-                activityToStart = MainActivity.class;
+                activityToStart = CapitalsActivity.class;
                 gameTypeString = getString(R.string.maps);
                 break;
             case GAME_TYPE_MONUMENTS:

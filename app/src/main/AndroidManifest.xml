@@ -67,6 +67,7 @@
         <activity android:name=".flags.FlagsActivity" android:theme="@style/playGameTheme"/>
         <activity android:name=".pinpoint.MonumentsPointActivity" android:theme="@style/playGameTheme"/>
         <activity android:name=".outlinesToFlags.OutlinesToFlagsActivity" android:theme="@style/playGameTheme"/>
+        <activity android:name=".capitals.CapitalsActivity" android:theme="@style/playGameTheme"/>
         <activity android:name=".loadingScreen.LoginSplashScreenActivity" android:theme="@style/playGameTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

@@ -12,7 +12,8 @@ public class GeographyMediaRepository implements MediaRepository{
                 return questionDisplay;
             case TYPE_FLAGS:
                 return questionDisplay + "_flag";
-            case TYPE_CAPITALS:
+            case TYPE_CAPITALS_TEXT:
+            case TYPE_CAPITALS_MAP:
                 return questionDisplay;
             case TYPE_OUTLINE_TO_FLAG:
                 return questionDisplay;

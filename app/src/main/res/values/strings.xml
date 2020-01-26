@@ -4,7 +4,7 @@
     <string name="app_name">Quiz</string>
     <string name="geo_question_type_outlines">Which Country Is This?</string>
     <string name="geo_question_type_flags">Which Country Has This Flag?</string>
-    <string name="geo_question_type_capitals">Which Country\'s Capital Is This?</string>
+    <string name="geo_question_type_capitals">Which is the capital?</string>
     <string name="geo_question_type_outline_to_flag">Which one is the correct flag</string>
     <string name="loading">Loading</string>
     <string name="skills">Skills</string>

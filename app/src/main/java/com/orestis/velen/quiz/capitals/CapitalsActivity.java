@@ -1,15 +1,13 @@
-package com.orestis.velen.quiz.pinpoint;
+package com.orestis.velen.quiz.capitals;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Rect;
 import android.graphics.Typeface;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
-import android.view.View;
+import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -19,6 +17,11 @@ import com.orestis.velen.quiz.R;
 import com.orestis.velen.quiz.StreakBonus.StreakBonusDisplayHandler;
 import com.orestis.velen.quiz.StreakBonus.StreakBonusManager;
 import com.orestis.velen.quiz.adverts.FullscreenAdManager;
+import com.orestis.velen.quiz.answerButtons.AnswerButtonStateListener;
+import com.orestis.velen.quiz.answerButtons.AnswerButtonsHandler;
+import com.orestis.velen.quiz.answerButtons.AnswerChoice;
+import com.orestis.velen.quiz.answerButtons.AnswerGivenListener;
+import com.orestis.velen.quiz.answerButtons.DefaultAnswerButtonsHandler;
 import com.orestis.velen.quiz.bonusTimeDisplay.BonusTimeHandler;
 import com.orestis.velen.quiz.gameEnd.GameEndLossFragment;
 import com.orestis.velen.quiz.gameEnd.GameEndWinFragment;
@@ -34,6 +37,7 @@ import com.orestis.velen.quiz.loadingBar.LoadingBarHandler;
 import com.orestis.velen.quiz.loadingBar.LoadingBarStateListener;
 import com.orestis.velen.quiz.loadingScreen.BounceLoadingView;
 import com.orestis.velen.quiz.mainMenu.MainMenuActivity;
+import com.orestis.velen.quiz.outlines.MainActivity;
 import com.orestis.velen.quiz.player.Player;
 import com.orestis.velen.quiz.player.PlayerHelper;
 import com.orestis.velen.quiz.player.PlayerSession;
@@ -48,85 +52,93 @@ import com.orestis.velen.quiz.repositories.SampleSizeEndListener;
 import com.orestis.velen.quiz.roundProgressDisplay.RoundProgressDisplayHandler;
 import com.orestis.velen.quiz.sound.SoundPoolHelper;
 
+import java.util.HashMap;
+
+import static com.orestis.velen.quiz.answerButtons.AnswerChoice.A;
+import static com.orestis.velen.quiz.answerButtons.AnswerChoice.B;
+import static com.orestis.velen.quiz.answerButtons.AnswerChoice.C;
 import static com.orestis.velen.quiz.helpPowers.PowerType.EXTRA_TIME;
 import static com.orestis.velen.quiz.loadingBar.TimerDirection.DOWN;
 import static com.orestis.velen.quiz.mainMenu.MainMenuActivity.XP_BOOST_ENABLED;
-import static com.orestis.velen.quiz.questions.Difficulty.EASY;
-import static com.orestis.velen.quiz.questions.GameType.TYPE_CAPITALS_MAP;
+import static com.orestis.velen.quiz.questions.GameType.TYPE_CAPITALS_TEXT;
 import static com.orestis.velen.quiz.repositories.GameTheme.GEOGRAPHY;
 
-public class CapitalsPointActivity extends AppCompatActivity implements SampleSizeEndListener, DisplayDistanceDurationEndListener,
-        PinpointAnswerGivenListener, LoadingBarStateListener, FrameResizeHandler, GameStartingEndListener {
+public class CapitalsActivity extends AppCompatActivity implements LoadingBarStateListener, AnswerGivenListener,
+        AnswerButtonStateListener, SampleSizeEndListener, GameStartingEndListener {
 
-    private Player player;
-    private QuestionHandler questionHandler;
-    private StreakBonusManager bonusManager;
-    private StreakBonusDisplayHandler bonusDisplayHandler;
+    private static final long PROGRESS_BAR_DURATION = 60000;
+    private static final int GAINED_TIME = 3000;
+    private static final int LOST_TIME = 5000;
+    private static final int DISPLAY_BONUS_DURATION = 500;
+    private static final int LEVEL_QUESTION_SAMPLE = 20;
     private LoadingBarHandler loadingBarHandler;
     private BonusTimeHandler bonusTimeHandler;
-    private ImageView hideMapOverlay;
-    private static final int LEVEL_QUESTION_SAMPLE = 20;
-    public static final int DISPLAY_DISTANCE_DURATION = 500;
-    private static final int DELAYED_ANSWER_DURATION = 200;
-    private static final int DISPLAY_BONUS_DURATION = 500;
-    private static final long PROGRESS_BAR_DURATION = 60000;
-    private static final int PROGRESS_BAR_ANIMATION_DURATION = 1800;
-    private static final int GAINED_TIME_CLOSE = 3000;
-    private static final int GAINED_TIME_PERFECT = 5000;
-    private static final int LOST_TIME = 5000;
-    private boolean gameHasEnded = false;
+    private QuestionHandler questionHandler;
+    private QuestionTextHandler questionTextHandler;
+    private AnswerButtonsHandler answerButtonsHandler;
+    private StreakBonusManager bonusManager;
+    private StreakBonusDisplayHandler bonusDisplayHandler;
+    private Typeface face;
+    private Player player;
     private Difficulty difficulty;
-    private MapTouchListener mapTouchListener;
-    private ImageView map;
+    private boolean gameHasEnded = false;
+    private HashMap<AnswerChoice, Button> buttons = new HashMap<>();
     private SoundPoolHelper soundHelper;
     private boolean hasXpBoostEnabled;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.pinpoint_activity);
-        map = findViewById(R.id.mapId);
+        setContentView(R.layout.activity_capitals);
 
         soundHelper = new SoundPoolHelper(5, this);
         soundHelper.loadInGameSounds();
 
         FullscreenAdManager.getInstance().initialise(this);
 
-        map = findViewById(R.id.mapId);
-        hideMapOverlay = findViewById(R.id.hideMapId);
-
         player = PlayerHelper.getPlayerFromIntent(getIntent());
         hasXpBoostEnabled = getIntent().getBooleanExtra(XP_BOOST_ENABLED, false);
 
-        difficulty = DifficultyHelper.getDifficultyFromIntent(getIntent());
+        buttons.put(A, (Button) findViewById(R.id.answerA));
+        buttons.put(B, (Button) findViewById(R.id.answerB));
+        buttons.put(C, (Button) findViewById(R.id.answerC));
 
-        Typeface face = Typeface.createFromAsset(getAssets(),"custom.ttf");
+        TextView questionDisplay = findViewById(R.id.questionDisplay);
 
-        DistanceTextHandler distanceTextHandler = new DistanceTextHandler(DISPLAY_DISTANCE_DURATION, (TextView) findViewById(R.id.distanceText), this);
+        face = Typeface.createFromAsset(getAssets(),"custom.ttf");
 
         RepositoryFactory repositoryFactory = new RepositoryFactory(GEOGRAPHY);
         questionHandler = new QuestionHandler(repositoryFactory, this, this);
 
-        QuestionAnnouncement questionAnnouncement = (new QuestionAnnouncementFactory()).getQuestionAnouncement(GEOGRAPHY);
-        new QuestionTextHandler(face, (TextView) findViewById(R.id.questionText), questionHandler,
-                questionAnnouncement, TYPE_CAPITALS_MAP, this);
+        difficulty = DifficultyHelper.getDifficultyFromIntent(getIntent());
 
-        mapTouchListener = new MapTouchListener.Builder()
-                .forMap(map)
+        new CapitalTextDisplayHandler.Builder()
+                .forTextView(questionDisplay)
+                .gameOf(TYPE_CAPITALS_TEXT)
                 .withContext(this)
-                .withDelayedAnswerDuration(DELAYED_ANSWER_DURATION)
-                .withQuestionHandler(questionHandler)
-                .withDistanceTextHandler(distanceTextHandler)
-                .withSoundPoolHelper(soundHelper)
-                .withAnswerGivenListener(this).build();
+                .withQuestionHandler(questionHandler).buildAndInit();
 
-        questionHandler.init(EASY, TYPE_CAPITALS_MAP, LEVEL_QUESTION_SAMPLE);
+
+        answerButtonsHandler = new DefaultAnswerButtonsHandler.Builder()
+                .forButtons(buttons)
+                .withTypeFace(face)
+                .displayAnswerDurationFor(DISPLAY_BONUS_DURATION)
+                .withQuestionHandler(questionHandler)
+                .withButtonStateListener(this)
+                .withSoundPoolHelper(soundHelper)
+                .withAnswerGivenListener(this).buildAndInit();
+
+        QuestionAnnouncement questionAnnouncement = (new QuestionAnnouncementFactory()).getQuestionAnouncement(GEOGRAPHY);
+        questionTextHandler = new QuestionTextHandler(face, (TextView) findViewById(R.id.questionText),
+                questionHandler, questionAnnouncement, TYPE_CAPITALS_TEXT, this);
+
+        questionHandler.init(difficulty, TYPE_CAPITALS_TEXT, LEVEL_QUESTION_SAMPLE);
 
         bonusTimeHandler = new BonusTimeHandler((TextView) findViewById(R.id.bonusTime), this);
 
         bonusDisplayHandler = new StreakBonusDisplayHandler((TextView) findViewById(R.id.nowBonusTxt),
                 (TextView) findViewById(R.id.accumBonusTxt), face, DISPLAY_BONUS_DURATION, this);
-        bonusManager = new StreakBonusManager(GEOGRAPHY, EASY, TYPE_CAPITALS_MAP, bonusDisplayHandler);
+        bonusManager = new StreakBonusManager(GEOGRAPHY, difficulty, TYPE_CAPITALS_TEXT, bonusDisplayHandler);
 
         new RoundProgressDisplayHandler((TextView) findViewById(R.id.questionProgressTxt),
                 (TextView) findViewById(R.id.currentQuestionNumberTxt), LEVEL_QUESTION_SAMPLE, questionHandler, face);
@@ -138,39 +150,47 @@ public class CapitalsPointActivity extends AppCompatActivity implements SampleSi
                 .useTypeface(face)
                 .withGameStartingEndListener(this)
                 .withContext(this).init();
+
     }
 
     @Override
     public void onGameStartingScreenEnd() {
         if(!gameHasEnded) {
             startCountDownBar();
-            map.setOnTouchListener(mapTouchListener);
             setupPowerButtons();
             soundHelper.playInGameBackgroundMusic();
         }
     }
 
     private void setupPowerButtons() {
-        new SkipButton.Builder().forPlayer(player)
-                .useLayout((ConstraintLayout) findViewById(R.id.skipBtnLayout))
-                .withBonusManager(bonusManager)
-                .withContext(this)
-                .forMap(map)
-                .withSoundPoolHelper(soundHelper)
-                .useHelpPowerUsedImg((ImageView) findViewById(R.id.helpPowerUsedImg))
-                .useHelpPowerUsedImgBg((ImageView) findViewById(R.id.helpPowerUsedImgBg))
-                .withQuestionHandler(questionHandler).enable();
-
         new FiftyFiftyButton.Builder().forPlayer(player)
                 .useLayout((ConstraintLayout) findViewById(R.id.fiftyFiftyBtnLayout))
-                .withMap(map)
-                .withHideMapOverlay(hideMapOverlay)
+                .withAnswerButtons(buttons)
                 .withQuestionHandler(questionHandler)
                 .withBonusManager(bonusManager)
                 .withSoundPoolHelper(soundHelper)
                 .useHelpPowerUsedImg((ImageView) findViewById(R.id.helpPowerUsedImg))
                 .useHelpPowerUsedImgBg((ImageView) findViewById(R.id.helpPowerUsedImgBg))
-                .withContext(this).enableForMap();
+                .withContext(this).enableDefault();
+
+        new SkipButton.Builder().forPlayer(player)
+                .useLayout((ConstraintLayout) findViewById(R.id.skipBtnLayout))
+                .withBonusManager(bonusManager)
+                .withAnswerButtonsHandler(answerButtonsHandler)
+                .withSoundPoolHelper(soundHelper)
+                .useHelpPowerUsedImg((ImageView) findViewById(R.id.helpPowerUsedImg))
+                .useHelpPowerUsedImgBg((ImageView) findViewById(R.id.helpPowerUsedImgBg))
+                .withQuestionHandler(questionHandler).enable();
+
+        new FreezeTimeButton.Builder().forPlayer(player)
+                .useLayout((ConstraintLayout) findViewById(R.id.freezeTimeBtnLayout))
+                .useContext(this)
+                .withLoadingBarHandler(loadingBarHandler)
+                .withPowerIcon((ImageView) findViewById(R.id.freezeImg))
+                .withSoundPoolHelper(soundHelper)
+                .useHelpPowerUsedImg((ImageView) findViewById(R.id.helpPowerUsedImg))
+                .useHelpPowerUsedImgBg((ImageView) findViewById(R.id.helpPowerUsedImgBg))
+                .withTimerText((TextView) findViewById(R.id.freezeTimer)).enable();
 
         new ShieldButton.Builder().forPlayer(player)
                 .useLayout((ConstraintLayout) findViewById(R.id.shieldLayout))
@@ -181,18 +201,9 @@ public class CapitalsPointActivity extends AppCompatActivity implements SampleSi
                 .useHelpPowerUsedImgBg((ImageView) findViewById(R.id.helpPowerUsedImgBg))
                 .withContext(this)
                 .withSoundPoolHelper(soundHelper)
-                .withMapTouchListener(mapTouchListener)
+                .withAnswerButtons(buttons)
+                .withAnswerButtonsHandler(answerButtonsHandler)
                 .withQuestionHandler(questionHandler).enable();
-
-        new FreezeTimeButton.Builder().forPlayer(player)
-                .useLayout((ConstraintLayout) findViewById(R.id.freezeTimeBtnLayout))
-                .useContext(this)
-                .withLoadingBarHandler(loadingBarHandler)
-                .withSoundPoolHelper(soundHelper)
-                .withPowerIcon((ImageView) findViewById(R.id.freezeImg))
-                .useHelpPowerUsedImg((ImageView) findViewById(R.id.helpPowerUsedImg))
-                .useHelpPowerUsedImgBg((ImageView) findViewById(R.id.helpPowerUsedImgBg))
-                .withTimerText((TextView) findViewById(R.id.freezeTimer)).enable();
     }
 
     @Override
@@ -232,12 +243,58 @@ public class CapitalsPointActivity extends AppCompatActivity implements SampleSi
     }
 
     @Override
+    public void onLoadingBarFinished() {
+        if (gameHasEnded) {
+            return;
+        }
+        soundHelper.pauseInGameBackgroundMusic();
+        gameHasEnded = true;
+        answerButtonsHandler.enableButtons(false);
+        loadingBarHandler.stopLoadingBar();
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        ft.setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
+        GameEndLossFragment gameEndLossFragment = new GameEndLossFragment.Builder()
+                .forPlayer(player)
+                .forDifficulty(difficulty)
+                .restartActivity(MainActivity.class)
+                .withSoundPoolHelper(soundHelper)
+                .withDarkBg((ImageView) findViewById(R.id.darkBg)).build();
+        ft.replace(R.id.endGameScreenPlaceholder, gameEndLossFragment);
+        ft.commit();
+    }
+
+    @Override
+    public void onLoadingBarFillAnimationEnd() {
+        answerButtonsHandler.enableButtons(true);
+    }
+
+    @Override
+    public void onCorrectAnswerGiven() {
+        bonusManager.correctAnswerGiven();
+        bonusTimeHandler.displayGainedTime(GAINED_TIME, DISPLAY_BONUS_DURATION);
+        loadingBarHandler.incrementLoadingBar(GAINED_TIME, DISPLAY_BONUS_DURATION);
+    }
+
+    @Override
+    public void onWrongAnswerGiven() {
+        bonusManager.wrongAnswerGiven();
+        bonusTimeHandler.displayLostTime(LOST_TIME, DISPLAY_BONUS_DURATION);
+        loadingBarHandler.decrementLoadingBar(LOST_TIME, DISPLAY_BONUS_DURATION);
+    }
+
+    @Override
+    public void onAnswerButtonsEnabled() {
+        questionHandler.nextQuestion();
+    }
+
+    @Override
     public void onSampleSizeEnd() {
         if(gameHasEnded) {
             return;
         }
         soundHelper.pauseInGameBackgroundMusic();
         gameHasEnded = true;
+        answerButtonsHandler.enableButtons(false);
         loadingBarHandler.stopLoadingBar();
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         ft.setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
@@ -256,94 +313,16 @@ public class CapitalsPointActivity extends AppCompatActivity implements SampleSi
     }
 
     @Override
-    public void onLoadingBarFinished() {
-        if(gameHasEnded) {
-            return;
-        }
-        soundHelper.pauseInGameBackgroundMusic();
-        gameHasEnded = true;
-        loadingBarHandler.stopLoadingBar();
-        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        ft.setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
-        GameEndLossFragment gameEndLossFragment = new GameEndLossFragment.Builder()
-                .forPlayer(player)
-                .forDifficulty(difficulty)
-                .withSoundPoolHelper(soundHelper)
-                .restartActivity(CapitalsPointActivity.class)
-                .withDarkBg((ImageView) findViewById(R.id.darkBg)).build();
-        ft.replace(R.id.endGameScreenPlaceholder, gameEndLossFragment);
-        ft.commit();
-    }
-
-    @Override
-    public void onDisplayDistanceDurationEnd() {
-        questionHandler.nextQuestion();
-        hideMapOverlay.setVisibility(View.GONE);
-    }
-
-
-    @Override
-    public void onCloseAnswerGiven() {
-        bonusManager.correctAnswerGiven();
-        bonusTimeHandler.displayGainedTime(GAINED_TIME_CLOSE, DISPLAY_BONUS_DURATION);
-        loadingBarHandler.incrementLoadingBar(GAINED_TIME_CLOSE, DISPLAY_BONUS_DURATION);
-    }
-
-    @Override
-    public void onPerfectAnswerGiven() {
-        bonusManager.perfectAnswerGiven();
-        bonusTimeHandler.displayGainedTime(GAINED_TIME_PERFECT, DISPLAY_BONUS_DURATION);
-        loadingBarHandler.incrementLoadingBar(GAINED_TIME_PERFECT, DISPLAY_BONUS_DURATION);
-    }
-
-    @Override
-    public void onFarAnswerGiven() {
-        bonusManager.wrongAnswerGiven();
-        bonusTimeHandler.displayLostTime(LOST_TIME, DISPLAY_BONUS_DURATION);
-        loadingBarHandler.decrementLoadingBar(LOST_TIME, DISPLAY_BONUS_DURATION);
-    }
-
-    @Override
-    public void onLoadingBarFillAnimationEnd() {
-
-    }
-
-    @Override
-    public void onFrameResizeRequired() {
-//        ImageView landmark = findViewById(R.id.landmarkId);
-//        ImageView frame = findViewById(R.id.frame);
-//        TextView landmarkName = findViewById(R.id.monumentName);
-//        setUpFrameUI(landmark, landmarkName, frame);
-    }
-
-    private void setUpFrameUI(ImageView landmark, TextView landmarkName, ImageView frame) {
-        Drawable drawable = landmark.getDrawable();
-        Rect imageBounds = drawable.getBounds();
-
-        int scaledHeight = imageBounds.height();
-        int scaledWidth = imageBounds.width();
-
-        float aspectRatio = scaledWidth / (scaledHeight * 1.0f);
-
-        int landmarkHeight = landmark.getHeight();
-        frame.getLayoutParams().width = (int) (landmarkHeight * aspectRatio) + 4;
-        frame.requestLayout();
-
-        landmarkName.getLayoutParams().width = frame.getLayoutParams().width;
-        landmarkName.requestLayout();
-    }
-
-    @Override
     public void onBackPressed() {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
                 gameHasEnded = true;
-                Intent intent = new Intent(CapitalsPointActivity.this, MainMenuActivity.class);
+                Intent intent = new Intent(CapitalsActivity.this, MainMenuActivity.class);
                 PlayerSession.getInstance().setRecoveredPlayer(player);
-                CapitalsPointActivity.this.startActivity(intent);
-                CapitalsPointActivity.this.finish();
-                CapitalsPointActivity.this.overridePendingTransition(0, 0);
+                CapitalsActivity.this.startActivity(intent);
+                CapitalsActivity.this.finish();
+                CapitalsActivity.this.overridePendingTransition(0, 0);
             }
         });
     }

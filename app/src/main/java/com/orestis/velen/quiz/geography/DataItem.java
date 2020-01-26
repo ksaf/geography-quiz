@@ -57,6 +57,10 @@ public class DataItem {
         return continent;
     }
 
+    public void setContinent(int continent) {
+        this.continent = continent;
+    }
+
     public Difficulty getDifficulty() {
         return difficulty;
     }

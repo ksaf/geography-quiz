@@ -49,9 +49,12 @@ public class DataItemManager {
             case TYPE_FLAGS:
                 question = answer = getRandomItems(TYPE_COUNTRY, difficulty, sampleSize);
                 break;
-            case TYPE_CAPITALS:
+            case TYPE_CAPITALS_TEXT:
                 question = getRandomItems(TYPE_COUNTRY, difficulty, sampleSize);
                 answer = getCapitalsOfCountries(question);
+                break;
+            case TYPE_CAPITALS_MAP:
+                question = answer = getRandomItems(TYPE_CAPITAL, difficulty, sampleSize);
                 break;
             case TYPE_OUTLINE_TO_FLAG:
                 question = answer = getRandomItems(TYPE_COUNTRY, difficulty, sampleSize);
@@ -61,6 +64,8 @@ public class DataItemManager {
                 break;
 
         }
+//        addContinents(question);
+//        addContinents(answer);
         return new QuestionPoolData(question, answer);
     }
 
@@ -69,6 +74,30 @@ public class DataItemManager {
     }
     public void addItem(String itemCode, @Nullable Pair<Float, Float> coordinates, int continent, Difficulty difficulty, int itemType, String linkItemCode) {
         items.add(new DataItem(itemCode, coordinates, continent, difficulty, itemType, linkItemCode));
+    }
+
+    private void addContinents(List<DataItem> dataItemList) {
+        for(DataItem itemToAddContinent : dataItemList) {
+            DataItem linkItem = null;
+            if(itemToAddContinent.getContinent() < 0) {
+                if(itemToAddContinent.getLinkItemCode() != null) {
+                    for(DataItem item : items) {
+                        if(item.getItemCode().equals(itemToAddContinent.getLinkItemCode())) {
+                            linkItem = item;
+                        }
+                    }
+                } else {
+                    for(DataItem item : items) {
+                        if(item.getLinkItemCode() != null && item.getLinkItemCode().equals(itemToAddContinent.getItemCode())) {
+                            linkItem = item;
+                        }
+                    }
+                }
+            }
+            if(linkItem != null) {
+                itemToAddContinent.setContinent(linkItem.getContinent());
+            }
+        }
     }
 
     public List<DataItem> getAllItems(int itemType, Difficulty difficulty) {
@@ -81,12 +110,23 @@ public class DataItemManager {
         return returnItems;
     }
 
+    public List<DataItem> getAllItems(int itemType) {
+        List<DataItem> returnItems = new ArrayList<>();
+        for(DataItem item : items) {
+            if(item.getItemType() == itemType) {
+                returnItems.add(item);
+            }
+        }
+        return returnItems;
+    }
+
     public List<DataItem> getCapitalsOfCountries(List<DataItem> countries) {
         List<DataItem> capitals = new ArrayList<>();
-        for(DataItem item : items) {
-            for(DataItem country : countries) {
+        for(DataItem country : countries) {
+            for(DataItem item : getAllItems(TYPE_CAPITAL)) {
                 if(item.getLinkItemCode() != null && item.getLinkItemCode().equals(country.getItemCode())) {
                     capitals.add(item);
+                    break;
                 }
             }
         }

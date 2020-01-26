@@ -16,7 +16,9 @@ public class GeographyQuestionAnnouncement implements QuestionAnnouncement{
                 return context.getString(R.string.geo_question_type_outlines);
             case TYPE_FLAGS:
                 return context.getString(R.string.geo_question_type_flags);
-            case TYPE_CAPITALS:
+            case TYPE_CAPITALS_TEXT:
+                return context.getString(R.string.geo_question_type_capitals);
+            case TYPE_CAPITALS_MAP:
                 return question.getCorrectAnswer().getStringResource(context);
             case TYPE_MONUMENTS:
                 return "";

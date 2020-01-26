@@ -38,7 +38,7 @@ public class MapTouchListener implements View.OnTouchListener, AnswerPointDelayE
     private ShieldEndListener shieldEndListener;
     private SoundPoolHelper soundHelper;
     private DistanceCalculator distanceCalculator;
-
+    
     private MapTouchListener() {}
 
     private void init() {
@@ -138,7 +138,7 @@ public class MapTouchListener implements View.OnTouchListener, AnswerPointDelayE
     public void onQuestionChanged(Question question) {
         correctCoordinates = question.getCorrectAnswer().getCoordinates();
         map.setImageResource(question.getCorrectAnswer().getMapDrawbleId());
-//        map.setOnTouchListener(this);
+        map.setOnTouchListener(this);
     }
 
     public void enableShield(ShieldEndListener shieldEndListener) {

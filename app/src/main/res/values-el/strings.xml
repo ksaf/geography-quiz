@@ -4,7 +4,7 @@
     <string name="app_name">Quiz</string>
     <string name="geo_question_type_outlines">Ποια χώρα είναι αυτή;</string>
     <string name="geo_question_type_flags">Ποια χώρα έχει αυτή τη σημαία;</string>
-    <string name="geo_question_type_capitals">Ποια χώρα έχει αυτή την πρωτεύουσα;</string>
+    <string name="geo_question_type_capitals">Ποια είναι η πρωτεύουσα;</string>
     <string name="geo_question_type_outline_to_flag">Ποιά είναι η σωστή σημαία;</string>
     <string name="loading">Loading</string>
     <string name="skills">Ικανότητες</string>

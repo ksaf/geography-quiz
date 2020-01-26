@@ -30,7 +30,7 @@ public class GeographyDataRepository implements DataRepository{
 //                case TYPE_FLAGS:
 //                    sampleSizer = new GeographyItemsSampleSizer(countries, capitals, sampleSize);
 //                    return new QuestionPoolData(sampleSizer.getFirst(), sampleSizer.getFirst());
-//                case TYPE_CAPITALS:
+//                case TYPE_CAPITALS_MAP:
 //                    sampleSizer = new GeographyItemsSampleSizer(countries, capitals, sampleSize);
 //                    return new QuestionPoolData(sampleSizer.getFirst(), sampleSizer.getSecond());
 //                case TYPE_OUTLINE_TO_FLAG:
