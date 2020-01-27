@@ -1,5 +1,6 @@
 package com.orestis.velen.quiz.mainMenu;
 
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
@@ -18,6 +19,9 @@ import com.orestis.velen.quiz.player.PlayerSession;
 import com.orestis.velen.quiz.questions.Difficulty;
 import com.orestis.velen.quiz.sound.SoundPoolHelper;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static com.orestis.velen.quiz.mainMenu.MainMenuActivity.XP_BOOST_DURATION;
 
 public class GameStartConfirmationFragment extends Fragment {
@@ -25,12 +29,15 @@ public class GameStartConfirmationFragment extends Fragment {
     private ImageView darkBg;
     private String gameType;
     private GameStartRequestListener gameStartRequestListener;
-    private Class activityToStart;
+    private int viewPagerSelection;
     private SparseArray<String> difficultiesTxt = new SparseArray<>();
     private SparseArray<Difficulty> difficulties = new SparseArray<>();
     private int difficultySelected = 1;
     private SoundPoolHelper soundHelper;
     private boolean xpBoostEnabled;
+    private Class activityToStart;
+    private List<GameVariationInfo> availableGameTypes;
+    private List<ImageView> availableGameTypesImages;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
@@ -49,6 +56,47 @@ public class GameStartConfirmationFragment extends Fragment {
         });
         TextView beginGameTypeText = view.findViewById(R.id.beginGameTypeText);
         beginGameTypeText.setText(Html.fromHtml(getString(R.string.startGameOf) + " <br><b><font color='#000000'>" + gameType + "</font></b>?"));
+
+        availableGameTypes = VariationSelector.getAvailableVariations(viewPagerSelection, getContext());
+        availableGameTypesImages = new ArrayList<>();
+
+        final TextView gameTypeSelectionText = view.findViewById(R.id.gameTypeSelectionText);
+        final ImageView gameTypeAImage = view.findViewById(R.id.gameTypeAImage);
+        final ImageView gameTypeBImage = view.findViewById(R.id.gameTypeBImage);
+
+        if(availableGameTypes.size() > 0) {
+            gameTypeAImage.setImageResource(availableGameTypes.get(0).getVariationIconResource());
+            gameTypeSelectionText.setText(availableGameTypes.get(0).getVariationDescription());
+            activityToStart = availableGameTypes.get(0).getActivityToStart();
+            availableGameTypesImages.add(gameTypeAImage);
+            gameTypeBImage.setVisibility(View.GONE);
+            highLightImage(gameTypeAImage);
+
+            if(availableGameTypes.size() == 2) {
+                availableGameTypesImages.add(gameTypeBImage);
+                gameTypeBImage.setImageResource(availableGameTypes.get(1).getVariationIconResource());
+                gameTypeBImage.setVisibility(View.VISIBLE);
+
+                gameTypeAImage.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        soundHelper.playMenuBtnOpenSound();
+                        activityToStart = availableGameTypes.get(0).getActivityToStart();
+                        gameTypeSelectionText.setText(availableGameTypes.get(0).getVariationDescription());
+                        highLightImage(gameTypeAImage);
+                    }
+                });
+                gameTypeBImage.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        soundHelper.playMenuBtnOpenSound();
+                        activityToStart = availableGameTypes.get(1).getActivityToStart();
+                        gameTypeSelectionText.setText(availableGameTypes.get(1).getVariationDescription());
+                        highLightImage(gameTypeBImage);
+                    }
+                });
+            }
+        }
 
         Button gameStart = view.findViewById(R.id.game_start);
         gameStart.setOnClickListener(new View.OnClickListener() {
@@ -111,11 +159,21 @@ public class GameStartConfirmationFragment extends Fragment {
         darkBg.setVisibility(View.GONE);
     }
 
+    private void highLightImage(ImageView image) {
+        for (int i=0; i < availableGameTypesImages.size(); i++) {
+            if (availableGameTypesImages.get(i).getBackground() != null) {
+                availableGameTypesImages.get(i).setBackground(null);
+            }
+        }
+        Drawable highlight = getResources().getDrawable( R.drawable.game_type_selection_frame);
+        image.setBackground(highlight);
+    }
+
     public static class Builder {
         private ImageView darkBg;
         private String gameType;
         private GameStartRequestListener gameStartRequestListener;
-        private Class activityToStart;
+        private int viewPagerSelection;
         private SoundPoolHelper soundHelper;
 
         public Builder withDarkBg(ImageView darkBg) {
@@ -133,8 +191,8 @@ public class GameStartConfirmationFragment extends Fragment {
             return this;
         }
 
-        public Builder forActivityToStart(Class activityToStart) {
-            this.activityToStart = activityToStart;
+        public Builder forViewPagerSelection(int viewPagerSelection) {
+            this.viewPagerSelection = viewPagerSelection;
             return this;
         }
 
@@ -148,7 +206,7 @@ public class GameStartConfirmationFragment extends Fragment {
             gameStartConfirmationFragment.darkBg = darkBg;
             gameStartConfirmationFragment.gameType = gameType;
             gameStartConfirmationFragment.gameStartRequestListener = gameStartRequestListener;
-            gameStartConfirmationFragment.activityToStart = activityToStart;
+            gameStartConfirmationFragment.viewPagerSelection = viewPagerSelection;
             gameStartConfirmationFragment.soundHelper = soundHelper;
             return gameStartConfirmationFragment;
         }

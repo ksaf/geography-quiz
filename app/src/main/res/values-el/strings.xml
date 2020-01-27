@@ -19,6 +19,7 @@
     <string name="start">Εκκίνηση</string>
     <string name="flags">Σημαίες</string>
     <string name="maps">Χάρτες</string>
+    <string name="capitals">Πρωτεύουσες</string>
     <string name="mapToFlag">Σημαία του χάρτη</string>
     <string name="landmarks">Μνημία</string>
     <string name="skill_points">Ικανότητες:</string>
@@ -71,6 +72,11 @@
     <string name="xpBoostEnabledDescription">Ενεργοποιήθηκε! Θα κερδίζεις διπλή εμπειρία μέχρι να τελειώσει!</string>
     <string name="gameStartXpBoostEnabled">(Μπόνους Εμπειρίας Ενεργό)</string>
     <string name="gameEndXpBoostEnabled">Μπόνους Εμπειρία:\u0020</string>
+    <string name="variationTextDescription">\u0020Κουμπιά με κείμενο\u0020</string>
+    <string name="variationMapDescription">\u0020Βρές στον χάρτη\u0020</string>
+    <string name="variationImageButtonDescription">\u0020Κουμπιά με εικόνες\u0020</string>
+    <string name="difficulty">Δυσκολία:</string>
+    <string name="variation">Παραλλαγή:</string>
 
     //EASY COUNTRIES
 

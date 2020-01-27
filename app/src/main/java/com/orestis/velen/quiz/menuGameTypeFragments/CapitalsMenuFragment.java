@@ -11,9 +11,10 @@ import android.widget.ImageView;
 
 import com.orestis.velen.quiz.R;
 import com.orestis.velen.quiz.mainMenu.GameStartRequestListener;
-import com.orestis.velen.quiz.outlinesToFlags.OutlinesToFlagsActivity;
 
-public class OutlineToFlagsMenuFragment extends Fragment {
+import static com.orestis.velen.quiz.mainMenu.MainMenuActivity.VIEW_PAGER_SELECTION_CAPITALS;
+
+public class CapitalsMenuFragment extends Fragment {
 
     private ViewPager viewPager;
     private GameStartRequestListener gameStartRequestListener;
@@ -29,13 +30,13 @@ public class OutlineToFlagsMenuFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.outline_to_flags_menu_fragment, container, false);
+        ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.capitals_menu_fragment, container, false);
 
         menuImage = rootView.findViewById(R.id.menuImage);
         menuImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                gameStartRequestListener.onGameStartRequest(OutlinesToFlagsActivity.class, getString(R.string.mapToFlag));
+                gameStartRequestListener.onGameStartRequest(VIEW_PAGER_SELECTION_CAPITALS, getString(R.string.capitals));
             }
         });
 

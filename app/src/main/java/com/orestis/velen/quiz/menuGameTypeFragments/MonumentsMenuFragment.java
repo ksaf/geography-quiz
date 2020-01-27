@@ -11,7 +11,8 @@ import android.widget.ImageView;
 
 import com.orestis.velen.quiz.R;
 import com.orestis.velen.quiz.mainMenu.GameStartRequestListener;
-import com.orestis.velen.quiz.pinpoint.MonumentsPointActivity;
+
+import static com.orestis.velen.quiz.mainMenu.MainMenuActivity.VIEW_PAGER_SELECTION_MONUMENTS;
 
 public class MonumentsMenuFragment extends Fragment{
 
@@ -35,7 +36,7 @@ public class MonumentsMenuFragment extends Fragment{
         menuImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                gameStartRequestListener.onGameStartRequest(MonumentsPointActivity.class, getString(R.string.landmarks));
+                gameStartRequestListener.onGameStartRequest(VIEW_PAGER_SELECTION_MONUMENTS, getString(R.string.landmarks));
             }
         });
 

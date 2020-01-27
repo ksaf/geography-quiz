@@ -12,17 +12,17 @@
         android:layout_height="0dp"
         android:layout_marginBottom="12dp"
         android:layout_marginEnd="4dp"
-        android:layout_marginStart="8dp"
+        android:layout_marginStart="4dp"
         android:layout_marginTop="12dp"
         app:cardBackgroundColor="@android:color/transparent"
         app:cardCornerRadius="8dp"
         app:cardElevation="0dp"
-        app:strokeWidth="4dp"
-        app:strokeColor="#dff6efd7"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/guideline"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        app:strokeColor="#dff6efd7"
+        app:strokeWidth="4dp">
 
         <android.support.v7.widget.AppCompatButton
             android:id="@+id/answerA"
@@ -65,18 +65,18 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginBottom="12dp"
-        android:layout_marginEnd="8dp"
+        android:layout_marginEnd="4dp"
         android:layout_marginStart="4dp"
         android:layout_marginTop="12dp"
         app:cardBackgroundColor="@android:color/transparent"
         app:cardCornerRadius="8dp"
         app:cardElevation="0dp"
-        app:strokeWidth="4dp"
-        app:strokeColor="#dff6efd7"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/guideline2"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        app:strokeColor="#dff6efd7"
+        app:strokeWidth="4dp">
 
         <android.support.v7.widget.AppCompatButton
             android:id="@+id/answerC"

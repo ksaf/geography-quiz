@@ -36,8 +36,6 @@ import com.orestis.velen.quiz.adverts.XpBoostEnabledListener;
 import com.orestis.velen.quiz.adverts.XpBoostFragment;
 import com.orestis.velen.quiz.adverts.XpBoostFragmentActive;
 import com.orestis.velen.quiz.adverts.XpBoostTimeLeftTimer;
-import com.orestis.velen.quiz.capitals.CapitalsActivity;
-import com.orestis.velen.quiz.flags.FlagsActivity;
 import com.orestis.velen.quiz.language.LocaleHelper;
 import com.orestis.velen.quiz.leaderboard.GoogleLeaderboard;
 import com.orestis.velen.quiz.login.UserSession;
@@ -46,13 +44,11 @@ import com.orestis.velen.quiz.login.googleSignIn.GoogleSession;
 import com.orestis.velen.quiz.login.googleSignIn.GoogleSignInActivity;
 import com.orestis.velen.quiz.login.googleSignIn.GoogleSignInButton;
 import com.orestis.velen.quiz.mainMenu.errors.ConnectionError;
+import com.orestis.velen.quiz.menuGameTypeFragments.CapitalsMenuFragment;
 import com.orestis.velen.quiz.menuGameTypeFragments.FlagsMenuFragment;
 import com.orestis.velen.quiz.menuGameTypeFragments.MapsMenuFragment;
 import com.orestis.velen.quiz.menuGameTypeFragments.MonumentsMenuFragment;
-import com.orestis.velen.quiz.menuGameTypeFragments.OutlineToFlagsMenuFragment;
 import com.orestis.velen.quiz.menuGameTypeFragments.ScreenSlidePagerAdapter;
-import com.orestis.velen.quiz.outlinesToFlags.OutlinesToFlagsActivity;
-import com.orestis.velen.quiz.pinpoint.CapitalsPointActivity;
 import com.orestis.velen.quiz.player.Player;
 import com.orestis.velen.quiz.player.PlayerHelper;
 import com.orestis.velen.quiz.player.PlayerSession;
@@ -80,6 +76,10 @@ public class MainMenuActivity extends AppCompatActivity implements PlayerRecover
     private SkillUpgradesFragment skillUpgradesFragment;
     private ImageView darkBg;
     private SoundPoolHelper soundHelper;
+    public static final int VIEW_PAGER_SELECTION_FLAGS = 0;
+    public static final int VIEW_PAGER_SELECTION_OUTLINES = 1;
+    public static final int VIEW_PAGER_SELECTION_CAPITALS = 2;
+    public static final int VIEW_PAGER_SELECTION_MONUMENTS = 3;
     public static final int GAME_TYPE_FLAGS = 0;
     public static final int GAME_TYPE_OUTLINE_TO_FLAGS = 1;
     public static final int GAME_TYPE_OUTLINES = 2;
@@ -232,47 +232,41 @@ public class MainMenuActivity extends AppCompatActivity implements PlayerRecover
         return activeNetworkInfo != null && activeNetworkInfo.isConnectedOrConnecting();
     }
 
-    private void enableStartButton(int selected) {
+    private void enableStartButton(final int selected) {
         Button startBtn = findViewById(R.id.startBtn);
-        final Class activityToStart;
         final String gameTypeString;
         switch (selected) {
-            case GAME_TYPE_FLAGS:
-                activityToStart = FlagsActivity.class;
+            case VIEW_PAGER_SELECTION_FLAGS:
                 gameTypeString = getString(R.string.flags);
                 break;
-            case GAME_TYPE_OUTLINE_TO_FLAGS:
-                activityToStart = OutlinesToFlagsActivity.class;
-                gameTypeString = getString(R.string.mapToFlag);
-                break;
-            case GAME_TYPE_OUTLINES:
-                activityToStart = CapitalsActivity.class;
+            case VIEW_PAGER_SELECTION_OUTLINES:
                 gameTypeString = getString(R.string.maps);
                 break;
-            case GAME_TYPE_MONUMENTS:
-                activityToStart = CapitalsPointActivity.class;
+            case VIEW_PAGER_SELECTION_CAPITALS:
+                gameTypeString = getString(R.string.capitals);
+                break;
+            case VIEW_PAGER_SELECTION_MONUMENTS:
                 gameTypeString = getString(R.string.landmarks);
                 break;
             default:
-                activityToStart = FlagsActivity.class;
                 gameTypeString = getString(R.string.flags);
                 break;
         }
         startBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                onGameStartRequest(activityToStart, gameTypeString);
+                onGameStartRequest(selected, gameTypeString);
             }
         });
     }
 
     @Override
-    public void onGameStartRequest(Class activityToStart, String gameType) {
+    public void onGameStartRequest(int viewPagerSelection, String gameType) {
         soundHelper.playMenuBtnOpenSound();
         GameStartConfirmationFragment gameStartConfirmationFragment = new GameStartConfirmationFragment.Builder()
                 .withDarkBg(darkBg)
                 .forGameType(gameType)
-                .forActivityToStart(activityToStart)
+                .forViewPagerSelection(viewPagerSelection)
                 .useGameStartRequestListener(this)
                 .withSoundPoolHelper(soundHelper)
                 .build();
@@ -418,7 +412,7 @@ public class MainMenuActivity extends AppCompatActivity implements PlayerRecover
         FlagsMenuFragment flagsMenuFragment = new FlagsMenuFragment();
         flagsMenuFragment.useInViewPager(viewPager);
         flagsMenuFragment.setGameStartRequestListener(this);
-        OutlineToFlagsMenuFragment outlineToFlagsMenuFragment = new OutlineToFlagsMenuFragment();
+        CapitalsMenuFragment outlineToFlagsMenuFragment = new CapitalsMenuFragment();
         outlineToFlagsMenuFragment.useInViewPager(viewPager);
         outlineToFlagsMenuFragment.setGameStartRequestListener(this);
         MapsMenuFragment mapsMenuFragment = new MapsMenuFragment();

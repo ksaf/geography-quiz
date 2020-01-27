@@ -19,6 +19,7 @@
     <string name="start">Start</string>
     <string name="flags">Flags</string>
     <string name="maps">Maps</string>
+    <string name="capitals">Capitals</string>
     <string name="mapToFlag">Map\'s Flag</string>
     <string name="landmarks">Landmarks</string>
     <string name="skill_points">Skill Points:</string>
@@ -71,6 +72,11 @@
     <string name="xpBoostEnabledDescription">Your XP boost is on! You will gain double experience from your games until it runs out!</string>
     <string name="gameStartXpBoostEnabled">(XP Boost Active)</string>
     <string name="gameEndXpBoostEnabled">Bonus XP:\u0020</string>
+    <string name="variationTextDescription">\u0020Text buttons\u0020</string>
+    <string name="variationMapDescription">\u0020Find on map\u0020</string>
+    <string name="variationImageButtonDescription">\u0020Image buttons\u0020</string>
+    <string name="difficulty">Difficulty:</string>
+    <string name="variation">Variation:</string>
 
     //EASY COUNTRIES
 

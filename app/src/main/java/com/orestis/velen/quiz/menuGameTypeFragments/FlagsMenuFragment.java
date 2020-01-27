@@ -10,8 +10,9 @@ import android.widget.Button;
 import android.widget.ImageView;
 
 import com.orestis.velen.quiz.R;
-import com.orestis.velen.quiz.flags.FlagsActivity;
 import com.orestis.velen.quiz.mainMenu.GameStartRequestListener;
+
+import static com.orestis.velen.quiz.mainMenu.MainMenuActivity.VIEW_PAGER_SELECTION_FLAGS;
 
 public class FlagsMenuFragment extends Fragment{
 
@@ -35,7 +36,7 @@ public class FlagsMenuFragment extends Fragment{
         menuImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                gameStartRequestListener.onGameStartRequest(FlagsActivity.class, getString(R.string.flags));
+                gameStartRequestListener.onGameStartRequest(VIEW_PAGER_SELECTION_FLAGS, getString(R.string.flags));
             }
         });
 

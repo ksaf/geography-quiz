@@ -9,9 +9,10 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 
-import com.orestis.velen.quiz.outlines.MainActivity;
 import com.orestis.velen.quiz.R;
 import com.orestis.velen.quiz.mainMenu.GameStartRequestListener;
+
+import static com.orestis.velen.quiz.mainMenu.MainMenuActivity.VIEW_PAGER_SELECTION_OUTLINES;
 
 public class MapsMenuFragment extends Fragment{
 
@@ -35,7 +36,7 @@ public class MapsMenuFragment extends Fragment{
         menuImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                gameStartRequestListener.onGameStartRequest(MainActivity.class, getString(R.string.maps));
+                gameStartRequestListener.onGameStartRequest(VIEW_PAGER_SELECTION_OUTLINES, getString(R.string.maps));
             }
         });
 

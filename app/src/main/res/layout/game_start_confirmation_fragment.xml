@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -31,6 +30,16 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <View
+        android:id="@+id/line_separator"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:layout_marginTop="4dp"
+        android:background="#333"
+        app:layout_constraintEnd_toEndOf="@+id/beginGameTypeText"
+        app:layout_constraintStart_toStartOf="@+id/beginGameTypeText"
+        app:layout_constraintTop_toBottomOf="@+id/beginGameTypeText" />
+
     <Button
         android:id="@+id/game_start"
         android:layout_width="wrap_content"
@@ -38,11 +47,11 @@
         android:layout_marginBottom="32dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:theme="@style/AppTheme.PrimaryColoredButton"
         android:fontFamily="@font/normal"
         android:text="@string/start"
         android:textColor="#fff"
         android:textStyle="bold"
+        android:theme="@style/AppTheme.PrimaryColoredButton"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
@@ -52,18 +61,16 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:fontFamily="@font/normal"
         android:text="Normal"
         android:textColor="#333"
-        android:textSize="18sp"
+        android:textSize="16sp"
         app:layout_constraintBottom_toTopOf="@+id/game_start"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/leftDifficultyBtn"
         app:layout_constraintTop_toBottomOf="@+id/beginGameTypeText"
-        app:layout_constraintVertical_bias="0.6" />
+        app:layout_constraintVertical_bias="0.19999999" />
 
     <Button
         android:id="@+id/rightDifficultyBtn"
@@ -79,10 +86,10 @@
         android:id="@+id/leftDifficultyBtn"
         android:layout_width="24dp"
         android:layout_height="24dp"
-        android:layout_marginEnd="8dp"
+        android:layout_marginStart="32dp"
         android:background="@drawable/left_button_selector"
         app:layout_constraintBottom_toBottomOf="@+id/difficultyLevel"
-        app:layout_constraintEnd_toStartOf="@+id/difficultyLevel"
+        app:layout_constraintStart_toStartOf="@+id/guideline23"
         app:layout_constraintTop_toTopOf="@+id/difficultyLevel" />
 
     <TextView
@@ -100,5 +107,90 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/beginGameTypeText" />
+
+
+    <android.support.v7.widget.AppCompatTextView
+        android:id="@+id/gameTypeSelectionText"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_marginStart="28dp"
+        android:fontFamily="@font/normal"
+        android:gravity="center"
+        android:text="Type A"
+        android:textAlignment="textStart"
+        android:textColor="#333"
+        android:textSize="16sp"
+        app:autoSizeMaxTextSize="18sp"
+        app:autoSizeMinTextSize="12sp"
+        app:autoSizeStepGranularity="1sp"
+        app:autoSizeTextType="uniform"
+        app:layout_constraintBottom_toBottomOf="@+id/textView3"
+        app:layout_constraintStart_toStartOf="@+id/guideline23"
+        app:layout_constraintTop_toTopOf="@+id/textView3" />
+
+    <LinearLayout
+        android:id="@+id/variations"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/gameTypeSelectionText">
+
+        <ImageView
+            android:id="@+id/gameTypeAImage"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:padding="4dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/leftDifficultyBtn"
+            app:srcCompat="@drawable/united_kingdom_flag" />
+
+        <ImageView
+            android:id="@+id/gameTypeBImage"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:padding="4dp"
+            app:layout_constraintStart_toEndOf="@+id/gameTypeAImage"
+            app:layout_constraintTop_toBottomOf="@+id/leftDifficultyBtn"
+            app:srcCompat="@drawable/map_to_flag_icon" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:fontFamily="@font/normal"
+        android:text="@string/difficulty"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/difficultyLevel"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/difficultyLevel" />
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="16dp"
+        android:fontFamily="@font/normal"
+        android:text="@string/variation"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView2" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guideline23"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.36" />
+
 
 </android.support.constraint.ConstraintLayout>
