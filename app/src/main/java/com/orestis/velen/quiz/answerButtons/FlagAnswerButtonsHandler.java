@@ -47,7 +47,8 @@ public class FlagAnswerButtonsHandler implements AnswerButtonsHandler, AnswerBut
 
     @Override
     public void displayCorrectAnswer() {
-
+        AnswerChoice correctChoice = questionHandler.getCorrectAnswerChoice();
+        displayCorrectChoice(correctChoice);
     }
 
     @Override
@@ -84,6 +85,9 @@ public class FlagAnswerButtonsHandler implements AnswerButtonsHandler, AnswerBut
                 buttons.get(C).setVisibility(View.VISIBLE);
                 break;
             case MAP_TO_FLAGS:
+                buttons.get(A).setVisibility(View.VISIBLE);
+                buttons.get(B).setVisibility(View.VISIBLE);
+                buttons.get(C).setVisibility(View.VISIBLE);
                 buttonBackGrounds.get(A).setVisibility(View.VISIBLE);
                 buttonBackGrounds.get(B).setVisibility(View.VISIBLE);
                 buttonBackGrounds.get(C).setVisibility(View.VISIBLE);

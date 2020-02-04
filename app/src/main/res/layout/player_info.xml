@@ -28,14 +28,15 @@
         android:layout_alignLeft="@+id/mainMenuProfileLevel"
         android:layout_alignStart="@+id/mainMenuProfileLevel"
         android:layout_below="@+id/mainMenuProfileLevel"
-        android:layout_marginStart="10dp"
+        android:layout_marginStart="8dp"
         android:fontFamily="@font/normal"
         android:paddingTop="0dp"
         android:textColor="#333"
         android:textSize="20sp"
         android:textStyle="bold|italic"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toEndOf="@+id/google_games_icon"
+        app:layout_constraintTop_toTopOf="@+id/google_games_icon" />
 
     <Button
         android:id="@+id/skillPlusBtn"
@@ -127,5 +128,14 @@
         android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/skillPlusBtn" />
+
+    <ImageView
+        android:id="@+id/google_games_icon"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginStart="10dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:srcCompat="@drawable/ic_play_games_badge_gray" />
 
 </android.support.constraint.ConstraintLayout>

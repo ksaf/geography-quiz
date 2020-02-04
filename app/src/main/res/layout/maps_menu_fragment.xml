@@ -31,7 +31,7 @@
 
     <ImageView
         android:id="@+id/leftArrow"
-        android:layout_width="80dp"
+        android:layout_width="60dp"
         android:layout_height="0dp"
         android:layout_marginBottom="8dp"
         android:layout_marginTop="8dp"
@@ -53,14 +53,14 @@
 
     <ImageView
         android:id="@+id/rightArrow"
-        android:layout_width="80dp"
+        android:layout_width="60dp"
         android:layout_height="0dp"
         android:layout_marginBottom="8dp"
         android:layout_marginTop="8dp"
         android:background="?android:selectableItemBackground"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView"/>
+        app:layout_constraintTop_toBottomOf="@+id/textView" />
 
     <TextView
         android:id="@+id/textView"

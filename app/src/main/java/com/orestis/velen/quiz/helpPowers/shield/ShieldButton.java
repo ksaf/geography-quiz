@@ -2,6 +2,7 @@ package com.orestis.velen.quiz.helpPowers.shield;
 
 import android.content.Context;
 import android.support.constraint.ConstraintLayout;
+import android.support.design.card.MaterialCardView;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -23,6 +24,7 @@ public class ShieldButton implements ChargeChangeListener {
 
     private ConstraintLayout shieldBtnLayout;
     private HashMap<AnswerChoice, Button> answerButtons;
+    private HashMap<AnswerChoice, MaterialCardView> flagAnswerButtons;
     private AnswerButtonsHandler answerButtonsHandler;
     private QuestionHandler questionHandler;
     private Player player;
@@ -48,10 +50,14 @@ public class ShieldButton implements ChargeChangeListener {
             shieldBtnLayout.setEnabled(false);
         }
         if(answerButtons != null) {
-            shieldBtnLayout.setOnClickListener(new ShieldClickListener(questionHandler, answerButtons,
+            ShieldClickListener shieldClickListener = new ShieldClickListener(questionHandler, answerButtons,
                     shieldOnIcon, shieldBreakingIcon, shieldOverlay, answerButtonsHandler, shieldPowerConfig,
-                    this, context, helpPowerUsedImg, helpPowerUsedImgBg));
-        } else if (mapTouchListener != null){
+                    this, context, helpPowerUsedImg, helpPowerUsedImgBg);
+            if(flagAnswerButtons != null) {
+                shieldClickListener.setFlagAnswerButtons(flagAnswerButtons);
+            }
+            shieldBtnLayout.setOnClickListener(shieldClickListener);
+        } else if(mapTouchListener != null){
             shieldBtnLayout.setOnClickListener(new ShieldOnMapClickListener(questionHandler,
                     shieldOnIcon, shieldBreakingIcon, shieldOverlay, shieldPowerConfig,
                     this, context, mapTouchListener, helpPowerUsedImg, helpPowerUsedImgBg));
@@ -75,6 +81,7 @@ public class ShieldButton implements ChargeChangeListener {
 
         private ConstraintLayout shieldBtnLayout;
         private HashMap<AnswerChoice, Button> answerButtons;
+        private HashMap<AnswerChoice, MaterialCardView> flagAnswerButtons;
         private AnswerButtonsHandler answerButtonsHandler;
         private QuestionHandler questionHandler;
         private Player player;
@@ -132,6 +139,11 @@ public class ShieldButton implements ChargeChangeListener {
             return this;
         }
 
+        public Builder withFlagAnswerButtons(HashMap<AnswerChoice, MaterialCardView> flagAnswerButtons) {
+            this.flagAnswerButtons = flagAnswerButtons;
+            return this;
+        }
+
         public Builder withAnswerButtonsHandler(AnswerButtonsHandler answerButtonsHandler) {
             this.answerButtonsHandler = answerButtonsHandler;
             return this;
@@ -156,6 +168,7 @@ public class ShieldButton implements ChargeChangeListener {
             ShieldButton shieldButton = new ShieldButton();
             shieldButton.questionHandler = this.questionHandler;
             shieldButton.answerButtons = this.answerButtons;
+            shieldButton.flagAnswerButtons = this.flagAnswerButtons;
             shieldButton.shieldBtnLayout = this.shieldBtnLayout;
             shieldButton.player = this.player;
             shieldButton.answerButtonsHandler = this.answerButtonsHandler;

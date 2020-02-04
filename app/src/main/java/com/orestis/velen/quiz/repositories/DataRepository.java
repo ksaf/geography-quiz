@@ -6,4 +6,5 @@ import com.orestis.velen.quiz.questions.QuestionPoolData;
 
 public interface DataRepository {
     QuestionPoolData getDataFor(Difficulty difficulty, GameType gameType, int sampleSize);
+    QuestionPoolData getDataFor(int continent, GameType gameType, int sampleSize);
 }

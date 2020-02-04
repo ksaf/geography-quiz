@@ -209,6 +209,7 @@ public class OutlinesToFlagsActivity extends AppCompatActivity implements Loadin
                 .withContext(this)
                 .withSoundPoolHelper(soundHelper)
                 .withAnswerButtons(buttons)
+                .withFlagAnswerButtons(buttonBackGrounds)
                 .withAnswerButtonsHandler(answerButtonsHandler)
                 .withQuestionHandler(questionHandler).enable();
     }

@@ -21,6 +21,11 @@ public class DataItem {
     public static final int TYPE_CAPITAL = 9;
     public static final int TYPE_MONUMENT = 10;
 
+    public static final int ALL_CONTINENTS = 11;
+    public static final int AMERICA = 12;
+    public static final int MESOPOTAMIA = 13;
+    public static final int EAST_ASIA_AND_OCEANIA = 14;
+
     private String itemCode;
     private Pair<Float, Float> coordinates;
     private int itemType;

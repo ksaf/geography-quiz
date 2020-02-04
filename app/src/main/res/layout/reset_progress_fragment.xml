@@ -47,12 +47,13 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="3dp"
         android:background="?android:selectableItemBackground"
+        android:padding="10dp"
         android:scaleType="fitXY"
         app:layout_constraintBottom_toTopOf="@+id/underline"
         app:layout_constraintEnd_toStartOf="@+id/resetProgressText"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/resetProgressText"
-        app:srcCompat="@drawable/left_arrow" />
+        app:srcCompat="@drawable/back_arrow" />
 
     <TextView
         android:id="@+id/xpBoostDescriptionText"

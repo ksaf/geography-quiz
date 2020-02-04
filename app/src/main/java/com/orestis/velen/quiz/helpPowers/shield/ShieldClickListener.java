@@ -2,6 +2,7 @@ package com.orestis.velen.quiz.helpPowers.shield;
 
 import android.content.Context;
 import android.os.AsyncTask;
+import android.support.design.card.MaterialCardView;
 import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
@@ -25,6 +26,7 @@ public class ShieldClickListener implements View.OnClickListener, ShieldEndListe
 
     private QuestionHandler questionHandler;
     private HashMap<AnswerChoice, Button> buttons;
+    private HashMap<AnswerChoice, MaterialCardView> flagAnswerButtons;
     private AnswerButtonsHandler answerButtonsHandler;
     protected boolean isShieldEnabled = false;
     private ImageView shieldImg;
@@ -70,6 +72,10 @@ public class ShieldClickListener implements View.OnClickListener, ShieldEndListe
         questionHandler.registerQuestionChangedListener(this);
     }
 
+    public void setFlagAnswerButtons(HashMap<AnswerChoice, MaterialCardView> flagAnswerButtons) {
+        this.flagAnswerButtons = flagAnswerButtons;
+    }
+
     @Override
     public void onClick(View view) {
         isShieldEnabled = true;
@@ -100,8 +106,20 @@ public class ShieldClickListener implements View.OnClickListener, ShieldEndListe
     }
 
     private void overrideWrongAnswersListeners(AnswerChoice wrongChoice1, AnswerChoice wrongChoice2) {
-        buttons.get(wrongChoice1).setOnClickListener(new WrongChoiceClickListener(this, context, this, questionHandler, wrongChoice1));
-        buttons.get(wrongChoice2).setOnClickListener(new WrongChoiceClickListener(this, context, this, questionHandler, wrongChoice2));
+        WrongChoiceClickListener wrongChoiceClickListener1;
+        WrongChoiceClickListener wrongChoiceClickListener2;
+        if(flagAnswerButtons != null) {
+            wrongChoiceClickListener1 = new WrongChoiceClickListener(this, context, this, questionHandler,
+                    wrongChoice1, flagAnswerButtons.get(wrongChoice1));
+            wrongChoiceClickListener2 = new WrongChoiceClickListener(this, context, this, questionHandler,
+                    wrongChoice2, flagAnswerButtons.get(wrongChoice2));
+        } else {
+            wrongChoiceClickListener1 = new WrongChoiceClickListener(this, context, this, questionHandler, wrongChoice1);
+            wrongChoiceClickListener2 = new WrongChoiceClickListener(this, context, this, questionHandler, wrongChoice2);
+        }
+
+        buttons.get(wrongChoice1).setOnClickListener(wrongChoiceClickListener1);
+        buttons.get(wrongChoice2).setOnClickListener(wrongChoiceClickListener2);
     }
 
     @Override

@@ -32,7 +32,7 @@
 
     <ImageView
         android:id="@+id/leftArrow"
-        android:layout_width="80dp"
+        android:layout_width="60dp"
         android:layout_height="0dp"
         android:layout_marginBottom="8dp"
         android:layout_marginTop="8dp"
@@ -54,7 +54,7 @@
 
     <ImageView
         android:id="@+id/rightArrow"
-        android:layout_width="80dp"
+        android:layout_width="60dp"
         android:layout_height="0dp"
         android:layout_marginBottom="8dp"
         android:layout_marginTop="8dp"

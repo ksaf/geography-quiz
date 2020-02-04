@@ -1,6 +1,7 @@
 package com.orestis.velen.quiz.helpPowers.shield;
 
 import android.content.Context;
+import android.support.design.card.MaterialCardView;
 import android.view.View;
 
 import com.orestis.velen.quiz.answerButtons.AnswerChoice;
@@ -15,6 +16,7 @@ public class WrongChoiceClickListener implements View.OnClickListener, ViewScale
     private ShieldBreakingAnimator shieldBreakingAnimator;
     private QuestionHandler questionHandler;
     private AnswerChoice wrongChoice;
+    private MaterialCardView wrongChoiceBg;
 
     public WrongChoiceClickListener(ShieldEndListener shieldEndListener, Context context, ShieldBreakingAnimator shieldBreakingAnimator,
                                     QuestionHandler questionHandler, AnswerChoice wrongChoice) {
@@ -25,12 +27,26 @@ public class WrongChoiceClickListener implements View.OnClickListener, ViewScale
         this.wrongChoice = wrongChoice;
     }
 
+    public WrongChoiceClickListener(ShieldEndListener shieldEndListener, Context context, ShieldBreakingAnimator shieldBreakingAnimator,
+                                    QuestionHandler questionHandler, AnswerChoice wrongChoice, MaterialCardView wrongChoiceBg) {
+        this.shieldEndListener = shieldEndListener;
+        this.context = context;
+        this.shieldBreakingAnimator = shieldBreakingAnimator;
+        this.questionHandler = questionHandler;
+        this.wrongChoice = wrongChoice;
+        this.wrongChoiceBg = wrongChoiceBg;
+    }
+
     @Override
     public void onClick(View view) {
         shieldBreakingAnimator.animateBreakingShield();
         view.setVisibility(View.INVISIBLE);
         ScaleDownAnimationHandler animationHandler = new ScaleDownAnimationHandler(context);
         animationHandler.hide(view, this);
+        if(wrongChoiceBg != null) {
+            animationHandler.hide(view, wrongChoiceBg, this);
+            wrongChoiceBg.setVisibility(View.INVISIBLE);
+        }
         questionHandler.removeAnswer(wrongChoice);
     }
 

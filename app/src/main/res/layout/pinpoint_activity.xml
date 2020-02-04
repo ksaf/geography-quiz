@@ -183,6 +183,31 @@
         app:layout_constraintTop_toTopOf="@+id/guideline8" />
 
     <ImageView
+        android:id="@+id/helpPowerUsedImgBg"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="@+id/mapBg"
+        app:layout_constraintTop_toTopOf="@+id/mapBg" />
+
+    <ImageView
+        android:id="@+id/helpPowerUsedImg"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:src="@drawable/shield"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="@+id/mapBg"
+        app:layout_constraintTop_toTopOf="@+id/mapBg" />
+
+    <ImageView
         android:id="@+id/darkBg"
         android:layout_width="0dp"
         android:layout_height="0dp"

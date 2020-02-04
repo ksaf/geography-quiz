@@ -12,7 +12,7 @@ import java.util.Random;
 public class QuestionGenerator {
     private List<DataItem> questionPoolData;
     private List<DataItem> answersPoolData;
-    private List<DataItem> originalAnswersPoolData;
+    private List<DataItem> allAnswersPoolData;
     private SampleSizeEndListener endListener;
 
     QuestionGenerator(Difficulty difficulty, GameType gameType, DataRepository repository, int sampleSize, SampleSizeEndListener endListener) {
@@ -21,7 +21,16 @@ public class QuestionGenerator {
         questionPoolData = data.getQuestionPool();
 
         answersPoolData = data.getAnswerPool();
-        originalAnswersPoolData = new ArrayList<>(answersPoolData);
+        allAnswersPoolData = data.getAllAnswersPool();
+    }
+
+    QuestionGenerator(int continent, GameType gameType, DataRepository repository, int sampleSize, SampleSizeEndListener endListener) {
+        this.endListener = endListener;
+        QuestionPoolData data = repository.getDataFor(continent, gameType, sampleSize);
+        questionPoolData = data.getQuestionPool();
+
+        answersPoolData = data.getAnswerPool();
+        allAnswersPoolData = data.getAllAnswersPool();
     }
 
     Question generateQuestion() {
@@ -42,14 +51,14 @@ public class QuestionGenerator {
             answersPoolData.remove(correctAnswer);
         }
 
-        DataItem answer2 = originalAnswersPoolData.get(r.nextInt(originalAnswersPoolData.size()));
-        DataItem answer3 = originalAnswersPoolData.get(r.nextInt(originalAnswersPoolData.size()));
+        DataItem answer2 = allAnswersPoolData.get(r.nextInt(allAnswersPoolData.size()));
+        DataItem answer3 = allAnswersPoolData.get(r.nextInt(allAnswersPoolData.size()));
 
-        while (answer2.equals(correctAnswer)){
-            answer2 = originalAnswersPoolData.get(r.nextInt(originalAnswersPoolData.size()));
+        while (answer2.equals(correctAnswer) || answer2.getContinent() != correctAnswer.getContinent()){
+            answer2 = allAnswersPoolData.get(r.nextInt(allAnswersPoolData.size()));
         }
-        while (answer3.equals(correctAnswer) || answer3.equals(answer2)){
-            answer3 = originalAnswersPoolData.get(r.nextInt(originalAnswersPoolData.size()));
+        while (answer3.equals(correctAnswer) || answer3.equals(answer2) || answer3.getContinent() != correctAnswer.getContinent()){
+            answer3 = allAnswersPoolData.get(r.nextInt(allAnswersPoolData.size()));
         }
 
         int randomPos = r.nextInt(3);

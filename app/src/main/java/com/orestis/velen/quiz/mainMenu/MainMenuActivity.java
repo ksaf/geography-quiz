@@ -147,6 +147,7 @@ public class MainMenuActivity extends AppCompatActivity implements PlayerRecover
                         .withSoundPoolHelper(soundHelper)
                         .build();
                 FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+                ft.setCustomAnimations(R.anim.scale_up_animation, R.anim.scale_down_animation);
                 ft.add(R.id.optionScreenPlaceholder, settingsFragment, "SettingsTag");
                 ft.addToBackStack("settings");
                 ft.commit();
@@ -176,6 +177,7 @@ public class MainMenuActivity extends AppCompatActivity implements PlayerRecover
                             .withSoundPoolHelper(soundHelper)
                             .build();
                     FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+                    ft.setCustomAnimations(R.anim.scale_up_animation, R.anim.scale_down_animation);
                     ft.replace(R.id.optionScreenPlaceholder, xpBoostFragmentActive).commit();
                 } else {
                     XpBoostFragment xpBoostFragment = new XpBoostFragment.Builder()
@@ -185,6 +187,7 @@ public class MainMenuActivity extends AppCompatActivity implements PlayerRecover
                             .withXpBoostEnabledListener(MainMenuActivity.this)
                             .build();
                     FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+                    ft.setCustomAnimations(R.anim.scale_up_animation, R.anim.scale_down_animation);
                     ft.replace(R.id.optionScreenPlaceholder, xpBoostFragment);
                     ft.commit();
                 }
@@ -271,6 +274,7 @@ public class MainMenuActivity extends AppCompatActivity implements PlayerRecover
                 .withSoundPoolHelper(soundHelper)
                 .build();
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        ft.setCustomAnimations(R.anim.scale_up_animation, R.anim.scale_down_animation);
         ft.replace(R.id.gameStartConfirmationPlaceholder, gameStartConfirmationFragment);
         ft.commit();
     }
@@ -305,6 +309,7 @@ public class MainMenuActivity extends AppCompatActivity implements PlayerRecover
                 .withSkillSumChangeListener(this)
                 .build();
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        ft.setCustomAnimations(R.anim.scale_up_animation, R.anim.scale_down_animation);
         ft.replace(R.id.optionScreenPlaceholder, skillUpgradesFragment);
         ft.commit();
     }

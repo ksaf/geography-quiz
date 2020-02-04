@@ -7,15 +7,12 @@ import java.util.List;
 public class QuestionPoolData {
     private List<DataItem> questionPool;
     private List<DataItem> answerPool;
+    private List<DataItem> allAnswersPool;
 
-    public QuestionPoolData(List<DataItem> questionPool, List<DataItem> answerPool) {
+    public QuestionPoolData(List<DataItem> questionPool, List<DataItem> answerPool, List<DataItem> allAnswersPool) {
         this.questionPool = questionPool;
         this.answerPool = answerPool;
-    }
-
-    public QuestionPoolData(List<DataItem> itemPool) {
-        this.questionPool = itemPool;
-        this.answerPool = itemPool;
+        this.allAnswersPool = allAnswersPool;
     }
 
     public List<DataItem> getQuestionPool() {
@@ -24,5 +21,9 @@ public class QuestionPoolData {
 
     public List<DataItem> getAnswerPool() {
         return answerPool;
+    }
+
+    public List<DataItem> getAllAnswersPool() {
+        return allAnswersPool;
     }
 }

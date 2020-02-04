@@ -35,6 +35,11 @@ public class QuestionHandler {
         nextQuestion();
     }
 
+    public void init(int continent, GameType gameType, int sampleSize) {
+        questionGenerator = new QuestionGenerator(continent, gameType, repositoryFactory.getDataRepository(), sampleSize, endListener);
+        nextQuestion();
+    }
+
     public void nextQuestion() {
         removedAnswers = new HashMap<>();
         removedAnswers.put(A, false);

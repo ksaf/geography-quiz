@@ -16,9 +16,13 @@ import java.util.Map;
 import java.util.Random;
 
 import static com.orestis.velen.quiz.geography.DataItem.AFRICA;
+import static com.orestis.velen.quiz.geography.DataItem.ALL_CONTINENTS;
+import static com.orestis.velen.quiz.geography.DataItem.AMERICA;
 import static com.orestis.velen.quiz.geography.DataItem.AUSTRALIA;
 import static com.orestis.velen.quiz.geography.DataItem.EAST_ASIA;
+import static com.orestis.velen.quiz.geography.DataItem.EAST_ASIA_AND_OCEANIA;
 import static com.orestis.velen.quiz.geography.DataItem.EUROPE;
+import static com.orestis.velen.quiz.geography.DataItem.MESOPOTAMIA;
 import static com.orestis.velen.quiz.geography.DataItem.NORTH_AMERICA;
 import static com.orestis.velen.quiz.geography.DataItem.SOUTH_AMERICA;
 import static com.orestis.velen.quiz.geography.DataItem.TYPE_CAPITAL;
@@ -37,70 +41,103 @@ public class DataItemManager {
     public DataItemManager() {
         setupDifficultyMix();
         setupItems();
+        completeContinents();
     }
 
     public QuestionPoolData getSample(Difficulty difficulty, GameType gameType, int sampleSize) {
         List<DataItem> question = new ArrayList<>();
         List<DataItem> answer = new ArrayList<>();
+        List<DataItem> allAnswers = new ArrayList<>();
         switch (gameType) {
             case TYPE_OUTLINES:
                 question = answer = getRandomItems(TYPE_COUNTRY, difficulty, sampleSize);
+                allAnswers = getAllItems(TYPE_COUNTRY, difficulty);
                 break;
             case TYPE_FLAGS:
                 question = answer = getRandomItems(TYPE_COUNTRY, difficulty, sampleSize);
+                allAnswers = getAllItems(TYPE_COUNTRY, difficulty);
                 break;
             case TYPE_CAPITALS_TEXT:
                 question = getRandomItems(TYPE_COUNTRY, difficulty, sampleSize);
                 answer = getCapitalsOfCountries(question);
+                allAnswers = getAllItems(TYPE_CAPITAL, difficulty);
                 break;
             case TYPE_CAPITALS_MAP:
                 question = answer = getRandomItems(TYPE_CAPITAL, difficulty, sampleSize);
+                allAnswers = getAllItems(TYPE_CAPITAL, difficulty);
                 break;
             case TYPE_OUTLINE_TO_FLAG:
                 question = answer = getRandomItems(TYPE_COUNTRY, difficulty, sampleSize);
+                allAnswers = getAllItems(TYPE_COUNTRY, difficulty);
                 break;
             case TYPE_MONUMENTS:
                 question = answer = getRandomItems(TYPE_MONUMENT, difficulty, sampleSize);
+                allAnswers = getAllItems(TYPE_MONUMENT, difficulty);
                 break;
 
         }
-//        addContinents(question);
-//        addContinents(answer);
-        return new QuestionPoolData(question, answer);
+
+        return new QuestionPoolData(question, answer, allAnswers);
     }
 
-    public void addItem(String itemCode, @Nullable Pair<Float, Float> coordinates, int continent, Difficulty difficulty, int itemType) {
+    public QuestionPoolData getSample(int continent, GameType gameType, int sampleSize) {
+        List<DataItem> question = new ArrayList<>();
+        List<DataItem> answer = new ArrayList<>();
+        List<DataItem> allAnswers = new ArrayList<>();
+        switch (gameType) {
+            case TYPE_OUTLINES:
+                question = answer = getRandomItems(TYPE_COUNTRY, continent, sampleSize);
+                allAnswers = getAllItems(TYPE_COUNTRY, continent);
+                break;
+            case TYPE_FLAGS:
+                question = answer = getRandomItems(TYPE_COUNTRY, continent, sampleSize);
+                allAnswers = getAllItems(TYPE_COUNTRY, continent);
+                break;
+            case TYPE_CAPITALS_TEXT:
+                question = getRandomItems(TYPE_COUNTRY, continent, sampleSize);
+                answer = getCapitalsOfCountries(question);
+                allAnswers = getAllItems(TYPE_CAPITAL, continent);
+                break;
+            case TYPE_CAPITALS_MAP:
+                question = answer = getRandomItems(TYPE_CAPITAL, continent, sampleSize);
+                allAnswers = getAllItems(TYPE_CAPITAL, continent);
+                break;
+            case TYPE_OUTLINE_TO_FLAG:
+                question = answer = getRandomItems(TYPE_COUNTRY, continent, sampleSize);
+                allAnswers = getAllItems(TYPE_COUNTRY, continent);
+                break;
+            case TYPE_MONUMENTS:
+                question = answer = getRandomItems(TYPE_MONUMENT, continent, sampleSize);
+                allAnswers = getAllItems(TYPE_MONUMENT, continent);
+                break;
+
+        }
+
+        return new QuestionPoolData(question, answer, allAnswers);
+    }
+
+    private void addItem(String itemCode, @Nullable Pair<Float, Float> coordinates, int continent, Difficulty difficulty, int itemType) {
         items.add(new DataItem(itemCode, coordinates, continent, difficulty, itemType));
     }
-    public void addItem(String itemCode, @Nullable Pair<Float, Float> coordinates, int continent, Difficulty difficulty, int itemType, String linkItemCode) {
+    private void addItem(String itemCode, @Nullable Pair<Float, Float> coordinates, int continent, Difficulty difficulty, int itemType, String linkItemCode) {
         items.add(new DataItem(itemCode, coordinates, continent, difficulty, itemType, linkItemCode));
     }
 
-    private void addContinents(List<DataItem> dataItemList) {
-        for(DataItem itemToAddContinent : dataItemList) {
-            DataItem linkItem = null;
-            if(itemToAddContinent.getContinent() < 0) {
-                if(itemToAddContinent.getLinkItemCode() != null) {
-                    for(DataItem item : items) {
-                        if(item.getItemCode().equals(itemToAddContinent.getLinkItemCode())) {
-                            linkItem = item;
-                        }
-                    }
-                } else {
-                    for(DataItem item : items) {
-                        if(item.getLinkItemCode() != null && item.getLinkItemCode().equals(itemToAddContinent.getItemCode())) {
-                            linkItem = item;
-                        }
-                    }
-                }
+    private void completeContinents() {
+        Map<String, Integer> continentsMap = new HashMap<>();
+        for (DataItem item : items) {
+            if(item.getContinent() > 0 && item.getLinkItemCode() != null) {
+                continentsMap.put(item.getLinkItemCode(), item.getContinent());
             }
-            if(linkItem != null) {
-                itemToAddContinent.setContinent(linkItem.getContinent());
+        }
+        for (DataItem item : items) {
+            if(item.getContinent() < 0) {
+                item.setContinent(continentsMap.get(item.getItemCode()));
             }
         }
     }
 
-    public List<DataItem> getAllItems(int itemType, Difficulty difficulty) {
+    private List<DataItem> getAllItems(int itemType, Difficulty difficulty) {
         List<DataItem> returnItems = new ArrayList<>();
         for(DataItem item : items) {
             if(item.getDifficulty() == difficulty && item.getItemType() == itemType) {
@@ -110,7 +147,42 @@ public class DataItemManager {
         return returnItems;
     }
 
-    public List<DataItem> getAllItems(int itemType) {
+    private List<DataItem> getAllItems(int itemType, int continent) {
+        List<DataItem> returnItems = new ArrayList<>();
+        for(DataItem item : items) {
+            if(isCorrectContinent(item, continent) && item.getItemType() == itemType) {
+                returnItems.add(item);
+            }
+        }
+        return returnItems;
+    }
+
+    private boolean isCorrectContinent(DataItem item, int continent) {
+        boolean isCorrectContinent = false;
+        switch (continent) {
+            case EUROPE:
+                isCorrectContinent = item.getContinent() == EUROPE;
+                break;
+            case AFRICA:
+                isCorrectContinent = item.getContinent() == AFRICA;
+                break;
+            case EAST_ASIA_AND_OCEANIA:
+                isCorrectContinent = item.getContinent() == EAST_ASIA || item.getContinent() == AUSTRALIA;
+                break;
+            case AMERICA:
+                isCorrectContinent = item.getContinent() == NORTH_AMERICA || item.getContinent() == SOUTH_AMERICA;
+                break;
+            case MESOPOTAMIA:
+                isCorrectContinent = item.getContinent() == EAST_ASIA;
+                break;
+            case ALL_CONTINENTS:
+                isCorrectContinent = true;
+                break;
+        }
+        return isCorrectContinent;
+    }
+
+    private List<DataItem> getAllItems(int itemType) {
         List<DataItem> returnItems = new ArrayList<>();
         for(DataItem item : items) {
             if(item.getItemType() == itemType) {
@@ -120,7 +192,7 @@ public class DataItemManager {
         return returnItems;
     }
 
-    public List<DataItem> getCapitalsOfCountries(List<DataItem> countries) {
+    private List<DataItem> getCapitalsOfCountries(List<DataItem> countries) {
         List<DataItem> capitals = new ArrayList<>();
         for(DataItem country : countries) {
             for(DataItem item : getAllItems(TYPE_CAPITAL)) {
@@ -133,17 +205,23 @@ public class DataItemManager {
         return capitals;
     }
 
-    public List<DataItem> getItemsForContinent(int continent) {
-        List<DataItem> returnItems = new ArrayList<>();
-        for(DataItem item : items) {
-            if(item.getContinent() == continent) {
-                returnItems.add(item);
+    private List<DataItem> getRandomItems(int type, int continent, int sampleSize) {
+        List<DataItem> finalList = new ArrayList<>();
+        List<DataItem> itemsForContinent = getAllItems(type, continent);
+        List<Integer> continentIndexesSelected = new ArrayList<>();
+        Random rand = new Random();
+        for(int i = 0; i < sampleSize; i++) {
+            int randomIndex = rand.nextInt(itemsForContinent.size());
+            while (continentIndexesSelected.contains(randomIndex)) {
+                randomIndex = rand.nextInt(itemsForContinent.size());
             }
+            continentIndexesSelected.add(randomIndex);
+            finalList.add(itemsForContinent.get(i));
         }
-        return returnItems;
+        return finalList;
     }
 
-    public List<DataItem> getRandomItems(int type, Difficulty difficulty, int sampleSize) {
+    private List<DataItem> getRandomItems(int type, Difficulty difficulty, int sampleSize) {
         List<DataItem> finalList = new ArrayList<>();
         List<Integer> easyIndexesSelected = new ArrayList<>();
         List<Integer> normalIndexesSelected = new ArrayList<>();

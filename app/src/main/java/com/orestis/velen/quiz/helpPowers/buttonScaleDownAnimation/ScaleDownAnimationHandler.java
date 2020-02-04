@@ -20,4 +20,10 @@ public class ScaleDownAnimationHandler {
         animatedView.startAnimation(animation);
     }
 
+    public void hide(View animatedView, View animatedViewBg, ViewScaledDownListener viewScaledDownListener) {
+        animation.setAnimationListener(new ScaleDownAnimationListener(animatedView, viewScaledDownListener));
+        animatedView.startAnimation(animation);
+        animatedViewBg.startAnimation(animation);
+    }
+
 }
