@@ -11,13 +11,24 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.TextView;
 
+import com.google.android.gms.auth.api.Auth;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.auth.api.signin.GoogleSignInResult;
+import com.google.android.gms.common.Scopes;
+import com.google.android.gms.common.api.Scope;
 import com.google.android.gms.games.Games;
+import com.google.android.gms.games.GamesClient;
 import com.google.android.gms.games.PlayersClient;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseUser;
 import com.orestis.velen.quiz.R;
@@ -25,7 +36,6 @@ import com.orestis.velen.quiz.adverts.VideoAdManager;
 import com.orestis.velen.quiz.login.UserSession;
 import com.orestis.velen.quiz.login.firebase.FirebaseConnectedListener;
 import com.orestis.velen.quiz.login.firebase.FirebaseConnectionHelper;
-import com.orestis.velen.quiz.login.googleSignIn.GoogleSession;
 import com.orestis.velen.quiz.mainMenu.MainMenuActivity;
 import com.orestis.velen.quiz.mainMenu.PlayerRecoveredListener;
 import com.orestis.velen.quiz.player.Player;
@@ -33,7 +43,8 @@ import com.orestis.velen.quiz.player.PlayerSession;
 
 public class LoginSplashScreenActivity extends AppCompatActivity implements FirebaseConnectedListener, PlayerRecoveredListener {
 
-    private GoogleSignInAccount lastGoogleAccount;
+    private static final int RC_SIGN_IN = 0;
+    private GoogleSignInAccount signedInAccount;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,51 +57,115 @@ public class LoginSplashScreenActivity extends AppCompatActivity implements Fire
     @Override
     protected void onResume() {
         super.onResume();
-        startConnecting();
+        signInSilently();
     }
 
-    private void startConnecting() {
-        lastGoogleAccount = GoogleSession.getInstance().getLastGoogleAccount(this);
-        FirebaseConnectionHelper connectionHelper = new FirebaseConnectionHelper();
-        if(lastGoogleAccount != null) {
-            connectionHelper.firebaseAuthWithGoogle(this, lastGoogleAccount, this);
+    private void signInSilently() {
+        GoogleSignInOptions signInOptions = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_GAMES_SIGN_IN)
+                .requestIdToken(getString(R.string.default_web_client_id))
+                .requestScopes(new Scope(Scopes.GAMES))
+                .build();
+        GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
+        if (GoogleSignIn.hasPermissions(account, signInOptions.getScopeArray())) {
+            // Already signed in.
+            // The signed in account is stored in the 'account' variable.
+            signedInAccount = account;
+            getGoogleGamesPlayer(signedInAccount);
         } else {
-            PlayerSession.getInstance().setConnected(false);
-            UserSession.getInstance().recoverPlayerFromLocalStorage(this, getApplicationContext());
+            // Haven't been signed-in before. Try the silent sign-in first.
+            GoogleSignInClient signInClient = GoogleSignIn.getClient(this, signInOptions);
+            signInClient
+            .silentSignIn()
+            .addOnCompleteListener(
+                    this,
+                    new OnCompleteListener<GoogleSignInAccount>() {
+                        @Override
+                        public void onComplete(@NonNull Task<GoogleSignInAccount> task) {
+                            if (task.isSuccessful()) {
+                                // The signed in account is stored in the task's result.
+                                signedInAccount = task.getResult();
+                                getGoogleGamesPlayer(signedInAccount);
+                            } else if (UserSession.getInstance().shouldAttemptAutomaticLogin(LoginSplashScreenActivity.this)){
+                                startSignInIntent();
+                            } else {
+                                PlayerSession.getInstance().setConnected(false);
+                                PlayerSession.getInstance().setWasConnectionError(false);
+                                final Handler handler = new Handler();
+                                handler.postDelayed(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        UserSession.getInstance().recoverPlayerFromLocalStorage(LoginSplashScreenActivity.this,
+                                                getApplicationContext());
+                                    }
+                                }, 1000);
+                            }
+                        }
+                    });
         }
     }
 
-    private void getGoogleGamesName(GoogleSignInAccount googleAccount) {
-        Games.getGamesClient(this, googleAccount).setViewForPopups(findViewById(R.id.gps_popup));
-        PlayersClient mPlayersClient = Games.getPlayersClient(this, googleAccount);
-        mPlayersClient.getCurrentPlayer()
-                .addOnCompleteListener(new OnCompleteListener<com.google.android.gms.games.Player>() {
-                    @Override
-                    public void onComplete(@NonNull Task<com.google.android.gms.games.Player> task) {
-                        if (task.isSuccessful()) {
-                            PlayerSession.getInstance().setCurrentPlayerName(task.getResult().getDisplayName());
-                        }
-                        PlayerSession.getInstance().setConnected(task.isSuccessful());
-                        PlayerSession.getInstance().setWasConnectionError(!task.isSuccessful());
-                        nextActivity();
-                    }
-                });
+    private void startSignInIntent() {
+        UserSession.getInstance().incrementAutoLoginAttempts(LoginSplashScreenActivity.this);
+        GoogleSignInOptions signInOptions = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_GAMES_SIGN_IN)
+        .requestIdToken(getString(R.string.default_web_client_id))
+        .requestScopes(new Scope(Scopes.GAMES))
+        .build();
+        GoogleSignInClient signInClient = GoogleSignIn.getClient(this, signInOptions);
+        Intent intent = signInClient.getSignInIntent();
+        startActivityForResult(intent, RC_SIGN_IN);
+    }
+
+    private void getGoogleGamesPlayer(GoogleSignInAccount googleAccount) {
+        final FirebaseConnectionHelper connectionHelper = new FirebaseConnectionHelper();
+
+        GamesClient gamesClient = Games.getGamesClient(this, googleAccount);
+        gamesClient.setGravityForPopups(Gravity.TOP | Gravity.CENTER_HORIZONTAL);
+        gamesClient.setViewForPopups(findViewById(R.id.gps_popup));
+
+        PlayersClient playersClient = Games.getPlayersClient(LoginSplashScreenActivity.this, googleAccount);
+        playersClient.getCurrentPlayer().addOnSuccessListener(new OnSuccessListener<com.google.android.gms.games.Player>() {
+            @Override
+            public void onSuccess(com.google.android.gms.games.Player player) {
+                PlayerSession.getInstance().setCurrentPlayerName(player.getDisplayName());
+                PlayerSession.getInstance().setConnected(true);
+                PlayerSession.getInstance().setWasConnectionError(false);
+                connectionHelper.firebaseAuthWithGoogle(LoginSplashScreenActivity.this,
+                        signedInAccount, LoginSplashScreenActivity.this);
+                UserSession.getInstance().resetAutoLoginAttempts(LoginSplashScreenActivity.this);
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                PlayerSession.getInstance().setConnected(false);
+                PlayerSession.getInstance().setWasConnectionError(true);
+                UserSession.getInstance().recoverPlayerFromLocalStorage(LoginSplashScreenActivity.this,
+                        getApplicationContext());
+            }
+        });
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == RC_SIGN_IN) {
+            GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
+            if (result.isSuccess()) {
+                // The signed in account is stored in the result.
+                signedInAccount = result.getSignInAccount();
+                getGoogleGamesPlayer(signedInAccount);
+            } else {
+                PlayerSession.getInstance().setConnected(false);
+                PlayerSession.getInstance().setWasConnectionError(false);
+                UserSession.getInstance().recoverPlayerFromLocalStorage(LoginSplashScreenActivity.this,
+                        getApplicationContext());
+            }
+        }
     }
 
     @Override
     public void onPlayerRecovered(final Player player, final boolean fromLocalStorage) {
         PlayerSession.getInstance().setRecoveredPlayer(player);
-        if(lastGoogleAccount != null) {
-            getGoogleGamesName(lastGoogleAccount);
-        } else {
-            final Handler handler = new Handler();
-            handler.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    nextActivity();
-                }
-            }, 1000);
-        }
+        nextActivity();
     }
 
     @Override

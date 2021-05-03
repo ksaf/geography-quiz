@@ -1,5 +1,7 @@
 package com.orestis.velen.quiz.player;
 
+import com.orestis.velen.quiz.mainMenu.SelectionSaver;
+
 public class PlayerSession {
 
     private static PlayerSession instance;
@@ -7,6 +9,7 @@ public class PlayerSession {
     private boolean isConnected;
     private String currentPlayerName;
     private boolean wasConnectionError;
+    private SelectionSaver selectionSaver = new SelectionSaver();
 
     public static PlayerSession getInstance() {
         if(instance == null) {
@@ -45,5 +48,29 @@ public class PlayerSession {
 
     public boolean isWasConnectionError() {
         return wasConnectionError;
+    }
+
+    public void setLastMenuSelection(int lastMenuSelection) {
+        selectionSaver.setLastMenuSelection(lastMenuSelection);
+    }
+
+    public int getLastMenuSelection() {
+        return selectionSaver.getLastMenuSelection();
+    }
+
+    public void setDifficultySelection(int menuSelection, int lastDifficultySelection) {
+        selectionSaver.setLastDifficultyForSelection(menuSelection, lastDifficultySelection);
+    }
+
+    public int getDifficultySelection(int menuSelection) {
+        return selectionSaver.getLastDifficultyForSelection(menuSelection);
+    }
+
+    public void setVariationSelection(int menuSelection, int lastVariationSelection) {
+        selectionSaver.setLastVariationForSelection(menuSelection, lastVariationSelection);
+    }
+
+    public int getVariationSelection(int menuSelection) {
+        return selectionSaver.getLastVariationForSelection(menuSelection);
     }
 }

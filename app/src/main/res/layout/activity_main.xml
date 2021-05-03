@@ -52,6 +52,7 @@
         android:shadowRadius="4"
         android:textAlignment="center"
         android:textColor="#d0ffffff"
+        android:visibility="gone"
         app:autoSizeMaxTextSize="30sp"
         app:autoSizeMinTextSize="16sp"
         app:autoSizeStepGranularity="2sp"
@@ -75,27 +76,51 @@
         android:layout_height="0dp"
         android:layout_marginEnd="16dp"
         android:layout_marginStart="16dp"
-        android:background="@drawable/game_progress_background"
-        app:layout_constraintBottom_toTopOf="@+id/guideline7"
+
+        app:layout_constraintBottom_toTopOf="@+id/guideline24"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/guideline6">
+        app:layout_constraintTop_toTopOf="@+id/guideline11"
+        app:layout_constraintVertical_bias="1.0">
 
     </FrameLayout>
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guideline24"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.58" />
+
+    <ImageView
+        android:id="@+id/questionDisplayBg"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginTop="24dp"
+        android:scaleType="fitXY"
+        android:src="@drawable/notebook"
+
+        app:layout_constraintBottom_toBottomOf="@+id/questionFrame"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/questionFrame" />
 
     <ImageView
         android:id="@+id/questionDisplay"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginBottom="32dp"
+        android:layout_marginBottom="26dp"
         android:layout_marginEnd="32dp"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="40dp"
-        app:layout_constraintBottom_toTopOf="@+id/guideline7"
+        android:layout_marginStart="48dp"
+        android:layout_marginTop="46dp"
+        android:rotation="-1.2"
+        app:layout_constraintBottom_toBottomOf="@+id/questionFrame"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/guideline6"
-        app:srcCompat="@mipmap/ic_launcher" />
+        app:layout_constraintTop_toTopOf="@+id/questionFrame"
+        app:srcCompat="@drawable/egypt" />
 
     <ImageView
         android:id="@+id/helpPowerUsedImgBg"
@@ -239,16 +264,13 @@
 
     </FrameLayout>
 
-    <include
-        android:id="@+id/gameStarting"
-        layout="@layout/game_starting"
+    <FrameLayout
+        android:id="@+id/gameStartingPlaceholder"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
+        app:layout_constraintTop_toTopOf="parent"></FrameLayout>
 
 </android.support.constraint.ConstraintLayout>

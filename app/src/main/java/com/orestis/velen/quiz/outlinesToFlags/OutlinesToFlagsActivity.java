@@ -27,7 +27,7 @@ import com.orestis.velen.quiz.bonusTimeDisplay.BonusTimeHandler;
 import com.orestis.velen.quiz.gameEnd.GameEndLossFragment;
 import com.orestis.velen.quiz.gameEnd.GameEndWinFragment;
 import com.orestis.velen.quiz.gameStartingLoading.GameStartingEndListener;
-import com.orestis.velen.quiz.gameStartingLoading.GameStartingScreen;
+import com.orestis.velen.quiz.gameStartingLoading.GameStartingFragment;
 import com.orestis.velen.quiz.helpPowers.extraTime.ExtraTimePowerConfigs;
 import com.orestis.velen.quiz.helpPowers.fiftyFifty.FiftyFiftyButton;
 import com.orestis.velen.quiz.helpPowers.freezeTime.FreezeTimeButton;
@@ -36,7 +36,6 @@ import com.orestis.velen.quiz.helpPowers.skip.SkipButton;
 import com.orestis.velen.quiz.language.LocaleHelper;
 import com.orestis.velen.quiz.loadingBar.LoadingBarHandler;
 import com.orestis.velen.quiz.loadingBar.LoadingBarStateListener;
-import com.orestis.velen.quiz.loadingScreen.BounceLoadingView;
 import com.orestis.velen.quiz.mainMenu.MainMenuActivity;
 import com.orestis.velen.quiz.outlines.MainActivity;
 import com.orestis.velen.quiz.player.Player;
@@ -150,13 +149,13 @@ public class OutlinesToFlagsActivity extends AppCompatActivity implements Loadin
         new RoundProgressDisplayHandler((TextView) findViewById(R.id.questionProgressTxt),
                 (TextView) findViewById(R.id.currentQuestionNumberTxt), LEVEL_QUESTION_SAMPLE, questionHandler, face);
 
-        new GameStartingScreen.Builder()
-                .useBounceLoadingView((BounceLoadingView) findViewById(R.id.bounceLoading))
-                .useCountText((TextView) findViewById(R.id.countDown))
-                .forContainer((ConstraintLayout) findViewById(R.id.gameStartingContainer))
+        GameStartingFragment gameStartingFragment = new GameStartingFragment.Builder()
                 .useTypeface(face)
                 .withGameStartingEndListener(this)
-                .withContext(this).init();
+                .build();
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        ft.replace(R.id.gameStartingPlaceholder, gameStartingFragment);
+        ft.commit();
 
     }
 

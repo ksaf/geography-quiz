@@ -54,13 +54,13 @@ public class DefaultAnswerButtonsHandler implements AnswerButtonsHandler, Answer
     @Override
     public void displayCorrectAnswer() {
         AnswerChoice correctChoice = questionHandler.getCorrectAnswerChoice();
-        CorrectAnswerTask task = new CorrectAnswerTask(buttons, correctChoice, displayAnswerDuration, buttonStateListener);
+        CorrectAnswerTask task = new CorrectAnswerTask(buttons, correctChoice, displayAnswerDuration, buttonStateListener, false);
         task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
     }
 
     private void displayCorrectChoice(AnswerChoice answerChoice) {
         soundHelper.playInGameCorrectChoiceSound();
-        CorrectAnswerTask task = new CorrectAnswerTask(buttons, answerChoice, displayAnswerDuration, buttonStateListener);
+        CorrectAnswerTask task = new CorrectAnswerTask(buttons, answerChoice, displayAnswerDuration, buttonStateListener, true);
         task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
     }
 

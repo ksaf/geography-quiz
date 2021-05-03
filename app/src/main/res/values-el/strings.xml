@@ -43,7 +43,7 @@
     <string name="round_completed">Ο Γύρος Ολοκληρώθηκε!</string>
     <string name="game_win_next">Επόμενο</string>
     <string name="skill_point">ικανότητα</string>
-    <string name="completion_bonus">Σωστές aπαντήσεις:</string>
+    <string name="completion_bonus">Σωστές απαντήσεις:</string>
     <string name="time_left">Χρόνος:</string>
     <string name="streak_bonus">Μπόνους σερί:</string>
     <string name="total">Σύνολο:</string>
@@ -52,7 +52,7 @@
     <string name="time_s_up">Τέλος χρόνου!</string>
     <string name="try_again">Θα δοκιμάσεις ξανά;</string>
     <string name="retry">Ξανά</string>
-    <string name="question">Ερώτηση</string>
+    <string name="question">Ερώτηση:</string>
     <string name="bonus">Μπόνους:</string>
     <string name="select_language">Επιλογή Γλώσσας</string>
     <string name="sec">δευτ.</string>
@@ -77,6 +77,10 @@
     <string name="variationImageButtonDescription">\u0020Κουμπιά με εικόνες\u0020</string>
     <string name="difficulty">Δυσκολία:</string>
     <string name="variation">Παραλλαγή:</string>
+    <string name="sign_in">Σύνδεση</string>
+    <string name="credits">Συντελεστές</string>
+    <string name="termsAndConditions">Πολιτική Απορρήτου</string>
+    <string name="close">Κλείσιμο</string>
 
     //EASY COUNTRIES
 
@@ -135,7 +139,7 @@
     <string name="australia">Αυστραλία</string>
     <string name="cameroon">Καμερούν</string>
     <string name="ivory_coast">Ακτή Ελεφαντοστού</string>
-    <string name="niger">Νίγκερ</string>
+    <string name="niger">Νίγηρας</string>
     <string name="sri_lanka">Σρι Λάνκα</string>
     <string name="romania">Ρουμανία</string>
     <string name="burkina_faso">Μπουργκίνα Φάσο</string>
@@ -443,7 +447,7 @@
     <string name="nicosia">Λευκωσία</string>
     <string name="djibouti_city">Τζιμπουτί</string>
     <string name="suva">Σούβα</string>
-    <string name="oyala">Ciudad de la Paz</string>
+    <string name="oyala">Οϋαλα</string>
     <string name="moroni">Μορόνι</string>
     <string name="thimphu">Θίμφου</string>
     <string name="georgetown">Τζόρτζταουν</string>

@@ -45,8 +45,8 @@ public abstract class AnswerGivenTask extends AsyncTask {
     }
 
     private void resetAllButtonsToDefault() {
-        buttons.get().get(A).setBackgroundResource(R.drawable.answer_button_default);
-        buttons.get().get(B).setBackgroundResource(R.drawable.answer_button_default);
-        buttons.get().get(C).setBackgroundResource(R.drawable.answer_button_default);
+        buttons.get().get(A).setBackgroundResource(R.drawable.answer_button_default_legacy);
+        buttons.get().get(B).setBackgroundResource(R.drawable.answer_button_default_legacy);
+        buttons.get().get(C).setBackgroundResource(R.drawable.answer_button_default_legacy);
     }
 }

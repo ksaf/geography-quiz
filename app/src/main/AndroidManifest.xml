@@ -32,8 +32,8 @@
             android:name="com.google.android.gms.ads.APPLICATION_ID"
             android:value="ca-app-pub-3940256099942544~3347511713"/>
 
-        <activity android:name=".outlines.MainActivity" android:theme="@style/playGameTheme"/>
-        <activity android:name=".pinpoint.CapitalsPointActivity" android:theme="@style/playGameTheme"/>
+        <activity android:name=".outlines.MainActivity" />
+        <activity android:name=".pinpoint.CapitalsPointActivity"/>
         <activity android:name=".mainMenu.MainMenuActivity"/>
 
         <activity
@@ -62,13 +62,13 @@
             android:name=".loadingScreen.SplashActivity"
             android:theme="@style/SplashTheme">
         </activity>
-        <activity android:name=".findPoints.FindPointsActivity" android:theme="@style/playGameTheme"/>
-        <activity android:name=".findPoints.FindPointsActivity2" android:theme="@style/playGameTheme"/>
-        <activity android:name=".flags.FlagsActivity" android:theme="@style/playGameTheme"/>
-        <activity android:name=".pinpoint.MonumentsPointActivity" android:theme="@style/playGameTheme"/>
-        <activity android:name=".outlinesToFlags.OutlinesToFlagsActivity" android:theme="@style/playGameTheme"/>
-        <activity android:name=".capitals.CapitalsActivity" android:theme="@style/playGameTheme"/>
-        <activity android:name=".loadingScreen.LoginSplashScreenActivity" android:theme="@style/playGameTheme">
+        <activity android:name=".findPoints.FindPointsActivity"/>
+        <activity android:name=".findPoints.FindPointsActivity2"/>
+        <activity android:name=".flags.FlagsActivity"/>
+        <activity android:name=".pinpoint.MonumentsPointActivity"/>
+        <activity android:name=".outlinesToFlags.OutlinesToFlagsActivity"/>
+        <activity android:name=".capitals.CapitalsActivity"/>
+        <activity android:name=".loadingScreen.LoginSplashScreenActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

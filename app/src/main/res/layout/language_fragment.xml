@@ -24,13 +24,13 @@
         android:padding="10dp"
         android:scaleType="fitXY"
         app:layout_constraintBottom_toTopOf="@+id/line_separator2"
-        app:layout_constraintEnd_toStartOf="@+id/selectLanguageText"
+        app:layout_constraintEnd_toStartOf="@+id/termsTitleText"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/selectLanguageText"
+        app:layout_constraintTop_toTopOf="@+id/termsTitleText"
         app:srcCompat="@drawable/back_arrow" />
 
     <TextView
-        android:id="@+id/selectLanguageText"
+        android:id="@+id/termsTitleText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
@@ -50,9 +50,9 @@
         android:layout_height="1dp"
         android:layout_marginTop="8dp"
         android:background="#333"
-        app:layout_constraintEnd_toEndOf="@+id/selectLanguageText"
-        app:layout_constraintStart_toStartOf="@+id/selectLanguageText"
-        app:layout_constraintTop_toBottomOf="@+id/selectLanguageText" />
+        app:layout_constraintEnd_toEndOf="@+id/termsTitleText"
+        app:layout_constraintStart_toStartOf="@+id/termsTitleText"
+        app:layout_constraintTop_toBottomOf="@+id/termsTitleText" />
 
     <ImageView
         android:id="@+id/englishLanguage"

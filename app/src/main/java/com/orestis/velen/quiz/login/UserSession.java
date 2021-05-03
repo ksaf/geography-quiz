@@ -148,6 +148,21 @@ public class UserSession implements ValueEventListener {
         return localStorageManager.getXpBoostEnabledTime();
     }
 
+    public void incrementAutoLoginAttempts(Context context) {
+        LocalStorageManager localStorageManager = new LocalStorageManager(context);
+        localStorageManager.incrementAutoLoginAttempts();
+    }
+
+    public boolean shouldAttemptAutomaticLogin(Context context) {
+        LocalStorageManager localStorageManager = new LocalStorageManager(context);
+        return localStorageManager.getAutoLoginAttempts() < 3;
+    }
+
+    public void resetAutoLoginAttempts(Context context) {
+        LocalStorageManager localStorageManager = new LocalStorageManager(context);
+        localStorageManager.resetAutoLoginAttempts();
+    }
+
     @Override
     public void onCancelled(DatabaseError databaseError) {
         createPlayerFromLocalStorage();

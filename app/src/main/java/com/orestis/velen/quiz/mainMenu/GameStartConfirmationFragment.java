@@ -32,7 +32,7 @@ public class GameStartConfirmationFragment extends Fragment {
     private int viewPagerSelection;
     private SparseArray<String> difficultiesTxt = new SparseArray<>();
     private SparseArray<Difficulty> difficulties = new SparseArray<>();
-    private int difficultySelected = 1;
+    private int difficultySelected;
     private SoundPoolHelper soundHelper;
     private boolean xpBoostEnabled;
     private Class activityToStart;
@@ -57,6 +57,7 @@ public class GameStartConfirmationFragment extends Fragment {
         TextView beginGameTypeText = view.findViewById(R.id.beginGameTypeText);
         beginGameTypeText.setText(Html.fromHtml(getString(R.string.startGameOf) + " <br><b><font color='#000000'>" + gameType + "</font></b>?"));
 
+        difficultySelected = PlayerSession.getInstance().getDifficultySelection(viewPagerSelection);
         availableGameTypes = VariationSelector.getAvailableVariations(viewPagerSelection, getContext());
         availableGameTypesImages = new ArrayList<>();
 
@@ -66,11 +67,18 @@ public class GameStartConfirmationFragment extends Fragment {
 
         if(availableGameTypes.size() > 0) {
             gameTypeAImage.setImageResource(availableGameTypes.get(0).getVariationIconResource());
-            gameTypeSelectionText.setText(availableGameTypes.get(0).getVariationDescription());
-            activityToStart = availableGameTypes.get(0).getActivityToStart();
             availableGameTypesImages.add(gameTypeAImage);
             gameTypeBImage.setVisibility(View.GONE);
-            highLightImage(gameTypeAImage);
+
+            if(PlayerSession.getInstance().getVariationSelection(viewPagerSelection) == 0) {
+                highLightImage(gameTypeAImage);
+                activityToStart = availableGameTypes.get(0).getActivityToStart();
+                gameTypeSelectionText.setText(availableGameTypes.get(0).getVariationDescription());
+            } else {
+                highLightImage(gameTypeBImage);
+                activityToStart = availableGameTypes.get(1).getActivityToStart();
+                gameTypeSelectionText.setText(availableGameTypes.get(1).getVariationDescription());
+            }
 
             if(availableGameTypes.size() == 2) {
                 availableGameTypesImages.add(gameTypeBImage);
@@ -84,6 +92,7 @@ public class GameStartConfirmationFragment extends Fragment {
                         activityToStart = availableGameTypes.get(0).getActivityToStart();
                         gameTypeSelectionText.setText(availableGameTypes.get(0).getVariationDescription());
                         highLightImage(gameTypeAImage);
+                        PlayerSession.getInstance().setVariationSelection(viewPagerSelection, 0);
                     }
                 });
                 gameTypeBImage.setOnClickListener(new View.OnClickListener() {
@@ -93,17 +102,19 @@ public class GameStartConfirmationFragment extends Fragment {
                         activityToStart = availableGameTypes.get(1).getActivityToStart();
                         gameTypeSelectionText.setText(availableGameTypes.get(1).getVariationDescription());
                         highLightImage(gameTypeBImage);
+                        PlayerSession.getInstance().setVariationSelection(viewPagerSelection, 1);
                     }
                 });
             }
         }
 
-        Button gameStart = view.findViewById(R.id.game_start);
+        final Button gameStart = view.findViewById(R.id.game_start);
         gameStart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 soundHelper.playMenuBtnOpenSound();
                 gameStartRequestListener.onGameStartConfirm(activityToStart, difficulties.get(difficultySelected), xpBoostEnabled);
+                gameStart.setOnClickListener(null);
             }
         });
 
@@ -127,6 +138,7 @@ public class GameStartConfirmationFragment extends Fragment {
                 if(difficultySelected > 1) {
                     difficultySelected--;
                     difficultyLevelTxt.setText(difficultiesTxt.get(difficultySelected));
+                    PlayerSession.getInstance().setDifficultySelection(viewPagerSelection, difficultySelected);
                 }
             }
         });
@@ -138,6 +150,7 @@ public class GameStartConfirmationFragment extends Fragment {
                 if(difficultySelected < 3) {
                     difficultySelected++;
                     difficultyLevelTxt.setText(difficultiesTxt.get(difficultySelected));
+                    PlayerSession.getInstance().setDifficultySelection(viewPagerSelection, difficultySelected);
                 }
             }
         });

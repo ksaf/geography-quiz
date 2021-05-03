@@ -28,8 +28,8 @@ public class WrongAnswerTask extends AnswerGivenTask{
     @Override
     protected void onPreExecute() {
         disableAllButtons();
-        buttons.get().get(givenAnswerChoice).setBackgroundResource(R.drawable.answer_button_wrong);
-        buttons.get().get(correctAnswerChoice).setBackgroundResource(R.drawable.answer_button_correct);
+        buttons.get().get(givenAnswerChoice).setBackgroundResource(R.drawable.answer_button_wrong_legacy);
+        buttons.get().get(correctAnswerChoice).setBackgroundResource(R.drawable.answer_button_correct_unclicked_legacy);
     }
 
     private void disableAllButtons() {

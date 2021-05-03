@@ -52,7 +52,7 @@
     <string name="time_s_up">Time\'s Up!</string>
     <string name="try_again">Try Again?</string>
     <string name="retry">Retry</string>
-    <string name="question">question</string>
+    <string name="question">question:</string>
     <string name="bonus">Bonus:</string>
     <string name="select_language">Select Language</string>
     <string name="sec">sec</string>
@@ -77,6 +77,15 @@
     <string name="variationImageButtonDescription">\u0020Image buttons\u0020</string>
     <string name="difficulty">Difficulty:</string>
     <string name="variation">Variation:</string>
+    <string name="sign_in">Sign In</string>
+    <string name="credits">Credits</string>
+    <string name="termsAndConditions">Privacy Policy</string>
+    <string name="close">Close</string>
+    <string name="creditsTxt">
+        Vectors designed by Freepik.com\n\n
+        Music and sounds by playonloop.com, noiseforfun.com, freesound.org\n\n
+        Background City vector created by freepik - www.freepik.com
+    </string>
 
     //EASY COUNTRIES
 
@@ -534,7 +543,6 @@
     <string name="al_aqsa_mosque">Al Aqsa Mosque</string>
     <string name="petra">Petra</string>
     <string name="uluru">uluru</string>
-
 
 
 </resources>

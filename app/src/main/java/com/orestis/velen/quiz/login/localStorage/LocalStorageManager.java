@@ -16,6 +16,7 @@ public class LocalStorageManager {
     private static final String XP_BOOST_ENABLED_TIME = "com.orestis.velen.quiz.xpBoostEnabledTime";
     private static final String MUSIC_SETTING = "com.orestis.velen.quiz.musicSetting";
     private static final String SOUND_SETTING = "com.orestis.velen.quiz.soundSetting";
+    private static final String AUTO_LOGIN_ATTEMPTS = "com.orestis.velen.quiz.autoLoginAttempts";
     private SharedPreferences localStorage;
 
     public LocalStorageManager(Context context) {
@@ -72,5 +73,17 @@ public class LocalStorageManager {
 
     public boolean getMusicSettings() {
         return localStorage.getBoolean(MUSIC_SETTING, true);
+    }
+
+    public int getAutoLoginAttempts() {
+        return localStorage.getInt(AUTO_LOGIN_ATTEMPTS, 0);
+    }
+
+    public void resetAutoLoginAttempts() {
+        localStorage.edit().putInt(AUTO_LOGIN_ATTEMPTS, 0).apply();
+    }
+
+    public void incrementAutoLoginAttempts() {
+        localStorage.edit().putInt(AUTO_LOGIN_ATTEMPTS, getAutoLoginAttempts() + 1).apply();
     }
 }

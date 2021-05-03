@@ -15,18 +15,23 @@ public class CorrectAnswerTask extends AnswerGivenTask{
 
     private WeakReference<HashMap<AnswerChoice, Button>> buttons;
     private AnswerChoice answerChoice;
+    private boolean wasClicked;
 
     public CorrectAnswerTask(HashMap<AnswerChoice, Button> buttons, AnswerChoice answerChoice,
-                             int displayAnswerDuration, AnswerButtonStateListener buttonStateListener) {
+                             int displayAnswerDuration, AnswerButtonStateListener buttonStateListener,
+                             boolean wasClicked) {
         super(buttons, displayAnswerDuration, buttonStateListener);
         this.buttons = new WeakReference<>(buttons);
         this.answerChoice = answerChoice;
+        this.wasClicked = wasClicked;
     }
 
     @Override
     protected void onPreExecute() {
         disableAllButtons();
-        buttons.get().get(answerChoice).setBackgroundResource(R.drawable.answer_button_correct);
+        buttons.get().get(answerChoice).setBackgroundResource(wasClicked ?
+                R.drawable.answer_button_correct_legacy
+                : R.drawable.answer_button_correct_unclicked_legacy);
     }
 
     private void disableAllButtons() {

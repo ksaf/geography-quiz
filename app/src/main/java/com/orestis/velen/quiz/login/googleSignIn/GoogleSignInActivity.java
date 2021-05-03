@@ -3,7 +3,7 @@ package com.orestis.velen.quiz.login.googleSignIn;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.widget.Toast;
+import android.view.Gravity;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -12,6 +12,8 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.Scopes;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.common.api.Scope;
+import com.google.android.gms.games.Games;
+import com.google.android.gms.games.GamesClient;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseUser;
 import com.orestis.velen.quiz.R;
@@ -81,9 +83,12 @@ public class GoogleSignInActivity extends AppCompatActivity implements FirebaseC
     private void handleSignInResult(Task<GoogleSignInAccount> completedTask) {
         try {
             GoogleSignInAccount account = completedTask.getResult(ApiException.class);
+            GamesClient gamesClient = Games.getGamesClient(this, account);
+            gamesClient.setGravityForPopups(Gravity.TOP | Gravity.CENTER_HORIZONTAL);
+            gamesClient.setViewForPopups(findViewById(R.id.gps_popup));
             firebaseAuthWithGoogle(account);
         } catch (ApiException e) {
-            Toast.makeText(this, "Could not sign in with Google...", Toast.LENGTH_SHORT).show();
+//            Toast.makeText(this, "Could not sign in with Google...", Toast.LENGTH_SHORT).show();
             resumeCallingActivityWithCanceled();
         }
     }

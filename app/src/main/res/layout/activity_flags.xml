@@ -52,10 +52,12 @@
         android:shadowRadius="4"
         android:textAlignment="center"
         android:textColor="#d0ffffff"
-        app:autoSizeMaxTextSize="30sp"
+        android:visibility="gone"
+        app:autoSizeMaxTextSize="24sp"
         app:autoSizeMinTextSize="16sp"
         app:autoSizeStepGranularity="2sp"
         app:autoSizeTextType="uniform"
+        app:fontFamily="@font/normal"
         app:layout_constraintBottom_toTopOf="@+id/guideline6"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -75,12 +77,11 @@
         android:layout_height="0dp"
         android:layout_marginEnd="16dp"
         android:layout_marginStart="16dp"
-        android:background="@drawable/game_progress_background"
         android:visibility="visible"
-        app:layout_constraintBottom_toTopOf="@+id/guideline7"
+        app:layout_constraintBottom_toTopOf="@+id/guideline24"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/guideline6">
+        app:layout_constraintTop_toTopOf="@+id/guideline11">
 
     </FrameLayout>
 
@@ -93,10 +94,10 @@
         android:layout_marginEnd="60dp"
         android:layout_marginStart="60dp"
         android:layout_marginTop="40dp"
-        app:layout_constraintBottom_toTopOf="@+id/guideline7"
+        app:layout_constraintBottom_toBottomOf="@+id/questionFrame"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/guideline6"
+        app:layout_constraintTop_toTopOf="@+id/questionFrame"
         app:srcCompat="@drawable/ukraine_flag" />
 
     <ImageView
@@ -144,11 +145,18 @@
         app:layout_constraintTop_toTopOf="@+id/questionDisplay" />
 
     <android.support.constraint.Guideline
+        android:id="@+id/guideline24"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.58" />
+
+    <android.support.constraint.Guideline
         android:id="@+id/guideline7"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.66" />
+        app:layout_constraintGuide_percent="0.64" />
 
     <FrameLayout
         android:layout_width="0dp"
@@ -165,9 +173,9 @@
         layout="@layout/answer_buttons"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:layout_marginBottom="6dp"
         android:layout_marginEnd="16dp"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="6dp"
         app:layout_constraintBottom_toTopOf="@+id/guideline9"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -178,7 +186,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.82" />
+        app:layout_constraintGuide_percent="0.80" />
 
     <include
         android:id="@+id/progBar"
@@ -197,13 +205,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.90" />
+        app:layout_constraintGuide_percent="0.88" />
 
     <include
         android:id="@+id/include2"
         layout="@layout/help_powers"
         android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="24dp"
         android:layout_marginStart="24dp"
@@ -217,14 +225,14 @@
         android:id="@+id/darkBg"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:background="#bb424242"
+        android:clickable="true"
+        android:focusable="true"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:clickable="true"
-        android:focusable="true"
-        android:background="#bb424242"/>
+        app:layout_constraintTop_toTopOf="parent" />
 
     <FrameLayout
         android:id="@+id/endGameScreenPlaceholder"
@@ -241,16 +249,16 @@
 
     </FrameLayout>
 
-    <include
-        android:id="@+id/gameStarting"
-        layout="@layout/game_starting"
+    <FrameLayout
+        android:id="@+id/gameStartingPlaceholder"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent">
+
+    </FrameLayout>
 
 
 </android.support.constraint.ConstraintLayout>

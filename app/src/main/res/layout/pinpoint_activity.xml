@@ -14,23 +14,11 @@
         app:srcCompat="@drawable/bg17" />
 
     <include
-        android:id="@+id/gameStarting"
-        layout="@layout/game_starting"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <include
         android:id="@+id/progrBoard"
         layout="@layout/game_progress"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
         app:layout_constraintBottom_toTopOf="@+id/guideline11"
         app:layout_constraintEnd_toEndOf="parent"
@@ -44,68 +32,35 @@
         android:orientation="horizontal"
         app:layout_constraintGuide_percent="0.12" />
 
-    <android.support.v7.widget.AppCompatTextView
-        android:id="@+id/questionText"
-        android:layout_width="200dp"
-        android:layout_height="0dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:background="@drawable/game_progress_background"
-        android:textAlignment="center"
-        android:textColor="#000"
-        android:textSize="25sp"
-        android:textStyle="bold"
-        app:autoSizeMaxTextSize="25sp"
-        app:autoSizeMinTextSize="12sp"
-        app:autoSizeStepGranularity="1sp"
-        app:autoSizeTextType="uniform"
-        app:fontFamily="@font/normal"
-        app:layout_constraintBottom_toTopOf="@+id/guideline6"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/progrBoard"
-        tools:text="Question?" />
-
     <android.support.constraint.Guideline
         android:id="@+id/guideline6"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.22" />
+        app:layout_constraintGuide_percent="0.20" />
 
     <com.orestis.velen.quiz.pinpoint.SquareFrameLayout
         android:id="@+id/mapBg"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginBottom="8dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
         android:background="@drawable/game_progress_background"
+        app:layout_constraintBottom_toTopOf="@+id/guideline9"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/guideline6">
+        app:layout_constraintStart_toStartOf="parent">
 
         <ImageView
             android:id="@+id/mapId"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginBottom="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
+            android:layout_margin="0dp"
             app:srcCompat="@drawable/africa_map" />
 
         <ImageView
             android:id="@+id/hideMapId"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginBottom="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
+            android:layout_margin="0dp"
             android:visibility="gone" />
 
         <TextView
@@ -125,7 +80,6 @@
         android:id="@+id/nowBonusTxt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:shadowColor="#000"
@@ -137,10 +91,37 @@
         android:textSize="60sp"
         app:layout_constraintBottom_toBottomOf="@+id/mapBg"
         app:layout_constraintEnd_toEndOf="@+id/mapBg"
-        app:layout_constraintHorizontal_bias="0.1"
+        app:layout_constraintHorizontal_bias="0.05"
         app:layout_constraintStart_toStartOf="@+id/mapBg"
         app:layout_constraintTop_toTopOf="@+id/mapBg"
-        app:layout_constraintVertical_bias="0.9" />
+        app:layout_constraintVertical_bias="0.95" />
+
+    <android.support.v7.widget.AppCompatTextView
+        android:id="@+id/questionText"
+        android:layout_width="220dp"
+        android:layout_height="90dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:background="@drawable/post_it"
+        android:gravity="center"
+        android:padding="0dp"
+        android:paddingEnd="10dp"
+        android:rotation="1"
+        android:textAlignment="center"
+        android:textColor="#000"
+        android:textSize="25sp"
+        android:textStyle="bold"
+        android:translationY="4dp"
+        app:autoSizeMaxTextSize="25sp"
+        app:autoSizeMinTextSize="12sp"
+        app:autoSizeStepGranularity="1sp"
+        app:autoSizeTextType="uniform"
+        app:fontFamily="@font/normal"
+        app:layout_constraintBottom_toTopOf="@+id/mapBg"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/progrBoard"
+        tools:text="Question ?" />
 
     <android.support.constraint.Guideline
         android:id="@+id/guideline9"
@@ -172,11 +153,11 @@
         android:id="@+id/include2"
         layout="@layout/help_powers"
         android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="24dp"
         android:layout_marginStart="24dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="6dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -235,5 +216,15 @@
 
     </FrameLayout>
 
+    <FrameLayout
+        android:id="@+id/gameStartingPlaceholder"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+    </FrameLayout>
 
 </android.support.constraint.ConstraintLayout>

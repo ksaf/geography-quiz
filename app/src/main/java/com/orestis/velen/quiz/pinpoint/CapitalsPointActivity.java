@@ -23,7 +23,7 @@ import com.orestis.velen.quiz.bonusTimeDisplay.BonusTimeHandler;
 import com.orestis.velen.quiz.gameEnd.GameEndLossFragment;
 import com.orestis.velen.quiz.gameEnd.GameEndWinFragment;
 import com.orestis.velen.quiz.gameStartingLoading.GameStartingEndListener;
-import com.orestis.velen.quiz.gameStartingLoading.GameStartingScreen;
+import com.orestis.velen.quiz.gameStartingLoading.GameStartingFragment;
 import com.orestis.velen.quiz.helpPowers.extraTime.ExtraTimePowerConfigs;
 import com.orestis.velen.quiz.helpPowers.fiftyFifty.FiftyFiftyButton;
 import com.orestis.velen.quiz.helpPowers.freezeTime.FreezeTimeButton;
@@ -32,7 +32,6 @@ import com.orestis.velen.quiz.helpPowers.skip.SkipButton;
 import com.orestis.velen.quiz.language.LocaleHelper;
 import com.orestis.velen.quiz.loadingBar.LoadingBarHandler;
 import com.orestis.velen.quiz.loadingBar.LoadingBarStateListener;
-import com.orestis.velen.quiz.loadingScreen.BounceLoadingView;
 import com.orestis.velen.quiz.mainMenu.MainMenuActivity;
 import com.orestis.velen.quiz.player.Player;
 import com.orestis.velen.quiz.player.PlayerHelper;
@@ -51,7 +50,6 @@ import com.orestis.velen.quiz.sound.SoundPoolHelper;
 import static com.orestis.velen.quiz.helpPowers.PowerType.EXTRA_TIME;
 import static com.orestis.velen.quiz.loadingBar.TimerDirection.DOWN;
 import static com.orestis.velen.quiz.mainMenu.MainMenuActivity.XP_BOOST_ENABLED;
-import static com.orestis.velen.quiz.questions.Difficulty.EASY;
 import static com.orestis.velen.quiz.questions.GameType.TYPE_CAPITALS_MAP;
 import static com.orestis.velen.quiz.repositories.GameTheme.GEOGRAPHY;
 
@@ -85,7 +83,6 @@ public class CapitalsPointActivity extends AppCompatActivity implements SampleSi
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.pinpoint_activity);
-        map = findViewById(R.id.mapId);
 
         soundHelper = new SoundPoolHelper(5, this);
         soundHelper.loadInGameSounds();
@@ -120,24 +117,24 @@ public class CapitalsPointActivity extends AppCompatActivity implements SampleSi
                 .withSoundPoolHelper(soundHelper)
                 .withAnswerGivenListener(this).build();
 
-        questionHandler.init(EASY, TYPE_CAPITALS_MAP, LEVEL_QUESTION_SAMPLE);
+        questionHandler.init(difficulty, TYPE_CAPITALS_MAP, LEVEL_QUESTION_SAMPLE);
 
         bonusTimeHandler = new BonusTimeHandler((TextView) findViewById(R.id.bonusTime), this);
 
         bonusDisplayHandler = new StreakBonusDisplayHandler((TextView) findViewById(R.id.nowBonusTxt),
                 (TextView) findViewById(R.id.accumBonusTxt), face, DISPLAY_BONUS_DURATION, this);
-        bonusManager = new StreakBonusManager(GEOGRAPHY, EASY, TYPE_CAPITALS_MAP, bonusDisplayHandler);
+        bonusManager = new StreakBonusManager(GEOGRAPHY, difficulty, TYPE_CAPITALS_MAP, bonusDisplayHandler);
 
         new RoundProgressDisplayHandler((TextView) findViewById(R.id.questionProgressTxt),
                 (TextView) findViewById(R.id.currentQuestionNumberTxt), LEVEL_QUESTION_SAMPLE, questionHandler, face);
 
-        new GameStartingScreen.Builder()
-                .useBounceLoadingView((BounceLoadingView) findViewById(R.id.bounceLoading))
-                .useCountText((TextView) findViewById(R.id.countDown))
-                .forContainer((ConstraintLayout) findViewById(R.id.gameStartingContainer))
+        GameStartingFragment gameStartingFragment = new GameStartingFragment.Builder()
                 .useTypeface(face)
                 .withGameStartingEndListener(this)
-                .withContext(this).init();
+                .build();
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        ft.replace(R.id.gameStartingPlaceholder, gameStartingFragment);
+        ft.commit();
     }
 
     @Override

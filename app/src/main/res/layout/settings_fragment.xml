@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@drawable/settings_background">
+    android:background="@drawable/settings_background_small">
 
     <Button
         android:id="@+id/close_skill_upgrade_menu"
@@ -47,6 +47,7 @@
         android:layout_marginStart="24dp"
         android:layout_marginTop="24dp"
         android:overScrollMode="never"
+        style="@style/settingsScrollbar"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -106,6 +107,7 @@
                 android:text="@string/logout"
                 android:textStyle="bold"
                 android:theme="@style/AppTheme.PrimaryColoredButton"
+                android:visibility="visible"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/soundLayout" />
@@ -140,6 +142,38 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/languageBtn" />
+
+            <Button
+                android:id="@+id/creditsBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:fontFamily="@font/normal"
+                android:text="@string/credits"
+                android:textAllCaps="true"
+                android:textStyle="bold"
+                android:theme="@style/AppTheme.PrimaryColoredButton"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/resetProgressBtn" />
+
+            <Button
+                android:id="@+id/termsAndConditionsBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:fontFamily="@font/normal"
+                android:text="@string/termsAndConditions"
+                android:textAllCaps="true"
+                android:textStyle="bold"
+                android:theme="@style/AppTheme.PrimaryColoredButton"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/creditsBtn" />
 
         </android.support.constraint.ConstraintLayout>
 

@@ -11,6 +11,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
+        android:layout_marginTop="8dp"
         android:fontFamily="@font/normal"
         android:text="Level: 1"
         android:textAllCaps="false"
@@ -18,34 +19,17 @@
         android:textSize="20sp"
         android:textStyle="bold"
         android:visibility="visible"
-        app:layout_constraintBottom_toTopOf="@+id/profileName"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <TextView
-        android:id="@+id/profileName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/mainMenuProfileLevel"
-        android:layout_alignStart="@+id/mainMenuProfileLevel"
-        android:layout_below="@+id/mainMenuProfileLevel"
-        android:layout_marginStart="8dp"
-        android:fontFamily="@font/normal"
-        android:paddingTop="0dp"
-        android:textColor="#333"
-        android:textSize="20sp"
-        android:textStyle="bold|italic"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/google_games_icon"
-        app:layout_constraintTop_toTopOf="@+id/google_games_icon" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/mainMenuLoadingBar" />
 
     <Button
         android:id="@+id/skillPlusBtn"
         style="@style/Widget.AppCompat.Button.Colored"
         android:layout_width="wrap_content"
         android:layout_height="40dp"
-        android:layout_below="@+id/profileName"
-        android:layout_marginEnd="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_below="@+id/signedInFrameContainer"
+        android:layout_marginEnd="6dp"
+        android:layout_marginTop="4dp"
         android:fontFamily="@font/normal"
         android:paddingEnd="12dp"
         android:paddingLeft="12dp"
@@ -67,15 +51,25 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <ImageView
-        android:id="@+id/googleSignInBtn"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        android:src="@drawable/google_games_icon"
-        app:layout_constraintBottom_toBottomOf="@+id/profileName"
-        app:layout_constraintEnd_toEndOf="@+id/mainMenuLoadingBar" />
+    <Button
+        android:id="@+id/achievementsBtn"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        android:layout_marginEnd="4dp"
+        android:layout_marginTop="4dp"
+        android:background="@drawable/achievements_button_selector"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/settingsBtn" />
+
+    <Button
+        android:id="@+id/leaderboardBtn"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        android:layout_marginEnd="4dp"
+        android:layout_marginTop="4dp"
+        android:background="@drawable/leaderboard_button_selector"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/achievementsBtn" />
 
 
     <com.akexorcist.roundcornerprogressbar.RoundCornerProgressBar
@@ -88,7 +82,6 @@
         app:layout_constraintTop_toTopOf="parent"
         app:rcBackgroundPadding="5dp"
         app:rcProgressColor="#F9D71C" />
-    <!--app:rcProgressColor="#ee9f3c"-->
 
     <TextView
         android:id="@+id/mainMenuXPText"
@@ -124,18 +117,31 @@
         layout="@layout/xp_boost_time_left"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="4dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginTop="6dp"
         android:visibility="gone"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/skillPlusBtn" />
+        app:layout_constraintEnd_toStartOf="@+id/settingsBtn"
+        app:layout_constraintTop_toBottomOf="@+id/signedOutFrameContainer" />
 
-    <ImageView
-        android:id="@+id/google_games_icon"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
+
+    <FrameLayout
+        android:id="@+id/signedInFrameContainer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:srcCompat="@drawable/ic_play_games_badge_gray" />
+        app:layout_constraintTop_toBottomOf="@+id/mainMenuProfileLevel">
+
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/signedOutFrameContainer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        app:layout_constraintEnd_toStartOf="@+id/settingsBtn"
+        app:layout_constraintTop_toBottomOf="@+id/skillPlusBtn">
+
+    </FrameLayout>
 
 </android.support.constraint.ConstraintLayout>

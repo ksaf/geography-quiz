@@ -4,14 +4,27 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/login_bg">
+    android:background="@drawable/background_splash">
+
+    <ImageView
+        android:id="@+id/earthImage"
+        android:layout_width="750dp"
+        android:layout_height="750dp"
+        android:layout_marginTop="40dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/guideline16"
+        app:layout_constraintVertical_bias="0.0"
+        android:rotation="-80"
+        app:srcCompat="@drawable/earth2" />
 
 
     <include
         android:id="@+id/playerInfo"
         layout="@layout/player_info"
         android:layout_width="0dp"
-        android:layout_height="100dp"
+        android:layout_height="124dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/gps_popup" />
@@ -56,7 +69,7 @@
         android:id="@+id/viewPagerIndicator"
         android:layout_width="wrap_content"
         android:layout_height="15dp"
-        android:layout_marginTop="4dp"
+        android:layout_marginTop="16dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/gameTypesViewPager"
@@ -69,6 +82,7 @@
         layout="@layout/start_options"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -79,7 +93,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.5" />
+        app:layout_constraintGuide_percent="0.53" />
 
     <android.support.constraint.Guideline
         android:id="@+id/guideline17"

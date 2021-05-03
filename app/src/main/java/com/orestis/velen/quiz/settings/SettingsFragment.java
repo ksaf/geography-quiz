@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 
 import com.orestis.velen.quiz.R;
+import com.orestis.velen.quiz.credits.CreditsFragment;
 import com.orestis.velen.quiz.language.LanguageFragment;
 import com.orestis.velen.quiz.login.UserSession;
 import com.orestis.velen.quiz.login.facebookSignIn.FacebookSession;
@@ -21,6 +22,7 @@ import com.orestis.velen.quiz.mainMenu.SocialSignInUIHandler;
 import com.orestis.velen.quiz.player.PlayerSession;
 import com.orestis.velen.quiz.resetProgress.ResetGameProgressFragment;
 import com.orestis.velen.quiz.sound.SoundPoolHelper;
+import com.orestis.velen.quiz.termsAndConditions.TermsAndConditionsFragment;
 
 public class SettingsFragment extends Fragment {
 
@@ -39,6 +41,8 @@ public class SettingsFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         darkBg.setVisibility(View.VISIBLE);
+
+        //Close
         Button closeBtn = view.findViewById(R.id.close_skill_upgrade_menu);
         closeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -46,19 +50,25 @@ public class SettingsFragment extends Fragment {
                 closeFragment();
             }
         });
+
+        //Logout
         Button logOutBtn = view.findViewById(R.id.logOutBtn);
         if(PlayerSession.getInstance().isConnected()) {
+            logOutBtn.setVisibility(View.VISIBLE);
             logOutBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     disconnect();
                     socialSignInUIHandler.setSignedOutUI();
+                    closeFragment();
                 }
             });
         } else {
+            logOutBtn.setVisibility(View.GONE);
             logOutBtn.setOnClickListener(null);
         }
 
+        //Reset progress
         Button resetProgressBtn = view.findViewById(R.id.resetProgressBtn);
         resetProgressBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -81,6 +91,7 @@ public class SettingsFragment extends Fragment {
         musicSettingOn = localStorageManager.getMusicSettings();
         soundSettingOn = localStorageManager.getSoundSettings();
 
+        //Music
         final Button musicBtn = view.findViewById(R.id.musicBtn);
         String musicSettingText = musicSettingOn ? getString(R.string.musicOn) : getString(R.string.musicOff);
         musicBtn.setText(musicSettingText);
@@ -104,6 +115,7 @@ public class SettingsFragment extends Fragment {
             }
         });
 
+        //Sound
         final Button soundBtn = view.findViewById(R.id.soundBtn);
         String soundSettingText = soundSettingOn ? getString(R.string.soundOn) : getString(R.string.soundOff);
         soundBtn.setText(soundSettingText);
@@ -121,6 +133,7 @@ public class SettingsFragment extends Fragment {
             }
         });
 
+        //Language
         final Button languageBtn = view.findViewById(R.id.languageBtn);
         languageBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -133,6 +146,42 @@ public class SettingsFragment extends Fragment {
                         .build();
                 FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
                 ft.replace(R.id.optionScreenPlaceholder, languageFragment, "LanguageTag");
+                ft.addToBackStack("settings");
+                ft.commit();
+            }
+        });
+
+        //Credits
+        Button creditsBtn = view.findViewById(R.id.creditsBtn);
+        creditsBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                soundHelper.playMenuBtnOpenSound();
+                CreditsFragment creditsFragment = new CreditsFragment.Builder()
+                        .withDarkBg(darkBg)
+                        .withSoundPoolHelper(soundHelper)
+                        .withFallBackFragment(SettingsFragment.this)
+                        .build();
+                FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
+                ft.replace(R.id.optionScreenPlaceholder, creditsFragment, "CreditsTag");
+                ft.addToBackStack("settings");
+                ft.commit();
+            }
+        });
+
+        //Terms and Conditions
+        Button termsAndConditionsBtn = view.findViewById(R.id.termsAndConditionsBtn);
+        termsAndConditionsBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                soundHelper.playMenuBtnOpenSound();
+                TermsAndConditionsFragment termsAndConditionsFragment = new TermsAndConditionsFragment.Builder()
+                        .withDarkBg(darkBg)
+                        .withSoundPoolHelper(soundHelper)
+                        .withFallBackFragment(SettingsFragment.this)
+                        .build();
+                FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
+                ft.replace(R.id.optionScreenPlaceholder, termsAndConditionsFragment, "TermsAndConditionsTag");
                 ft.addToBackStack("settings");
                 ft.commit();
             }

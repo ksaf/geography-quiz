@@ -1,5 +1,6 @@
 package com.orestis.velen.quiz.mainMenu;
 
+import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
@@ -15,7 +16,10 @@ import android.support.v4.view.ViewPropertyAnimatorCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.BounceInterpolator;
 import android.view.animation.DecelerateInterpolator;
+import android.view.animation.LinearInterpolator;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -42,7 +46,6 @@ import com.orestis.velen.quiz.login.UserSession;
 import com.orestis.velen.quiz.login.firebase.FirebaseConnectedListener;
 import com.orestis.velen.quiz.login.googleSignIn.GoogleSession;
 import com.orestis.velen.quiz.login.googleSignIn.GoogleSignInActivity;
-import com.orestis.velen.quiz.login.googleSignIn.GoogleSignInButton;
 import com.orestis.velen.quiz.mainMenu.errors.ConnectionError;
 import com.orestis.velen.quiz.menuGameTypeFragments.CapitalsMenuFragment;
 import com.orestis.velen.quiz.menuGameTypeFragments.FlagsMenuFragment;
@@ -80,23 +83,24 @@ public class MainMenuActivity extends AppCompatActivity implements PlayerRecover
     public static final int VIEW_PAGER_SELECTION_OUTLINES = 1;
     public static final int VIEW_PAGER_SELECTION_CAPITALS = 2;
     public static final int VIEW_PAGER_SELECTION_MONUMENTS = 3;
-    public static final int GAME_TYPE_FLAGS = 0;
-    public static final int GAME_TYPE_OUTLINE_TO_FLAGS = 1;
-    public static final int GAME_TYPE_OUTLINES = 2;
-    public static final int GAME_TYPE_MONUMENTS = 3;
     public static final String SHOULD_ANIMATE_ENTRANCE = "shouldAnimateEntrance";
     public static final int XP_BOOST_DURATION = 300000;
     public static final String XP_BOOST_ENABLED = "xpBoostEnabled";
+    private ObjectAnimator earthRotationAnimation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_menu);
 
-        if(getIntent().getBooleanExtra(SHOULD_ANIMATE_ENTRANCE, true)) {
+        if(getIntent().getBooleanExtra(SHOULD_ANIMATE_ENTRANCE, false)) {
             initViewScales((ViewGroup) findViewById(R.id.playerInfo));
             initViewScales((ViewGroup) findViewById(R.id.startOptions));
         }
+
+        ImageView earthImage = findViewById(R.id.earthImage);
+        earthImage.setScaleX(0.6f);
+        earthImage.setScaleY(0.6f);
 
         darkBg = findViewById(R.id.darkBg);
 
@@ -126,11 +130,7 @@ public class MainMenuActivity extends AppCompatActivity implements PlayerRecover
 
         setViewPager();
 
-        GoogleSignInButton googleSignInButton = new GoogleSignInButton((ImageView) findViewById(R.id.googleSignInBtn), new View.OnClickListener() {
-            @Override
-            public void onClick(View view) { googleSignIn();}
-        }, this);
-        socialSignInUIHandler = new SocialSignInUIHandler((TextView) findViewById(R.id.profileName), googleSignInButton);
+        socialSignInUIHandler = new SocialSignInUIHandler(this, this, soundHelper);
 
         Button settingsBtn = findViewById(R.id.settingsBtn);
         settingsBtn.setOnClickListener(new View.OnClickListener() {
@@ -332,7 +332,7 @@ public class MainMenuActivity extends AppCompatActivity implements PlayerRecover
                     onFirebaseError();
                 }
             } else if(resultCode == RESULT_CANCELED){
-                onFirebaseError();
+                //ÓonFirebaseError();
             }
         }
         if(resultCode == GamesActivityResultCodes.RESULT_RECONNECT_REQUIRED && requestCode == RC_ACHIEVEMENTS) {
@@ -364,6 +364,7 @@ public class MainMenuActivity extends AppCompatActivity implements PlayerRecover
         animateUIAppearance((ViewGroup) findViewById(R.id.playerInfo));
         animateUIAppearance((ViewGroup) findViewById(R.id.startOptions));
         animateViewPagerAppearance();
+        animateEarthAppearance();
 
         int xpPercentage = (int)(player.getCurrentXP() * 100.0f) / player.getXpToLevel();
 
@@ -378,7 +379,7 @@ public class MainMenuActivity extends AppCompatActivity implements PlayerRecover
         UserSession.getInstance().recoverPlayerFromFirebase(firebaseUser, this, getApplicationContext());
         GoogleSignInAccount lastGoogleAccount = GoogleSession.getInstance().getLastGoogleAccount(this);
         if(lastGoogleAccount != null) {
-            Games.getGamesClient(this, lastGoogleAccount).setViewForPopups(findViewById(R.id.gps_popup));
+//            Games.getGamesClient(this, lastGoogleAccount).setViewForPopups(findViewById(R.id.gps_popup));
             PlayersClient mPlayersClient = Games.getPlayersClient(this, lastGoogleAccount);
             mPlayersClient.getCurrentPlayer()
                     .addOnCompleteListener(new OnCompleteListener<com.google.android.gms.games.Player>() {
@@ -386,6 +387,7 @@ public class MainMenuActivity extends AppCompatActivity implements PlayerRecover
                         public void onComplete(@NonNull Task<com.google.android.gms.games.Player> task) {
                             if (task.isSuccessful()) {
                                 PlayerSession.getInstance().setCurrentPlayerName(task.getResult().getDisplayName());
+                                UserSession.getInstance().resetAutoLoginAttempts(MainMenuActivity.this);
                                 socialSignInUIHandler.setSignedInUI();
                             } else {
                                 socialSignInUIHandler.setSignedOutUI();
@@ -434,6 +436,7 @@ public class MainMenuActivity extends AppCompatActivity implements PlayerRecover
                 .addFragment(monumentsMenuFragment)
                 .build();
         viewPager.setAdapter(adapter);
+        viewPager.setCurrentItem(PlayerSession.getInstance().getLastMenuSelection());
         viewPager.addOnPageChangeListener(this);
 
         TabLayout tabLayout = findViewById(R.id.viewPagerIndicator);
@@ -449,6 +452,7 @@ public class MainMenuActivity extends AppCompatActivity implements PlayerRecover
     public void onPageSelected(int position) {
 //        pageIndicatorView.setSelection(position);
         enableStartButton(position);
+        PlayerSession.getInstance().setLastMenuSelection(position);
     }
 
     @Override
@@ -467,6 +471,28 @@ public class MainMenuActivity extends AppCompatActivity implements PlayerRecover
 
             viewAnimator.setInterpolator(new DecelerateInterpolator()).start();
         }
+    }
+
+    private void animateEarthAppearance() {
+        ImageView earthImage = findViewById(R.id.earthImage);
+        ViewPropertyAnimatorCompat viewAnimator;
+        viewAnimator = ViewCompat.animate(earthImage)
+                .scaleY(1).scaleX(1)
+                .setDuration(1000);
+        viewAnimator.setInterpolator(new BounceInterpolator()).start();
+    }
+
+    private void startEarthRotationAnimation() {
+        ImageView earthImage = findViewById(R.id.earthImage);
+        earthRotationAnimation = ObjectAnimator.ofFloat(earthImage, "rotation", earthImage.getRotation(), earthImage.getRotation() + 360);
+        earthRotationAnimation.setDuration(100000);
+        earthRotationAnimation.setInterpolator(new LinearInterpolator());
+        earthRotationAnimation.setRepeatCount(Animation.INFINITE);
+        earthRotationAnimation.start();
+    }
+
+    private void stopEarthRotationAnimation() {
+        earthRotationAnimation.cancel();
     }
 
     private void animateViewPagerAppearance() {
@@ -489,12 +515,14 @@ public class MainMenuActivity extends AppCompatActivity implements PlayerRecover
     @Override
     protected void onPause() {
         super.onPause();
+        stopEarthRotationAnimation();
         soundHelper.pauseMenuBackgroundMusic();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
+        startEarthRotationAnimation();
         soundHelper.resumeMenuBackgroundMusic();
     }
 
