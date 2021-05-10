@@ -8,6 +8,7 @@ import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.RectF;
 import android.graphics.drawable.BitmapDrawable;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -50,8 +51,8 @@ public class FiftyFiftyMapClickListener implements View.OnClickListener {
         int mapHeight = mapBitmap.getHeight();
         int ivMapWidth = map.getWidth();
         int ivMapHeight = map.getHeight();
-        float relativeX =  mapWidth / (float)ivMapWidth;
-        float relativeY = mapHeight / (float)ivMapHeight;
+        final float relativeX =  mapWidth / (float)ivMapWidth;
+        final float relativeY = mapHeight / (float)ivMapHeight;
 
         Bitmap hideMapOverlayFrame = Bitmap.createBitmap(mapBitmap.getWidth(), mapBitmap.getHeight(), Bitmap.Config.ARGB_8888);
         RectF outerRectangle = new RectF(0, 0, hideMapOverlayFrame.getWidth(),hideMapOverlayFrame.getHeight());
@@ -62,17 +63,30 @@ public class FiftyFiftyMapClickListener implements View.OnClickListener {
         hideCanvas.drawRect(outerRectangle, paint);
 
         paint.setColor(Color.TRANSPARENT);
-        paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_OUT));
+        paint.setStyle(Paint.Style.FILL);
+        paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.CLEAR));
         float centerX = correctRelativeX * relativeX;
         float centerY = correctRelativeY * relativeY;
-        float radius = (float)(hideMapOverlayFrame.getWidth() / 2.8);
+        final float radius = (float)(hideMapOverlayFrame.getWidth() / 2.8);
         float errorMargin = radius / 4;
         Random rand = new Random();
-        float randomX = (centerX - radius + errorMargin) + rand.nextFloat() * (centerX + radius - errorMargin - (centerX - radius + errorMargin));
-        float randomY = (centerY - radius + errorMargin) + rand.nextFloat() * (centerY + radius - errorMargin - (centerY - radius + errorMargin));
+        final float randomX = (centerX - radius + errorMargin) + rand.nextFloat() * (centerX + radius - errorMargin - (centerX - radius + errorMargin));
+        final float randomY = (centerY - radius + errorMargin) + rand.nextFloat() * (centerY + radius - errorMargin - (centerY - radius + errorMargin));
         hideCanvas.drawCircle(randomX, randomY, radius, paint);
         hideMapOverlay.setVisibility(View.VISIBLE);
         hideMapOverlay.setImageBitmap(hideMapOverlayFrame);
+
+        hideMapOverlay.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                if(Math.sqrt((motionEvent.getX()*relativeX-randomX)*(motionEvent.getX()*relativeX-randomX) +
+                        (motionEvent.getY()*relativeY-randomY)*(motionEvent.getY()*relativeY-randomY)) < radius) {
+                    return false;
+                } else {
+                    return true;
+                }
+            }
+        });
         chargeChangeListener.onChargeDecreased();
     }
 }
