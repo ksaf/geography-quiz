@@ -42,7 +42,7 @@
     <string name="freeze_time_description_part3">Χρήσεις:</string>
     <string name="round_completed">Ο Γύρος Ολοκληρώθηκε!</string>
     <string name="game_win_next">Επόμενο</string>
-    <string name="skill_point">ικανότητα</string>
+    <string name="skill_point">+ %1$d ικανότητα</string>
     <string name="completion_bonus">Σωστές απαντήσεις:</string>
     <string name="time_left">Χρόνος:</string>
     <string name="streak_bonus">Μπόνους σερί:</string>
@@ -98,7 +98,7 @@
     <string name="ethiopia">Αιθιοπία</string>
     <string name="philippines">Φιλιππίνες</string>
     <string name="vietnam">Βιετνάμ</string>
-    <string name="egypt">Έγυπτος</string>
+    <string name="egypt">Αίγυπτος</string>
     <string name="dr_congo">Κονγκό</string>
     <string name="iran">Ιράν</string>
     <string name="germany">Γερμανία</string>
@@ -538,6 +538,7 @@
     <string name="al_aqsa_mosque">Τέμενος Αλ-Άκσα</string>
     <string name="petra">Πέτρα</string>
     <string name="uluru">Ουλουρού</string>
+    <string name="level">Επίπεδο</string>
 
 
 </resources>

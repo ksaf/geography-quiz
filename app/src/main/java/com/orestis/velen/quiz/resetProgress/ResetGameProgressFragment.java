@@ -35,7 +35,7 @@ public class ResetGameProgressFragment extends Fragment {
         closeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                closeFragment();
+                closeFragment(true);
             }
         });
 
@@ -56,8 +56,9 @@ public class ResetGameProgressFragment extends Fragment {
         });
     }
 
-    private void closeFragment() {
-        soundHelper.playMenuBtnCloseSound();
+    private void closeFragment(boolean withSound) {
+        if(withSound)
+            soundHelper.playMenuBtnCloseSound();
         FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
         ft.remove(ResetGameProgressFragment.this).addToBackStack(null).commit();
         darkBg.setVisibility(View.GONE);
@@ -73,6 +74,7 @@ public class ResetGameProgressFragment extends Fragment {
         soundHelper.playMenuBtnOpenSound();
         UserSession.getInstance().resetCurrentPlayer();
         UserSession.getInstance().recoverPlayerFromLocalStorage(playerRecoveredListener, getContext());
+        closeFragment(false);
     }
 
     public static class Builder {

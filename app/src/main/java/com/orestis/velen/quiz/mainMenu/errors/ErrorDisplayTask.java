@@ -43,7 +43,7 @@ public class ErrorDisplayTask extends AsyncTask{
 
     private void showError() {
         FragmentTransaction ft = activity.get().getSupportFragmentManager().beginTransaction();
-        ft.setCustomAnimations(R.anim.slide_down_animation, R.anim.slide_down_animation);
+        ft.setCustomAnimations(R.anim.bounce_down_animation, R.anim.bounce_down_animation);
         ft.replace(placeholderId, errorFragment);
         ft.commit();
     }

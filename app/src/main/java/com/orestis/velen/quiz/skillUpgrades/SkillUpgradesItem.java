@@ -89,6 +89,10 @@ abstract class SkillUpgradesItem {
         return player.getCurrentLevel() >= getPower().unlockLevel();
     }
 
+    public boolean isUpgradeAvailable() {
+        return player.getRemainingSkillPoints() > 0;
+    }
+
     public int getUnlockLevel() {
         return getPower().unlockLevel();
     }

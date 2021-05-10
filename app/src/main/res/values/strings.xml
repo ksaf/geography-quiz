@@ -34,7 +34,7 @@
     <string name="fifty_fifty_starting_description">Removes the extra options leaving you with a 50/50 choice.</string>
     <string name="fifty_fifty_description_part1">bonus points</string>
     <string name="fifty_fifty_description_part2">Charges:</string>
-    <string name="extra_time_starting_description">Permanently increase your available time for all your games.</string>
+    <string name="extra_time_starting_description">Permanently increase the total available time at the beginning of a round.</string>
     <string name="extra_time_description_part1">seconds</string>
     <string name="freeze_time_starting_description">Stops the timer for the next few seconds</string>
     <string name="freeze_time_description_part1">Stops the timer for the next</string>
@@ -42,7 +42,7 @@
     <string name="freeze_time_description_part3">Charges:</string>
     <string name="round_completed">Round Completed!</string>
     <string name="game_win_next">NEXT</string>
-    <string name="skill_point">skill point</string>
+    <string name="skill_point">+ %1$d skill point</string>
     <string name="completion_bonus">Correct answers:</string>
     <string name="time_left">Time left:</string>
     <string name="streak_bonus">Streak Bonus:</string>
@@ -543,6 +543,7 @@
     <string name="al_aqsa_mosque">Al Aqsa Mosque</string>
     <string name="petra">Petra</string>
     <string name="uluru">uluru</string>
+    <string name="level">Level</string>
 
 
 </resources>

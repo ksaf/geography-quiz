@@ -27,6 +27,7 @@ public class SoundPoolHelper extends SoundPool {
     private int inGameGainXpSound;
     private int inGameFreezePowerSound;
     private int inGameBackgroundMusic;
+    private int levelUpSound;
 
     public SoundPoolHelper(int maxStreams, Context context) {
         this(maxStreams, AudioManager.STREAM_MUSIC, 0, context);
@@ -93,6 +94,7 @@ public class SoundPoolHelper extends SoundPool {
         inGameGainXpSound = load(mContext, R.raw.gain_xp_sound, 1);
         inGameFreezePowerSound = load(mContext, R.raw.freeze_power_sound, 1);
         inGameBackgroundMusic = load(mContext, R.raw.ingame_background_music, 1);
+        levelUpSound = load(mContext, R.raw.level_up, 1);
     }
 
     //MAIN MENU
@@ -165,5 +167,9 @@ public class SoundPoolHelper extends SoundPool {
         if(localStorageManager.getMusicSettings()) {
             resume(inGameBackgroundMusic);
         }
+    }
+
+    public void playLevelUpSound() {
+        play(levelUpSound, 0.2f);
     }
 }

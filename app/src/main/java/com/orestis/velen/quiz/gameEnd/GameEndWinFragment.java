@@ -1,13 +1,20 @@
 package com.orestis.velen.quiz.gameEnd;
 
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.SystemClock;
 import android.support.annotation.NonNull;
+import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.Fragment;
 import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -22,11 +29,12 @@ import com.orestis.velen.quiz.player.PlayerSession;
 import com.orestis.velen.quiz.player.Player;
 import com.orestis.velen.quiz.questions.Difficulty;
 import com.orestis.velen.quiz.repositories.GameTheme;
+import com.orestis.velen.quiz.skillUpgrades.LevelUpScreenClosedListener;
 import com.orestis.velen.quiz.sound.SoundPoolHelper;
 
 import java.text.DecimalFormat;
 
-public class GameEndWinFragment extends Fragment implements LevelUpListener, ExperienceGainEndListener {
+public class GameEndWinFragment extends Fragment implements LevelUpListener, ExperienceGainEndListener, LevelUpScreenClosedListener {
 
     private long msTimeLeft;
     private long maxTime;
@@ -40,7 +48,12 @@ public class GameEndWinFragment extends Fragment implements LevelUpListener, Exp
     private SoundPoolHelper soundHelper;
     private boolean hasXpBoostEnabled;
     private int totalQuestionAmount;
+    private LevelUpScreenHandler levelUpScreenHandler;
     private final static double XP_BOOST_MULTIPLIER = 1.5;
+    private TextView levelUpTxt;
+    private TextView currentLevelTxt;
+    private ConstraintLayout gameEndWinContainer;
+    private final static int LEVEL_UP_SCREEN_DISPLAY_MILLIS = 2000;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
@@ -57,6 +70,12 @@ public class GameEndWinFragment extends Fragment implements LevelUpListener, Exp
         TextView totalBonus = view.findViewById(R.id.totalBonus);
         TextView highScoreTxt = view.findViewById(R.id.highScoreTxt);
         skillPointText = view.findViewById(R.id.skillPointText);
+        levelUpTxt = view.findViewById(R.id.levelUpTxt);
+        currentLevelTxt = view.findViewById(R.id.currentLevelTxt);
+        gameEndWinContainer = view.findViewById(R.id.gameEndWinContainer);
+        Typeface face = Typeface.createFromAsset(requireActivity().getAssets(),"custom.ttf");
+        levelUpTxt.setTypeface(face);
+        currentLevelTxt.setTypeface(face);
         skillPointText.setVisibility(View.GONE);
         darkBg.setVisibility(View.VISIBLE);
         final RoundCornerProgressBar levelBar = view.findViewById(R.id.levelBar);
@@ -116,10 +135,10 @@ public class GameEndWinFragment extends Fragment implements LevelUpListener, Exp
     @Override
     public void onLevelUp() {
         levelsGained++;
-        getActivity().runOnUiThread(new Runnable() {
+        requireActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                skillPointText.setText("+" + levelsGained + " " + getString(R.string.skill_point));
+                skillPointText.setText(getString(R.string.skill_point, levelsGained));
                 skillPointText.setVisibility(View.VISIBLE);
             }
         });
@@ -127,7 +146,10 @@ public class GameEndWinFragment extends Fragment implements LevelUpListener, Exp
 
     @Override
     public void onExperienceGainEnd() {
-        getActivity().runOnUiThread(new Runnable() {
+        if(levelsGained > 0 && levelUpScreenHandler != null) {
+            showLevelUpScreen();
+        }
+        requireActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
                 revealScoreBtn.setText(R.string.finish);
@@ -151,9 +173,58 @@ public class GameEndWinFragment extends Fragment implements LevelUpListener, Exp
     private void goToMainMenu() {
         Intent intent = new Intent(GameEndWinFragment.this.getActivity(), MainMenuActivity.class);
         PlayerSession.getInstance().setRecoveredPlayer(player);
-        GameEndWinFragment.this.getActivity().startActivity(intent);
-        GameEndWinFragment.this.getActivity().finish();
-        GameEndWinFragment.this.getActivity().overridePendingTransition(0, 0);
+        GameEndWinFragment.this.requireActivity().startActivity(intent);
+        GameEndWinFragment.this.requireActivity().finish();
+        GameEndWinFragment.this.requireActivity().overridePendingTransition(0, 0);
+    }
+
+    private void showLevelUpScreen() {
+        soundHelper.playLevelUpSound();
+        AlphaAnimation alphaAnimation = new AlphaAnimation(1.0f, 0f);
+        alphaAnimation.setDuration(500);
+        alphaAnimation.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+                levelUpTxt.setVisibility(View.VISIBLE);
+                currentLevelTxt.setVisibility(View.VISIBLE);
+                currentLevelTxt.setText(Integer.toString(player.getCurrentLevel()));
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                for (int i = 0; i < gameEndWinContainer.getChildCount(); i++) {
+                    View v = gameEndWinContainer.getChildAt(i);
+                    if(v.getId() != R.id.levelUpTxt && v.getId() != R.id.currentLevelTxt)
+                        v.setAlpha(0f);
+                }
+                SystemClock.sleep(1200);
+                requireActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        levelUpScreenHandler.showLevelUpScreen(GameEndWinFragment.this);
+                    }
+                });
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {}
+        });
+
+        for (int i = 0; i < gameEndWinContainer.getChildCount(); i++) {
+            View v = gameEndWinContainer.getChildAt(i);
+            if(v.getId() != R.id.levelUpTxt && v.getId() != R.id.currentLevelTxt)
+                v.startAnimation(alphaAnimation);
+        }
+    }
+
+    @Override
+    public void onLevelUpScreenClosed() {
+        for (int i = 0; i < gameEndWinContainer.getChildCount(); i++) {
+            View v = gameEndWinContainer.getChildAt(i);
+            v.setAlpha(1f);
+        }
+        levelUpTxt.setVisibility(View.GONE);
+        currentLevelTxt.setVisibility(View.GONE);
     }
 
     public static class Builder {
@@ -166,6 +237,7 @@ public class GameEndWinFragment extends Fragment implements LevelUpListener, Exp
         private SoundPoolHelper soundHelper;
         private boolean hasXpBoostEnabled;
         private int totalQuestionAmount;
+        private LevelUpScreenHandler levelUpScreenHandler;
 
         public Builder withStreakBonusManager(StreakBonusManager bonusManager) {
             this.bonusManager = bonusManager;
@@ -212,6 +284,11 @@ public class GameEndWinFragment extends Fragment implements LevelUpListener, Exp
             return this;
         }
 
+        public Builder withLevelUpScreenHandler (LevelUpScreenHandler levelUpScreenHandler) {
+            this.levelUpScreenHandler = levelUpScreenHandler;
+            return this;
+        }
+
         public GameEndWinFragment build() {
             GameEndWinFragment gameEndWinFragment = new GameEndWinFragment();
             gameEndWinFragment.msTimeLeft = msTimeLeft;
@@ -223,6 +300,7 @@ public class GameEndWinFragment extends Fragment implements LevelUpListener, Exp
             gameEndWinFragment.soundHelper = soundHelper;
             gameEndWinFragment.hasXpBoostEnabled = hasXpBoostEnabled;
             gameEndWinFragment.totalQuestionAmount = totalQuestionAmount;
+            gameEndWinFragment.levelUpScreenHandler = levelUpScreenHandler;
             return gameEndWinFragment;
         }
     }

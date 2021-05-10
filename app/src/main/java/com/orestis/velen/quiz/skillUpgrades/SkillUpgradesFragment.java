@@ -2,6 +2,7 @@ package com.orestis.velen.quiz.skillUpgrades;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
@@ -32,6 +33,8 @@ public class SkillUpgradesFragment extends Fragment implements SkillPlusListener
     private ImageView darkBg;
     private SkillSumChangeListener skillSumChangeListener;
     private SoundPoolHelper soundHelper;
+    private boolean releaseDarkBgOnClose;
+    private LevelUpScreenClosedListener levelUpScreenClosedListener;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
@@ -46,15 +49,12 @@ public class SkillUpgradesFragment extends Fragment implements SkillPlusListener
         darkBg.setVisibility(View.VISIBLE);
         updateSkillPointsCountText();
         setupSkillsAdapter();
-        Button closeBtn = view.findViewById(R.id.close_skill_upgrade_menu);
-        closeBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                closeFragment();
-            }
-        });
         skillsChosenConfirmationBtn = view.findViewById(R.id.skills_chosen_confirmation);
-        skillsChosenConfirmationBtn.setEnabled(false);
+        setConfirmationBtnToSkip();
+    }
+
+    private void setConfirmationBtnToUpgrade() {
+        skillsChosenConfirmationBtn.setText(getString(R.string.confirm));
         skillsChosenConfirmationBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -69,11 +69,26 @@ public class SkillUpgradesFragment extends Fragment implements SkillPlusListener
         });
     }
 
+    private void setConfirmationBtnToSkip() {
+        skillsChosenConfirmationBtn.setText(getString(R.string.close));
+        skillsChosenConfirmationBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                closeFragment();
+            }
+        });
+    }
+
     private void closeFragment() {
         soundHelper.playMenuBtnCloseSound();
         FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
         ft.remove(SkillUpgradesFragment.this).commit();
-        darkBg.setVisibility(View.GONE);
+        if(releaseDarkBgOnClose) {
+            darkBg.setVisibility(View.GONE);
+        }
+        if(levelUpScreenClosedListener != null) {
+            levelUpScreenClosedListener.onLevelUpScreenClosed();
+        }
     }
 
     private void setupSkillsAdapter() {
@@ -121,7 +136,7 @@ public class SkillUpgradesFragment extends Fragment implements SkillPlusListener
                     updateSkillPointsCountText();
                     skill.incrementSkillLevel();
                     adapter.notifyDataSetChanged();
-                    skillsChosenConfirmationBtn.setEnabled(true);
+                    setConfirmationBtnToUpgrade();
                     break;
                 }
             }
@@ -139,7 +154,7 @@ public class SkillUpgradesFragment extends Fragment implements SkillPlusListener
                     updateSkillPointsCountText();
                     adapter.notifyDataSetChanged();
                     if (initialRemainingSkillPoints <= remainingSkillPoints) {
-                        skillsChosenConfirmationBtn.setEnabled(false);
+                        setConfirmationBtnToSkip();
                     }
                     break;
                 }
@@ -153,7 +168,9 @@ public class SkillUpgradesFragment extends Fragment implements SkillPlusListener
         }
         player.setRemainingSkillPoints(remainingSkillPoints);
         player.save();
-        skillSumChangeListener.onSkillSumChange(remainingSkillPoints);
+        if(skillSumChangeListener != null) {
+            skillSumChangeListener.onSkillSumChange(remainingSkillPoints);
+        }
     }
 
     public static class Builder {
@@ -161,6 +178,8 @@ public class SkillUpgradesFragment extends Fragment implements SkillPlusListener
         private ImageView darkBg;
         private SkillSumChangeListener skillSumChangeListener;
         private SoundPoolHelper soundHelper;
+        private boolean releaseDarkBgOnClose = true;
+        private LevelUpScreenClosedListener levelUpScreenClosedListener;
 
         public Builder forPlayer(Player player) {
             this.player = player;
@@ -172,7 +191,12 @@ public class SkillUpgradesFragment extends Fragment implements SkillPlusListener
             return this;
         }
 
-        public Builder withSkillSumChangeListener(SkillSumChangeListener skillSumChangeListener) {
+        public Builder doNotReleaseDarkBgOnClose() {
+            this.releaseDarkBgOnClose = false;
+            return this;
+        }
+
+        public Builder withSkillSumChangeListener(@Nullable SkillSumChangeListener skillSumChangeListener) {
             this.skillSumChangeListener = skillSumChangeListener;
             return this;
         }
@@ -182,12 +206,19 @@ public class SkillUpgradesFragment extends Fragment implements SkillPlusListener
             return this;
         }
 
+        public Builder withCloseListener(@Nullable LevelUpScreenClosedListener levelUpScreenClosedListener) {
+            this.levelUpScreenClosedListener = levelUpScreenClosedListener;
+            return this;
+        }
+
         public SkillUpgradesFragment build() {
             SkillUpgradesFragment skillUpgradesFragment = new SkillUpgradesFragment();
             skillUpgradesFragment.player = player;
             skillUpgradesFragment.darkBg = darkBg;
             skillUpgradesFragment.skillSumChangeListener = skillSumChangeListener;
             skillUpgradesFragment.soundHelper = soundHelper;
+            skillUpgradesFragment.releaseDarkBgOnClose = releaseDarkBgOnClose;
+            skillUpgradesFragment.levelUpScreenClosedListener = levelUpScreenClosedListener;
             return skillUpgradesFragment;
         }
     }

@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="16dp"
-    android:background="@drawable/settings_background">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/gameEndWinContainer"
+    android:background="@drawable/test_menu_background">
 
     <com.akexorcist.roundcornerprogressbar.RoundCornerProgressBar
         android:id="@+id/levelBar"
@@ -38,20 +37,18 @@
 
     <Button
         android:id="@+id/revealScoreBtn"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginEnd="4dp"
+        android:layout_marginStart="4dp"
+        android:layout_marginBottom="4dp"
         android:fontFamily="@font/normal"
         android:text="@string/game_win_next"
         android:textStyle="bold"
         android:theme="@style/AppTheme.PrimaryColoredButton"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/levelBar" />
+        app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
         android:id="@+id/gameEndText"
@@ -63,7 +60,7 @@
         android:fontFamily="@font/normal"
         android:text="@string/round_completed"
         android:textColor="#333"
-        android:textSize="20sp"
+        android:textSize="22sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -90,6 +87,44 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/line_separator" />
+
+    <TextView
+        android:id="@+id/levelUpTxt"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:shadowColor="#000"
+        android:shadowDx="3"
+        android:shadowDy="3"
+        android:shadowRadius="4"
+        android:text="@string/level"
+        android:textAlignment="center"
+        android:textColor="#fdac2e"
+        android:textSize="60sp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.375" />
+
+    <TextView
+        android:id="@+id/currentLevelTxt"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:shadowColor="#000"
+        android:shadowDx="3"
+        android:shadowDy="3"
+        android:shadowRadius="4"
+        tools:text="3"
+        android:textAlignment="center"
+        android:textColor="#fdac2e"
+        android:textSize="60sp"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="@+id/levelUpTxt"
+        app:layout_constraintStart_toStartOf="@+id/levelUpTxt"
+        app:layout_constraintTop_toBottomOf="@+id/levelUpTxt" />
 
     <TextView
         android:id="@+id/skillPointText"
@@ -125,4 +160,5 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/include" />
+
 </android.support.constraint.ConstraintLayout>

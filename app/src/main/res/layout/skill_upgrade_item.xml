@@ -60,18 +60,16 @@
 
     <Button
         android:id="@+id/minus_skill_btn"
-        android:layout_width="20dp"
-        android:layout_height="20dp"
-        android:layout_marginBottom="8dp"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
         android:background="@drawable/skill_down_button_selector"
         app:layout_constraintBottom_toBottomOf="@+id/upgrade_skill_icon_drawable"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/plus_skill_btn" />
+        app:layout_constraintEnd_toEndOf="parent"/>
 
     <Button
         android:id="@+id/plus_skill_btn"
-        android:layout_width="20dp"
-        android:layout_height="20dp"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
         android:background="@drawable/skill_up_button_selector"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/upgrade_skill_icon_drawable" />

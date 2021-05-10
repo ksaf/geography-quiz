@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.card.MaterialCardView;
 import android.support.v4.app.FragmentTransaction;
@@ -26,6 +27,7 @@ import com.orestis.velen.quiz.answerButtons.FlagAnswerButtonsHandler;
 import com.orestis.velen.quiz.bonusTimeDisplay.BonusTimeHandler;
 import com.orestis.velen.quiz.gameEnd.GameEndLossFragment;
 import com.orestis.velen.quiz.gameEnd.GameEndWinFragment;
+import com.orestis.velen.quiz.gameEnd.LevelUpScreenHandler;
 import com.orestis.velen.quiz.gameStartingLoading.GameStartingEndListener;
 import com.orestis.velen.quiz.gameStartingLoading.GameStartingFragment;
 import com.orestis.velen.quiz.helpPowers.extraTime.ExtraTimePowerConfigs;
@@ -51,6 +53,8 @@ import com.orestis.velen.quiz.questions.QuestionHandler;
 import com.orestis.velen.quiz.repositories.RepositoryFactory;
 import com.orestis.velen.quiz.repositories.SampleSizeEndListener;
 import com.orestis.velen.quiz.roundProgressDisplay.RoundProgressDisplayHandler;
+import com.orestis.velen.quiz.skillUpgrades.LevelUpScreenClosedListener;
+import com.orestis.velen.quiz.skillUpgrades.SkillUpgradesFragment;
 import com.orestis.velen.quiz.sound.SoundPoolHelper;
 
 import java.util.HashMap;
@@ -65,7 +69,7 @@ import static com.orestis.velen.quiz.questions.GameType.TYPE_OUTLINE_TO_FLAG;
 import static com.orestis.velen.quiz.repositories.GameTheme.GEOGRAPHY;
 
 public class OutlinesToFlagsActivity extends AppCompatActivity implements LoadingBarStateListener, AnswerGivenListener,
-        AnswerButtonStateListener, SampleSizeEndListener, GameStartingEndListener {
+        AnswerButtonStateListener, SampleSizeEndListener, GameStartingEndListener, LevelUpScreenHandler {
 
     private static final long PROGRESS_BAR_DURATION = 60000;
     private static final int GAINED_TIME = 3000;
@@ -314,6 +318,7 @@ public class OutlinesToFlagsActivity extends AppCompatActivity implements Loadin
                 .withSoundPoolHelper(soundHelper)
                 .hasXpBoostEnabled(hasXpBoostEnabled)
                 .forTotalQuestionAmount(LEVEL_QUESTION_SAMPLE)
+                .withLevelUpScreenHandler(this)
                 .withDarkBg((ImageView) findViewById(R.id.darkBg)).build();
         ft.replace(R.id.endGameScreenPlaceholder, gameEndWinFragment);
         ft.commit();
@@ -343,5 +348,21 @@ public class OutlinesToFlagsActivity extends AppCompatActivity implements Loadin
     @Override
     protected void attachBaseContext(Context base) {
         super.attachBaseContext(LocaleHelper.onAttach(base));
+    }
+
+    @Override
+    public void showLevelUpScreen(@Nullable LevelUpScreenClosedListener levelUpScreenClosedListener) {
+        soundHelper.playMenuBtnOpenSound();
+        SkillUpgradesFragment skillUpgradesFragment = new SkillUpgradesFragment.Builder()
+                .forPlayer(player)
+                .withDarkBg((ImageView) findViewById(R.id.darkBg))
+                .doNotReleaseDarkBgOnClose()
+                .withSoundPoolHelper(soundHelper)
+                .withCloseListener(levelUpScreenClosedListener)
+                .build();
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        ft.setCustomAnimations(R.anim.bounce_down_animation, R.anim.slide_up_animation);
+        ft.replace(R.id.optionScreenPlaceholder, skillUpgradesFragment);
+        ft.commit();
     }
 }

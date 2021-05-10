@@ -128,8 +128,10 @@ public class GameStartConfirmationFragment extends Fragment {
 
         final TextView difficultyLevelTxt = view.findViewById(R.id.difficultyLevel);
         difficultyLevelTxt.setText(difficultiesTxt.get(difficultySelected));
-        Button leftDifficultyBtn = view.findViewById(R.id.leftDifficultyBtn);
-        Button rightDifficultyBtn = view.findViewById(R.id.rightDifficultyBtn);
+        final Button leftDifficultyBtn = view.findViewById(R.id.leftDifficultyBtn);
+        final Button rightDifficultyBtn = view.findViewById(R.id.rightDifficultyBtn);
+
+        removeUnnecessaryArrows(leftDifficultyBtn, rightDifficultyBtn);
 
         leftDifficultyBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -139,6 +141,7 @@ public class GameStartConfirmationFragment extends Fragment {
                     difficultySelected--;
                     difficultyLevelTxt.setText(difficultiesTxt.get(difficultySelected));
                     PlayerSession.getInstance().setDifficultySelection(viewPagerSelection, difficultySelected);
+                    removeUnnecessaryArrows(leftDifficultyBtn, rightDifficultyBtn);
                 }
             }
         });
@@ -151,6 +154,7 @@ public class GameStartConfirmationFragment extends Fragment {
                     difficultySelected++;
                     difficultyLevelTxt.setText(difficultiesTxt.get(difficultySelected));
                     PlayerSession.getInstance().setDifficultySelection(viewPagerSelection, difficultySelected);
+                    removeUnnecessaryArrows(leftDifficultyBtn, rightDifficultyBtn);
                 }
             }
         });
@@ -163,6 +167,13 @@ public class GameStartConfirmationFragment extends Fragment {
             gameStartXpBoostEnabledTxt.setVisibility(View.GONE);
             xpBoostEnabled = false;
         }
+    }
+
+    private void removeUnnecessaryArrows(Button leftDifficultyBtn, Button rightDifficultyBtn) {
+        leftDifficultyBtn.setAlpha(difficultySelected == 1 ? 0.2f : 1f);
+        rightDifficultyBtn.setAlpha(difficultySelected == 3 ? 0.2f : 1f);
+        leftDifficultyBtn.setEnabled(difficultySelected != 1);
+        rightDifficultyBtn.setEnabled(difficultySelected != 3);
     }
 
     private void closeFragment() {

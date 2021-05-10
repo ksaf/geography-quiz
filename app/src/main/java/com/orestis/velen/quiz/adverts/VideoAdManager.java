@@ -14,7 +14,8 @@ public class VideoAdManager implements RewardedVideoAdListener {
     private static final String ADMOB_APP_ID = "ca-app-pub-8012215063928736~3520575240";
     private static final String AD_UNIT_ID = "ca-app-pub-8012215063928736/8222237587";
     private static final String TEST_AD_UNIT_ID = "ca-app-pub-3940256099942544/5224354917";
-    private static final String TEST_DEVICE = "32D4B2F5BCFA3DC92225D54235591025";
+//    private static final String TEST_DEVICE = "32D4B2F5BCFA3DC92225D54235591025";
+    private static final String TEST_DEVICE = "77EC96E07440E50E28B31F916BCEDAF6";
     private RewardedVideoAd mRewardedVideoAd;
     private RewardHandler rewardHandler;
 

@@ -123,27 +123,18 @@
 
     <ImageView
         android:id="@+id/landmarkId"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:adjustViewBounds="true"
         android:cropToPadding="false"
+        android:maxWidth="200dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/guideline12"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        android:background="@drawable/monument_polaroid_background"
         app:srcCompat="@drawable/neuschwanstein" />
-
-    <ImageView
-        android:id="@+id/frame"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:scaleType="fitXY"
-        app:layout_constraintBottom_toBottomOf="@+id/landmarkId"
-        app:layout_constraintEnd_toEndOf="@+id/landmarkId"
-        app:layout_constraintStart_toStartOf="@+id/landmarkId"
-        app:layout_constraintTop_toTopOf="@+id/landmarkId"
-        app:srcCompat="@drawable/polaroid" />
 
     <TextView
         android:id="@+id/nowBonusTxt"
@@ -156,7 +147,7 @@
         android:shadowDx="3"
         android:shadowDy="3"
         android:shadowRadius="4"
-        android:text="TextView"
+        tools:text="TextView"
         android:textColor="#ee9f3c"
         android:textSize="60sp"
         android:visibility="invisible"
@@ -172,10 +163,11 @@
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:fontFamily="monospace"
-        android:gravity="center"
+        android:gravity="center|bottom"
+        android:layout_marginBottom="4dp"
         android:paddingEnd="4dp"
         android:paddingStart="4dp"
-        android:text="TextView"
+        tools:text="TextView"
         android:textAlignment="center"
         android:textColor="#000"
         android:textStyle="bold"
@@ -183,16 +175,16 @@
         app:autoSizeMinTextSize="8sp"
         app:autoSizeStepGranularity="2sp"
         app:autoSizeTextType="uniform"
-        app:layout_constraintBottom_toBottomOf="@+id/frame"
-        app:layout_constraintEnd_toEndOf="@+id/frame"
-        app:layout_constraintStart_toStartOf="@+id/frame"
-        app:layout_constraintTop_toTopOf="@+id/guideline15" />
+        app:layout_constraintBottom_toBottomOf="@+id/landmarkId"
+        app:layout_constraintEnd_toEndOf="@+id/landmarkId"
+        app:layout_constraintStart_toStartOf="@+id/landmarkId"
+        app:layout_constraintTop_toTopOf="@+id/landmarkId" />
 
     <android.support.constraint.Guideline
         android:id="@+id/guideline15"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.79" />
+        app:layout_constraintGuide_percent="0.77" />
 
 </android.support.constraint.ConstraintLayout>

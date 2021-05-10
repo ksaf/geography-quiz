@@ -4,12 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/settings_background_small">
+    android:background="@drawable/test_menu_background">
 
     <Button
         android:id="@+id/close_game_start_confirmation"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_margin="8dp"
         android:background="@drawable/close_button_selector"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -42,11 +43,11 @@
 
     <Button
         android:id="@+id/game_start"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="32dp"
-        android:layout_marginEnd="32dp"
-        android:layout_marginStart="32dp"
+        android:layout_marginEnd="4dp"
+        android:layout_marginStart="4dp"
+        android:layout_marginBottom="4dp"
         android:fontFamily="@font/normal"
         android:text="@string/start"
         android:textColor="#fff"
@@ -112,21 +113,21 @@
     <android.support.v7.widget.AppCompatTextView
         android:id="@+id/gameTypeSelectionText"
         android:layout_width="wrap_content"
-        android:layout_height="0dp"
-        android:layout_marginStart="28dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
         android:fontFamily="@font/normal"
         android:gravity="center"
         android:text="Type A"
-        android:textAlignment="textStart"
+        android:textAlignment="center"
         android:textColor="#333"
         android:textSize="16sp"
         app:autoSizeMaxTextSize="18sp"
         app:autoSizeMinTextSize="12sp"
         app:autoSizeStepGranularity="1sp"
         app:autoSizeTextType="uniform"
-        app:layout_constraintBottom_toBottomOf="@+id/textView3"
-        app:layout_constraintStart_toStartOf="@+id/guideline23"
-        app:layout_constraintTop_toTopOf="@+id/textView3" />
+        app:layout_constraintStart_toStartOf="@+id/variations"
+        app:layout_constraintEnd_toEndOf="@+id/variations"
+        app:layout_constraintTop_toBottomOf="@+id/variations" />
 
     <LinearLayout
         android:id="@+id/variations"
@@ -138,7 +139,7 @@
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/gameTypeSelectionText">
+        app:layout_constraintTop_toBottomOf="@+id/textView3">
 
         <ImageView
             android:id="@+id/gameTypeAImage"
@@ -176,12 +177,12 @@
         android:id="@+id/textView3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="12dp"
         android:fontFamily="@font/normal"
         android:text="@string/variation"
         android:textSize="18sp"
         android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView2" />
 

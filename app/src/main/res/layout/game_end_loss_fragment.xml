@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:padding="16dp"
-    android:background="@drawable/settings_background">
+    android:background="@drawable/test_menu_background">
 
     <TextView
         android:id="@+id/gameEndText"
@@ -39,7 +39,7 @@
         android:fontFamily="@font/normal"
         android:text="@string/try_again"
         android:textColor="#333"
-        android:textSize="18sp"
+        android:textSize="22sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/gameEndText" />
