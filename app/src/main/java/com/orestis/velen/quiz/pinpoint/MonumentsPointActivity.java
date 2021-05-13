@@ -46,6 +46,7 @@ import com.orestis.velen.quiz.repositories.SampleSizeEndListener;
 import com.orestis.velen.quiz.roundProgressDisplay.RoundProgressDisplayHandler;
 import com.orestis.velen.quiz.skillUpgrades.LevelUpScreenClosedListener;
 import com.orestis.velen.quiz.skillUpgrades.SkillUpgradesFragment;
+import com.orestis.velen.quiz.sound.InGameBackgroundMusicPlayer;
 import com.orestis.velen.quiz.sound.SoundPoolHelper;
 
 import static com.orestis.velen.quiz.helpPowers.PowerType.EXTRA_TIME;
@@ -78,6 +79,7 @@ public class MonumentsPointActivity extends AppCompatActivity implements SampleS
     private MapTouchListener mapTouchListener;
     private ImageView map;
     private SoundPoolHelper soundHelper;
+    private InGameBackgroundMusicPlayer musicPlayer;
     private boolean hasXpBoostEnabled;
 
     @Override
@@ -87,6 +89,7 @@ public class MonumentsPointActivity extends AppCompatActivity implements SampleS
 
         soundHelper = new SoundPoolHelper(5, this);
         soundHelper.loadInGameSounds();
+        musicPlayer = new InGameBackgroundMusicPlayer(this);
 
         FullscreenAdManager.getInstance().initialise(this);
 
@@ -146,7 +149,7 @@ public class MonumentsPointActivity extends AppCompatActivity implements SampleS
             startCountDownBar();
             map.setOnTouchListener(mapTouchListener);
             setupPowerButtons();
-            soundHelper.playInGameBackgroundMusic();
+            musicPlayer.start();
         }
     }
 
@@ -177,6 +180,7 @@ public class MonumentsPointActivity extends AppCompatActivity implements SampleS
                 .useShieldOnIcon((ImageView) findViewById(R.id.shieldImg))
                 .useShieldBreakingIcon((ImageView) findViewById(R.id.shieldBreakingImg))
                 .useShieldOverlay((FrameLayout) findViewById(R.id.shieldOverlay))
+                .useShieldTurnsLeftText((TextView) findViewById(R.id.shieldTurnsLeftText))
                 .useHelpPowerUsedImg((ImageView) findViewById(R.id.helpPowerUsedImg))
                 .useHelpPowerUsedImgBg((ImageView) findViewById(R.id.helpPowerUsedImgBg))
                 .withContext(this)
@@ -207,7 +211,7 @@ public class MonumentsPointActivity extends AppCompatActivity implements SampleS
     @Override
     protected void onPause() {
         super.onPause();
-        soundHelper.pauseInGameBackgroundMusic();
+        musicPlayer.pause();
         if(loadingBarHandler != null) {
             loadingBarHandler.pauseLoadingBar();
         }
@@ -216,7 +220,7 @@ public class MonumentsPointActivity extends AppCompatActivity implements SampleS
     @Override
     protected void onResume() {
         super.onResume();
-        soundHelper.resumeInGameBackgroundMusic();
+        musicPlayer.resume();
         if(loadingBarHandler != null) {
             loadingBarHandler.resumeLoadingBar();
         }
@@ -245,7 +249,7 @@ public class MonumentsPointActivity extends AppCompatActivity implements SampleS
         if(gameHasEnded) {
             return;
         }
-        soundHelper.pauseInGameBackgroundMusic();
+        musicPlayer.pause();
         gameHasEnded = true;
         loadingBarHandler.stopLoadingBar();
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
@@ -297,7 +301,7 @@ public class MonumentsPointActivity extends AppCompatActivity implements SampleS
         if(gameHasEnded) {
             return;
         }
-        soundHelper.pauseInGameBackgroundMusic();
+        musicPlayer.pause();
         gameHasEnded = true;
         loadingBarHandler.stopLoadingBar();
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
@@ -361,6 +365,7 @@ public class MonumentsPointActivity extends AppCompatActivity implements SampleS
     protected void onDestroy() {
         super.onDestroy();
         soundHelper.release();
+        musicPlayer.release();
     }
 
     @Override

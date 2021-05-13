@@ -15,7 +15,9 @@ public class LocalStorageManager {
     private static final String LAST_UPDATE_TIME = "com.orestis.velen.quiz.lastUpdateTime";
     private static final String XP_BOOST_ENABLED_TIME = "com.orestis.velen.quiz.xpBoostEnabledTime";
     private static final String MUSIC_SETTING = "com.orestis.velen.quiz.musicSetting";
+    private static final String MUSIC_VOLUME_SETTING = "com.orestis.velen.quiz.musicVolumeSetting";
     private static final String SOUND_SETTING = "com.orestis.velen.quiz.soundSetting";
+    private static final String SOUND_VOLUME_SETTING = "com.orestis.velen.quiz.soundVolumeSetting";
     private static final String AUTO_LOGIN_ATTEMPTS = "com.orestis.velen.quiz.autoLoginAttempts";
     private SharedPreferences localStorage;
 
@@ -63,16 +65,32 @@ public class LocalStorageManager {
         localStorage.edit().putBoolean(SOUND_SETTING, enabled).apply();
     }
 
+    public void setSoundVolumeSetting(float volume) {
+        localStorage.edit().putFloat(SOUND_VOLUME_SETTING, volume).apply();
+    }
+
     public void setMusicSetting(boolean enabled) {
         localStorage.edit().putBoolean(MUSIC_SETTING, enabled).apply();
+    }
+
+    public void setMusicVolumeSetting(float volume) {
+        localStorage.edit().putFloat(MUSIC_VOLUME_SETTING, volume).apply();
     }
 
     public boolean getSoundSettings() {
         return localStorage.getBoolean(SOUND_SETTING, true);
     }
 
+    public float getSoundVolumeSettings() {
+        return localStorage.getFloat(SOUND_VOLUME_SETTING, 1.0f);
+    }
+
     public boolean getMusicSettings() {
         return localStorage.getBoolean(MUSIC_SETTING, true);
+    }
+
+    public float getMusicVolumeSettings() {
+        return localStorage.getFloat(MUSIC_VOLUME_SETTING, 1.0f);
     }
 
     public int getAutoLoginAttempts() {

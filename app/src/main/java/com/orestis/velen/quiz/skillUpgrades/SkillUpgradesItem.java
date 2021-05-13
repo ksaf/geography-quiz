@@ -12,6 +12,7 @@ abstract class SkillUpgradesItem {
     private SkillMinusListener skillMinusListener;
     private int skillLevel;
     private int skillLevelTimesIncreased;
+    private boolean canBeIncremented;
     private Player player;
 
     abstract public int getBackGroundColorId();
@@ -49,6 +50,18 @@ abstract class SkillUpgradesItem {
     public void decreaseSkillLevel() {
         this.skillLevel--;
         this.skillLevelTimesIncreased--;
+    }
+
+    public boolean canBeIncremented() {
+        return canBeIncremented;
+    }
+
+    public void setCanBeIncremented(boolean canBeIncremented) {
+        this.canBeIncremented = canBeIncremented;
+    }
+
+    public boolean canBeDecremented() {
+        return this.skillLevelTimesIncreased > 0;
     }
 
     public void setSkillPlusListener(SkillPlusListener skillPlusListener) {

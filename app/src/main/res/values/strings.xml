@@ -85,6 +85,13 @@
         Vectors designed by Freepik.com\n\n
         Music and sounds by playonloop.com, noiseforfun.com, freesound.org\n\n
         Background City vector created by freepik - www.freepik.com
+        \n\n
+        Silly Intro by Alexander Nakarada | https://www.serpentsoundstudios.com
+        \n
+        Music promoted by https://www.chosic.com/free-music/
+        \n
+        Attribution 4.0 International (CC BY 4.0)
+        https://creativecommons.org/licenses/by/4.0/
     </string>
 
     //EASY COUNTRIES
@@ -544,6 +551,7 @@
     <string name="petra">Petra</string>
     <string name="uluru">uluru</string>
     <string name="level">Level</string>
+    <string name="volume">volume</string>
 
 
 </resources>

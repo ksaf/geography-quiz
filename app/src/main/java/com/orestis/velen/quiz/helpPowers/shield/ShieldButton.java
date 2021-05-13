@@ -30,6 +30,7 @@ public class ShieldButton implements ChargeChangeListener {
     private Player player;
     private ImageView shieldOnIcon;
     private ImageView shieldBreakingIcon;
+    private TextView shieldTurnsLeftText;
     private FrameLayout shieldOverlay;
     private int charges;
     private TextView shieldTextView;
@@ -51,7 +52,7 @@ public class ShieldButton implements ChargeChangeListener {
         }
         if(answerButtons != null) {
             ShieldClickListener shieldClickListener = new ShieldClickListener(questionHandler, answerButtons,
-                    shieldOnIcon, shieldBreakingIcon, shieldOverlay, answerButtonsHandler, shieldPowerConfig,
+                    shieldOnIcon, shieldBreakingIcon, shieldOverlay, shieldTurnsLeftText, answerButtonsHandler, shieldPowerConfig,
                     this, context, helpPowerUsedImg, helpPowerUsedImgBg);
             if(flagAnswerButtons != null) {
                 shieldClickListener.setFlagAnswerButtons(flagAnswerButtons);
@@ -59,7 +60,7 @@ public class ShieldButton implements ChargeChangeListener {
             shieldBtnLayout.setOnClickListener(shieldClickListener);
         } else if(mapTouchListener != null){
             shieldBtnLayout.setOnClickListener(new ShieldOnMapClickListener(questionHandler,
-                    shieldOnIcon, shieldBreakingIcon, shieldOverlay, shieldPowerConfig,
+                    shieldOnIcon, shieldBreakingIcon, shieldOverlay, shieldTurnsLeftText, shieldPowerConfig,
                     this, context, mapTouchListener, helpPowerUsedImg, helpPowerUsedImgBg));
         }
 
@@ -75,6 +76,7 @@ public class ShieldButton implements ChargeChangeListener {
     @Override
     public void onChargeDurationEnd() {
         shieldBtnLayout.setEnabled(charges >= 1);
+        soundHelper.playShieldPowerEndSound();
     }
 
     public static class Builder {
@@ -87,6 +89,7 @@ public class ShieldButton implements ChargeChangeListener {
         private Player player;
         private ImageView shieldOnIcon;
         private ImageView shieldBreakingIcon;
+        private TextView shieldTurnsLeftText;
         private FrameLayout shieldOverlay;
         private Context context;
         private MapTouchListener mapTouchListener;
@@ -121,6 +124,11 @@ public class ShieldButton implements ChargeChangeListener {
 
         public Builder useShieldOverlay(FrameLayout shieldOverlay) {
             this.shieldOverlay = shieldOverlay;
+            return this;
+        }
+
+        public Builder useShieldTurnsLeftText(TextView shieldTurnsLeftText) {
+            this.shieldTurnsLeftText = shieldTurnsLeftText;
             return this;
         }
 
@@ -175,6 +183,7 @@ public class ShieldButton implements ChargeChangeListener {
             shieldButton.shieldOnIcon = this.shieldOnIcon;
             shieldButton.shieldBreakingIcon = this.shieldBreakingIcon;
             shieldButton.shieldOverlay = this.shieldOverlay;
+            shieldButton.shieldTurnsLeftText = this.shieldTurnsLeftText;
             shieldButton.context = this.context;
             shieldButton.mapTouchListener = this.mapTouchListener;
             shieldButton.helpPowerUsedImg = this.helpPowerUsedImg;

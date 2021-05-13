@@ -55,6 +55,7 @@ import com.orestis.velen.quiz.repositories.SampleSizeEndListener;
 import com.orestis.velen.quiz.roundProgressDisplay.RoundProgressDisplayHandler;
 import com.orestis.velen.quiz.skillUpgrades.LevelUpScreenClosedListener;
 import com.orestis.velen.quiz.skillUpgrades.SkillUpgradesFragment;
+import com.orestis.velen.quiz.sound.InGameBackgroundMusicPlayer;
 import com.orestis.velen.quiz.sound.SoundPoolHelper;
 
 import java.util.HashMap;
@@ -90,6 +91,7 @@ public class OutlinesToFlagsActivity extends AppCompatActivity implements Loadin
     private HashMap<AnswerChoice, Button> buttons = new HashMap<>();
     private HashMap<AnswerChoice, MaterialCardView> buttonBackGrounds = new HashMap<>();
     private SoundPoolHelper soundHelper;
+    private InGameBackgroundMusicPlayer musicPlayer;
     private boolean hasXpBoostEnabled;
 
     @Override
@@ -99,6 +101,7 @@ public class OutlinesToFlagsActivity extends AppCompatActivity implements Loadin
 
         soundHelper = new SoundPoolHelper(5, this);
         soundHelper.loadInGameSounds();
+        musicPlayer = new InGameBackgroundMusicPlayer(this);
 
         FullscreenAdManager.getInstance().initialise(this);
 
@@ -168,7 +171,7 @@ public class OutlinesToFlagsActivity extends AppCompatActivity implements Loadin
         if(!gameHasEnded) {
             startCountDownBar();
             setupPowerButtons();
-            soundHelper.playInGameBackgroundMusic();
+            musicPlayer.start();
         }
     }
 
@@ -207,6 +210,7 @@ public class OutlinesToFlagsActivity extends AppCompatActivity implements Loadin
                 .useShieldOnIcon((ImageView) findViewById(R.id.shieldImg))
                 .useShieldBreakingIcon((ImageView) findViewById(R.id.shieldBreakingImg))
                 .useShieldOverlay((FrameLayout) findViewById(R.id.shieldOverlay))
+                .useShieldTurnsLeftText((TextView) findViewById(R.id.shieldTurnsLeftText))
                 .useHelpPowerUsedImg((ImageView) findViewById(R.id.helpPowerUsedImg))
                 .useHelpPowerUsedImgBg((ImageView) findViewById(R.id.helpPowerUsedImgBg))
                 .withContext(this)
@@ -220,7 +224,7 @@ public class OutlinesToFlagsActivity extends AppCompatActivity implements Loadin
     @Override
     protected void onPause() {
         super.onPause();
-        soundHelper.pauseInGameBackgroundMusic();
+        musicPlayer.pause();
         if(loadingBarHandler != null) {
             loadingBarHandler.pauseLoadingBar();
         }
@@ -229,7 +233,7 @@ public class OutlinesToFlagsActivity extends AppCompatActivity implements Loadin
     @Override
     protected void onResume() {
         super.onResume();
-        soundHelper.resumeInGameBackgroundMusic();
+        musicPlayer.resume();
         if(loadingBarHandler != null) {
             loadingBarHandler.resumeLoadingBar();
         }
@@ -258,7 +262,7 @@ public class OutlinesToFlagsActivity extends AppCompatActivity implements Loadin
         if (gameHasEnded) {
             return;
         }
-        soundHelper.pauseInGameBackgroundMusic();
+        musicPlayer.pause();
         gameHasEnded = true;
         answerButtonsHandler.enableButtons(false);
         loadingBarHandler.stopLoadingBar();
@@ -303,7 +307,7 @@ public class OutlinesToFlagsActivity extends AppCompatActivity implements Loadin
         if(gameHasEnded) {
             return;
         }
-        soundHelper.pauseInGameBackgroundMusic();
+        musicPlayer.pause();
         gameHasEnded = true;
         answerButtonsHandler.enableButtons(false);
         loadingBarHandler.stopLoadingBar();
@@ -343,6 +347,7 @@ public class OutlinesToFlagsActivity extends AppCompatActivity implements Loadin
     protected void onDestroy() {
         super.onDestroy();
         soundHelper.release();
+        musicPlayer.release();
     }
 
     @Override

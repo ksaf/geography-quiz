@@ -58,52 +58,80 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content">
 
-            <TableRow
-                android:id="@+id/soundLayout"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="0dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
-
-                <Button
-                    android:id="@+id/musicBtn"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/normal"
-                    android:text="Music On"
-                    android:textStyle="bold"
-                    android:layout_weight="2"
-                    android:theme="@style/AppTheme.PrimaryColoredButton"
-                    app:layout_constraintEnd_toStartOf="@+id/soundBtn"
-                    app:layout_constraintHorizontal_bias="0.33"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <Button
-                    android:id="@+id/soundBtn"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/normal"
-                    android:text="Sound On"
-                    android:textStyle="bold"
-                    android:layout_weight="1"
-                    android:theme="@style/AppTheme.PrimaryColoredButton"
-                    app:layout_constraintBottom_toBottomOf="@+id/musicBtn"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/musicBtn"
-                    app:layout_constraintTop_toTopOf="@+id/musicBtn" />
-
-            </TableRow>
-
             <Button
-                android:id="@+id/logOutBtn"
-                android:layout_width="wrap_content"
+                android:id="@+id/languageBtn"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"
                 android:layout_marginStart="8dp"
+                android:fontFamily="@font/normal"
+                android:text="@string/language"
+                android:textStyle="bold"
+                android:theme="@style/AppTheme.PrimaryColoredButton"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/volumeText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
+                android:textAllCaps="true"
+                android:fontFamily="@font/normal"
+                android:textColor="#333"
+                app:layout_constraintEnd_toEndOf="@+id/musicVolumeBar"
+                app:layout_constraintStart_toStartOf="@+id/musicVolumeIcon"
+                app:layout_constraintTop_toBottomOf="@+id/languageBtn"
+                android:text="@string/volume" />
+
+
+            <ImageView
+                android:id="@+id/musicVolumeIcon"
+                android:layout_width="28dp"
+                android:layout_height="28dp"
+                android:layout_marginStart="28dp"
+                android:src="@drawable/ic_music_volume_on"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/volumeText" />
+
+            <SeekBar
+                android:id="@+id/musicVolumeBar"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="28dp"
+                android:theme="@style/settingsSeekBarColor"
+                app:layout_constraintBottom_toBottomOf="@+id/musicVolumeIcon"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/musicVolumeIcon"
+                app:layout_constraintTop_toTopOf="@id/musicVolumeIcon" />
+
+            <ImageView
+                android:id="@+id/soundVolumeIcon"
+                android:layout_width="28dp"
+                android:layout_height="28dp"
+                android:layout_marginTop="8dp"
+                android:src="@drawable/ic_sound_high_volume"
+                app:layout_constraintEnd_toEndOf="@+id/musicVolumeIcon"
+                app:layout_constraintTop_toBottomOf="@+id/musicVolumeIcon" />
+
+            <SeekBar
+                android:id="@+id/soundVolumeBar"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:theme="@style/settingsSeekBarColor"
+                app:layout_constraintBottom_toBottomOf="@+id/soundVolumeIcon"
+                app:layout_constraintEnd_toEndOf="@id/musicVolumeBar"
+                app:layout_constraintStart_toStartOf="@id/musicVolumeBar"
+                app:layout_constraintTop_toTopOf="@id/soundVolumeIcon" />
+
+            <Button
+                android:id="@+id/logOutBtn"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="16dp"
                 android:fontFamily="@font/normal"
                 android:text="@string/logout"
                 android:textStyle="bold"
@@ -111,26 +139,11 @@
                 android:visibility="visible"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/soundLayout" />
-
-            <Button
-                android:id="@+id/languageBtn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="8dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
-                android:fontFamily="@font/normal"
-                android:text="@string/language"
-                android:textStyle="bold"
-                android:theme="@style/AppTheme.PrimaryColoredButton"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/logOutBtn" />
+                app:layout_constraintTop_toBottomOf="@+id/soundVolumeBar" />
 
             <Button
                 android:id="@+id/resetProgressBtn"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"
                 android:layout_marginStart="8dp"
@@ -142,11 +155,11 @@
                 android:theme="@style/AppTheme.PrimaryColoredButton"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/languageBtn" />
+                app:layout_constraintTop_toBottomOf="@+id/logOutBtn" />
 
             <Button
                 android:id="@+id/creditsBtn"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"
                 android:layout_marginStart="8dp"
@@ -162,7 +175,7 @@
 
             <Button
                 android:id="@+id/termsAndConditionsBtn"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"
                 android:layout_marginStart="8dp"

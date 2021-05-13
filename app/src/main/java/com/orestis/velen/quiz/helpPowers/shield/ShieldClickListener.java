@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.orestis.velen.quiz.R;
 import com.orestis.velen.quiz.answerButtons.AnswerButtonsHandler;
@@ -31,6 +32,7 @@ public class ShieldClickListener implements View.OnClickListener, ShieldEndListe
     protected boolean isShieldEnabled = false;
     private ImageView shieldImg;
     private ImageView shieldBreakingImg;
+    private TextView shieldTurnsLeftText;
     private FrameLayout shieldGradient;
     protected ChargeChangeListener chargeChangeListener;
     private Context context;
@@ -40,13 +42,14 @@ public class ShieldClickListener implements View.OnClickListener, ShieldEndListe
     private ImageView helpPowerUsedImgBg;
 
     public ShieldClickListener(QuestionHandler questionHandler, ImageView shieldImg, ImageView shieldBreakingImg, FrameLayout shieldGradient,
-                               ShieldPowerConfig shieldPowerConfig, ChargeChangeListener chargeChangeListener, Context context,
+                               TextView shieldTurnsLeftText, ShieldPowerConfig shieldPowerConfig, ChargeChangeListener chargeChangeListener, Context context,
                                ImageView helpPowerUsedImg, ImageView helpPowerUsedImgBg) {
         this.questionHandler = questionHandler;
         this.shieldPowerConfig = shieldPowerConfig;
         this.shieldImg = shieldImg;
         this.shieldBreakingImg = shieldBreakingImg;
         this.shieldGradient = shieldGradient;
+        this.shieldTurnsLeftText = shieldTurnsLeftText;
         this.chargeChangeListener = chargeChangeListener;
         this.context = context;
         this.helpPowerUsedImg = helpPowerUsedImg;
@@ -55,7 +58,8 @@ public class ShieldClickListener implements View.OnClickListener, ShieldEndListe
     }
 
     public ShieldClickListener(QuestionHandler questionHandler, HashMap<AnswerChoice, Button> buttons,
-                               ImageView shieldImg, ImageView shieldBreakingImg, FrameLayout shieldGradient, AnswerButtonsHandler answerButtonsHandler,
+                               ImageView shieldImg, ImageView shieldBreakingImg, FrameLayout shieldGradient,
+                               TextView shieldTurnsLeftText, AnswerButtonsHandler answerButtonsHandler,
                                ShieldPowerConfig shieldPowerConfig, ChargeChangeListener chargeChangeListener, Context context,
                                ImageView helpPowerUsedImg, ImageView helpPowerUsedImgBg) {
         this.questionHandler = questionHandler;
@@ -65,6 +69,7 @@ public class ShieldClickListener implements View.OnClickListener, ShieldEndListe
         this.shieldImg = shieldImg;
         this.shieldBreakingImg = shieldBreakingImg;
         this.shieldGradient = shieldGradient;
+        this.shieldTurnsLeftText = shieldTurnsLeftText;
         this.chargeChangeListener = chargeChangeListener;
         this.context = context;
         this.helpPowerUsedImg = helpPowerUsedImg;
@@ -82,6 +87,8 @@ public class ShieldClickListener implements View.OnClickListener, ShieldEndListe
         turnsShieldWasKeptOn = 0;
         view.setEnabled(false);
         shieldImg.setVisibility(View.VISIBLE);
+        shieldTurnsLeftText.setVisibility(View.VISIBLE);
+        shieldTurnsLeftText.setText(String.valueOf(shieldPowerConfig.getTurnsDuration() - turnsShieldWasKeptOn));
         shieldGradient.setVisibility(View.VISIBLE);
         stopCurrentTurnsMistake();
         chargeChangeListener.onChargeDecreased();
@@ -134,7 +141,7 @@ public class ShieldClickListener implements View.OnClickListener, ShieldEndListe
 
     @Override
     public void animateBreakingShield() {
-        BreakingShieldTask task = new BreakingShieldTask(shieldImg, shieldBreakingImg, shieldGradient, 700);
+        BreakingShieldTask task = new BreakingShieldTask(shieldImg, shieldTurnsLeftText, shieldBreakingImg, shieldGradient, 700);
         task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
         PowerImageTask powerImageTask = new PowerImageTask(R.drawable.help_second_chance_button_default, helpPowerUsedImg,
                 helpPowerUsedImgBg, R.drawable.shield_broken, 700);
@@ -144,6 +151,7 @@ public class ShieldClickListener implements View.OnClickListener, ShieldEndListe
     @Override
     public void onQuestionChanged(Question question) {
         turnsShieldWasKeptOn++;
+        shieldTurnsLeftText.setText(String.valueOf(shieldPowerConfig.getTurnsDuration() - turnsShieldWasKeptOn));
         if(!isShieldEnabled) {
             return;
         }

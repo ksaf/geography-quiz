@@ -66,4 +66,9 @@
         <item name="android:fadeScrollbars">false</item>
     </style>
 
+    <style name="settingsSeekBarColor"
+        parent="Widget.AppCompat.SeekBar">
+        <item name="colorAccent">#ee9f3c</item>
+    </style>
+
 </resources>

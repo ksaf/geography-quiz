@@ -52,6 +52,7 @@ import com.orestis.velen.quiz.repositories.SampleSizeEndListener;
 import com.orestis.velen.quiz.roundProgressDisplay.RoundProgressDisplayHandler;
 import com.orestis.velen.quiz.skillUpgrades.LevelUpScreenClosedListener;
 import com.orestis.velen.quiz.skillUpgrades.SkillUpgradesFragment;
+import com.orestis.velen.quiz.sound.InGameBackgroundMusicPlayer;
 import com.orestis.velen.quiz.sound.SoundPoolHelper;
 
 import java.util.HashMap;
@@ -86,6 +87,7 @@ public class CapitalsActivity extends AppCompatActivity implements LoadingBarSta
     private boolean gameHasEnded = false;
     private HashMap<AnswerChoice, Button> buttons = new HashMap<>();
     private SoundPoolHelper soundHelper;
+    private InGameBackgroundMusicPlayer musicPlayer;
     private boolean hasXpBoostEnabled;
 
     @Override
@@ -95,6 +97,7 @@ public class CapitalsActivity extends AppCompatActivity implements LoadingBarSta
 
         soundHelper = new SoundPoolHelper(5, this);
         soundHelper.loadInGameSounds();
+        musicPlayer = new InGameBackgroundMusicPlayer(this);
 
         FullscreenAdManager.getInstance().initialise(this);
 
@@ -160,7 +163,7 @@ public class CapitalsActivity extends AppCompatActivity implements LoadingBarSta
         if(!gameHasEnded) {
             startCountDownBar();
             setupPowerButtons();
-            soundHelper.playInGameBackgroundMusic();
+            musicPlayer.start();
         }
     }
 
@@ -199,6 +202,7 @@ public class CapitalsActivity extends AppCompatActivity implements LoadingBarSta
                 .useShieldOnIcon((ImageView) findViewById(R.id.shieldImg))
                 .useShieldBreakingIcon((ImageView) findViewById(R.id.shieldBreakingImg))
                 .useShieldOverlay((FrameLayout) findViewById(R.id.shieldOverlay))
+                .useShieldTurnsLeftText((TextView) findViewById(R.id.shieldTurnsLeftText))
                 .useHelpPowerUsedImg((ImageView) findViewById(R.id.helpPowerUsedImg))
                 .useHelpPowerUsedImgBg((ImageView) findViewById(R.id.helpPowerUsedImgBg))
                 .withContext(this)
@@ -211,7 +215,7 @@ public class CapitalsActivity extends AppCompatActivity implements LoadingBarSta
     @Override
     protected void onPause() {
         super.onPause();
-        soundHelper.pauseInGameBackgroundMusic();
+        musicPlayer.pause();
         if(loadingBarHandler != null) {
             loadingBarHandler.pauseLoadingBar();
         }
@@ -220,7 +224,7 @@ public class CapitalsActivity extends AppCompatActivity implements LoadingBarSta
     @Override
     protected void onResume() {
         super.onResume();
-        soundHelper.resumeInGameBackgroundMusic();
+        musicPlayer.resume();
         if(loadingBarHandler != null) {
             loadingBarHandler.resumeLoadingBar();
         }
@@ -249,7 +253,7 @@ public class CapitalsActivity extends AppCompatActivity implements LoadingBarSta
         if (gameHasEnded) {
             return;
         }
-        soundHelper.pauseInGameBackgroundMusic();
+        musicPlayer.pause();
         gameHasEnded = true;
         answerButtonsHandler.enableButtons(false);
         loadingBarHandler.stopLoadingBar();
@@ -294,7 +298,7 @@ public class CapitalsActivity extends AppCompatActivity implements LoadingBarSta
         if(gameHasEnded) {
             return;
         }
-        soundHelper.pauseInGameBackgroundMusic();
+        musicPlayer.pause();
         gameHasEnded = true;
         answerButtonsHandler.enableButtons(false);
         loadingBarHandler.stopLoadingBar();
@@ -334,6 +338,7 @@ public class CapitalsActivity extends AppCompatActivity implements LoadingBarSta
     protected void onDestroy() {
         super.onDestroy();
         soundHelper.release();
+        musicPlayer.release();
     }
 
     @Override

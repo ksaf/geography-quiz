@@ -79,8 +79,7 @@ public class FiftyFiftyMapClickListener implements View.OnClickListener {
         hideMapOverlay.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
-                if(Math.sqrt((motionEvent.getX()*relativeX-randomX)*(motionEvent.getX()*relativeX-randomX) +
-                        (motionEvent.getY()*relativeY-randomY)*(motionEvent.getY()*relativeY-randomY)) < radius) {
+                if(Math.sqrt((motionEvent.getX()*relativeX-randomX)*(motionEvent.getX()*relativeX-randomX) + (motionEvent.getY()*relativeY-randomY)*(motionEvent.getY()*relativeY-randomY)) < radius) {
                     return false;
                 } else {
                     return true;

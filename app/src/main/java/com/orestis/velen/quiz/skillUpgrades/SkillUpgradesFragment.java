@@ -118,12 +118,23 @@ public class SkillUpgradesFragment extends Fragment implements SkillPlusListener
         skills.add(shieldUpgradeItem);
         skills.add(freezeTimeUpgradeItem);
         skills.add(extraTimeUpgradeItem);
+        setCanBeIncremented(canSkillsBeIncremented());
         adapter = new SkillUpgradesListAdapter(skills, getContext());
         skillUpgradesListView.setAdapter(adapter);
     }
 
     private void updateSkillPointsCountText() {
         skillPointsCount.setText(String.valueOf(remainingSkillPoints));
+    }
+
+    private void setCanBeIncremented(boolean canBeIncremented) {
+        for (SkillUpgradesItem skill : skills) {
+            skill.setCanBeIncremented(canBeIncremented);
+        }
+    }
+
+    private boolean canSkillsBeIncremented() {
+        return remainingSkillPoints > 0;
     }
 
     @Override
@@ -135,6 +146,7 @@ public class SkillUpgradesFragment extends Fragment implements SkillPlusListener
                     remainingSkillPoints--;
                     updateSkillPointsCountText();
                     skill.incrementSkillLevel();
+                    setCanBeIncremented(canSkillsBeIncremented());
                     adapter.notifyDataSetChanged();
                     setConfirmationBtnToUpgrade();
                     break;
@@ -152,6 +164,7 @@ public class SkillUpgradesFragment extends Fragment implements SkillPlusListener
                     skill.decreaseSkillLevel();
                     remainingSkillPoints++;
                     updateSkillPointsCountText();
+                    setCanBeIncremented(canSkillsBeIncremented());
                     adapter.notifyDataSetChanged();
                     if (initialRemainingSkillPoints <= remainingSkillPoints) {
                         setConfirmationBtnToSkip();

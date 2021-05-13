@@ -69,6 +69,8 @@ public class SkillUpgradesListAdapter extends ArrayAdapter<SkillUpgradesItem> {
                 viewHolder.plusSkillBtn.setVisibility(View.GONE);
                 viewHolder.minusSkillBtn.setVisibility(View.GONE);
             }
+            viewHolder.plusSkillBtn.setAlpha(dataModel.canBeIncremented() ? 1f : 0.2f);
+            viewHolder.minusSkillBtn.setAlpha(dataModel.canBeDecremented() ? 1f : 0.2f);
         } else {
             viewHolder.skillDescription.setText(Html.fromHtml("Unlock at level: <b><font color='#000000'>" + dataModel.getUnlockLevel() + "</font></b>"));
             viewHolder.currentSkillLevel.setVisibility(View.INVISIBLE);

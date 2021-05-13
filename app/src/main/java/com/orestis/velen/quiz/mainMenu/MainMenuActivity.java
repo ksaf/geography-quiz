@@ -60,7 +60,7 @@ import com.orestis.velen.quiz.questions.DifficultyHelper;
 import com.orestis.velen.quiz.settings.SettingsFragment;
 import com.orestis.velen.quiz.skillUpgrades.SkillSumChangeListener;
 import com.orestis.velen.quiz.skillUpgrades.SkillUpgradesFragment;
-import com.orestis.velen.quiz.sound.BackgroundMusicLoadedListener;
+import com.orestis.velen.quiz.sound.MainMenuBackgroundMusicPlayer;
 import com.orestis.velen.quiz.sound.SoundPoolHelper;
 
 import static com.orestis.velen.quiz.achievements.GoogleAchievements.RC_ACHIEVEMENTS;
@@ -68,7 +68,7 @@ import static com.orestis.velen.quiz.leaderboard.GoogleLeaderboard.RC_LEADERBOAR
 
 public class MainMenuActivity extends AppCompatActivity implements PlayerRecoveredListener,
         FirebaseConnectedListener, SignInRequestHandler, ViewPager.OnPageChangeListener,
-        GameStartRequestListener, SkillSumChangeListener, BackgroundMusicLoadedListener,
+        GameStartRequestListener, SkillSumChangeListener,
         XpBoostEnabledListener {
 
     private static final int GOOGLE_SIGN_IN = 2;
@@ -87,6 +87,7 @@ public class MainMenuActivity extends AppCompatActivity implements PlayerRecover
     public static final int XP_BOOST_DURATION = 300000;
     public static final String XP_BOOST_ENABLED = "xpBoostEnabled";
     private ObjectAnimator earthRotationAnimation;
+    private MainMenuBackgroundMusicPlayer musicPlayer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -106,7 +107,7 @@ public class MainMenuActivity extends AppCompatActivity implements PlayerRecover
 
         soundHelper = new SoundPoolHelper(5, this);
         soundHelper.loadMainMenuSounds();
-        soundHelper.setBackgroundMusicLoadedListener(this);
+        musicPlayer = new MainMenuBackgroundMusicPlayer(this);
 
         Button achievementsBtn = findViewById(R.id.achievementsBtn);
         achievementsBtn.setOnClickListener(new View.OnClickListener() {
@@ -145,6 +146,7 @@ public class MainMenuActivity extends AppCompatActivity implements PlayerRecover
                         .withSocialSignInUIHandler(socialSignInUIHandler)
                         .withPlayerRecoveredListener(MainMenuActivity.this)
                         .withSoundPoolHelper(soundHelper)
+                        .withMainMenuBackgroundMusicPlayer(musicPlayer)
                         .build();
                 FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
                 ft.setCustomAnimations(R.anim.scale_up_animation, R.anim.scale_down_animation);
@@ -209,11 +211,6 @@ public class MainMenuActivity extends AppCompatActivity implements PlayerRecover
                         PlayerSession.getInstance().getCurrentPlayer().getXpBoostEnabledTimeLeft(XP_BOOST_DURATION),
                         1000, this);
         xpBoostTimeLeftTimer.start();
-    }
-
-    @Override
-    public void onBackgroundMusicLoaded() {
-        soundHelper.playMenuBackgroundMusic();
     }
 
     private void googleSignIn() {
@@ -516,20 +513,21 @@ public class MainMenuActivity extends AppCompatActivity implements PlayerRecover
     protected void onPause() {
         super.onPause();
         stopEarthRotationAnimation();
-        soundHelper.pauseMenuBackgroundMusic();
+        musicPlayer.pause();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
         startEarthRotationAnimation();
-        soundHelper.resumeMenuBackgroundMusic();
+        musicPlayer.start();
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
         soundHelper.release();
+        musicPlayer.release();
     }
 
     @Override

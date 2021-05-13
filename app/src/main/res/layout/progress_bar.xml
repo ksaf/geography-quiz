@@ -81,7 +81,7 @@
         app:layout_constraintEnd_toEndOf="@+id/progressBar"
         app:layout_constraintTop_toTopOf="@+id/progressBar" />
 
-    <FrameLayout
+    <android.support.constraint.ConstraintLayout
         android:id="@+id/shieldImgContainer"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -102,6 +102,18 @@
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/shield" />
 
+        <TextView
+            android:id="@+id/shieldTurnsLeftText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingBottom="4dp"
+            android:visibility="gone"
+            android:textColor="#000000"
+            app:layout_constraintBottom_toBottomOf="@+id/shieldImg"
+            app:layout_constraintEnd_toEndOf="@+id/shieldImg"
+            app:layout_constraintStart_toStartOf="@+id/shieldImg"
+            app:layout_constraintTop_toTopOf="@+id/shieldImg" />
+
         <ImageView
             android:id="@+id/shieldBreakingImg"
             android:layout_width="40dp"
@@ -112,7 +124,7 @@
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/shield_broken" />
 
-    </FrameLayout>
+    </android.support.constraint.ConstraintLayout>
 
     <ImageView
         android:id="@+id/freezeImg"
