@@ -5,6 +5,7 @@ import android.content.Context;
 import android.os.CountDownTimer;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import java.util.concurrent.TimeUnit;
@@ -13,12 +14,14 @@ public class XpBoostTimeLeftTimer extends CountDownTimer {
 
     private TextView countDownText;
     private ViewGroup countDownTextContainer;
+    private Button adBtn;
     private Context context;
 
-    public XpBoostTimeLeftTimer(ViewGroup countDownTextContainer, TextView countDownText, long duration, long interval, Context context) {
+    public XpBoostTimeLeftTimer(ViewGroup countDownTextContainer, TextView countDownText, Button adBtn, long duration, long interval, Context context) {
         super(duration, interval);
         this.countDownText = countDownText;
         this.countDownTextContainer = countDownTextContainer;
+        this.adBtn = adBtn;
         this.context = context;
     }
 
@@ -35,6 +38,7 @@ public class XpBoostTimeLeftTimer extends CountDownTimer {
     @Override
     public void onFinish() {
         countDownText.setText("-");
+        adBtn.setVisibility(View.VISIBLE);
         countDownTextContainer.setVisibility(View.GONE);
     }
 }

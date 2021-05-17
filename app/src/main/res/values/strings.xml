@@ -1,7 +1,7 @@
 <resources>
     <string name="facebook_app_id">605073649904239</string>
     <string name="fb_login_protocol_scheme">fb605073649904239</string>
-    <string name="app_name">Quiz</string>
+    <string name="app_name">Geo Challenge II</string>
     <string name="geo_question_type_outlines">Which Country Is This?</string>
     <string name="geo_question_type_flags">Which Country Has This Flag?</string>
     <string name="geo_question_type_capitals">Which is the capital?</string>
@@ -54,6 +54,7 @@
     <string name="retry">Retry</string>
     <string name="question">question:</string>
     <string name="bonus">Bonus:</string>
+    <string name="bonusButton">Bonus</string>
     <string name="select_language">Select Language</string>
     <string name="sec">sec</string>
     <string name="menu">Menu</string>

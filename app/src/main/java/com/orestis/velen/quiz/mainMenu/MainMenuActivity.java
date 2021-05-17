@@ -168,8 +168,8 @@ public class MainMenuActivity extends AppCompatActivity implements PlayerRecover
             showError(getString(R.string.connectionError), 3000);
         }
 
-        ImageButton adBtn = findViewById(R.id.adBtn);
-        adBtn.setOnClickListener(new View.OnClickListener() {
+        ImageButton adImageBtn = findViewById(R.id.adImageButton);
+        adImageBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 soundHelper.playMenuBtnOpenSound();
@@ -195,19 +195,40 @@ public class MainMenuActivity extends AppCompatActivity implements PlayerRecover
                 }
             }
         });
+
         if(PlayerSession.getInstance().getCurrentPlayer().hasXpBoostEnabled(XP_BOOST_DURATION)) {
             onXpBoostEnabled();
         }
+
+        Button adBtn = findViewById(R.id.adBtn);
+        adBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                soundHelper.playMenuBtnOpenSound();
+                XpBoostFragment xpBoostFragment = new XpBoostFragment.Builder()
+                        .withDarkBg(darkBg)
+                        .withSoundPoolHelper(soundHelper)
+                        .withVideoAdManager(VideoAdManager.getInstance())
+                        .withXpBoostEnabledListener(MainMenuActivity.this)
+                        .build();
+                FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+                ft.setCustomAnimations(R.anim.scale_up_animation, R.anim.scale_down_animation);
+                ft.replace(R.id.optionScreenPlaceholder, xpBoostFragment);
+                ft.commit();
+            }
+        });
 
     }
 
     @Override
     public void onXpBoostEnabled() {
+        Button adBtn = findViewById(R.id.adBtn);
         TextView xpBoostTimeLeftTxt = findViewById(R.id.xpBoostTimeLeftTxt);
         ViewGroup xpBoostContainer = findViewById(R.id.xpBoostContainer);
+        adBtn.setVisibility(View.GONE);
         xpBoostContainer.setVisibility(View.VISIBLE);
         XpBoostTimeLeftTimer xpBoostTimeLeftTimer =
-                new XpBoostTimeLeftTimer(xpBoostContainer, xpBoostTimeLeftTxt,
+                new XpBoostTimeLeftTimer(xpBoostContainer, xpBoostTimeLeftTxt, adBtn,
                         PlayerSession.getInstance().getCurrentPlayer().getXpBoostEnabledTimeLeft(XP_BOOST_DURATION),
                         1000, this);
         xpBoostTimeLeftTimer.start();

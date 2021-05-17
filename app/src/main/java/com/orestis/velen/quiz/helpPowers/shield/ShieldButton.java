@@ -69,6 +69,7 @@ public class ShieldButton implements ChargeChangeListener {
     @Override
     public void onChargeDecreased() {
         soundHelper.playInGamePowerEnableSound();
+        soundHelper.playShieldPowerEndSound();
         charges--;
         shieldTextView.setText(String.valueOf(charges));
     }

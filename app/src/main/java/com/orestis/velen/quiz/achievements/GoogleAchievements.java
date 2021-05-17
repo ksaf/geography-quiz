@@ -24,6 +24,13 @@ public class GoogleAchievements {
         }
     }
 
+    public void increment(Context context, int achievementId, int incrementBy) {
+        AchievementsClient mAchievementsClient = GoogleSession.getInstance().getAchievementsClient(context);
+        if(mAchievementsClient != null) {
+            mAchievementsClient.increment(context.getResources().getString(achievementId), incrementBy);
+        }
+    }
+
     public void showAchievements(final AppCompatActivity activity, final SignInRequestHandler signInRequestHandler, final int errorPlaceholderId) {
         AchievementsClient mAchievementsClient = GoogleSession.getInstance().getAchievementsClient(activity);
         if(mAchievementsClient == null || !GoogleSession.getInstance().isSignedIn(activity)) {
