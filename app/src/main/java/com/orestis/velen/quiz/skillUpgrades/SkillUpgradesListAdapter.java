@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -16,7 +17,7 @@ import java.util.List;
 
 public class SkillUpgradesListAdapter extends ArrayAdapter<SkillUpgradesItem> {
 
-    private List<SkillUpgradesItem> dataSet;
+    private final List<SkillUpgradesItem> dataSet;
     Context context;
     private ViewHolder viewHolder;
 
@@ -28,6 +29,7 @@ public class SkillUpgradesListAdapter extends ArrayAdapter<SkillUpgradesItem> {
         TextView currentSkillLevel;
         Button plusSkillBtn;
         Button minusSkillBtn;
+        FrameLayout descriptionClickFrame;
     }
 
     public SkillUpgradesListAdapter(List<SkillUpgradesItem> data, Context context) {
@@ -37,8 +39,8 @@ public class SkillUpgradesListAdapter extends ArrayAdapter<SkillUpgradesItem> {
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        SkillUpgradesItem dataModel = getItem(position);
+    public View getView(final int position, View convertView, ViewGroup parent) {
+        final SkillUpgradesItem dataModel = getItem(position);
 
         if (convertView == null) {
 
@@ -51,6 +53,7 @@ public class SkillUpgradesListAdapter extends ArrayAdapter<SkillUpgradesItem> {
             viewHolder.currentSkillLevel = convertView.findViewById(R.id.current_skill_level_text);
             viewHolder.plusSkillBtn = convertView.findViewById(R.id.plus_skill_btn);
             viewHolder.minusSkillBtn = convertView.findViewById(R.id.minus_skill_btn);
+            viewHolder.descriptionClickFrame = convertView.findViewById(R.id.descriptionClickFrame);
 
             convertView.setTag(viewHolder);
         } else {
@@ -77,6 +80,8 @@ public class SkillUpgradesListAdapter extends ArrayAdapter<SkillUpgradesItem> {
             viewHolder.plusSkillBtn.setVisibility(View.INVISIBLE);
             viewHolder.minusSkillBtn.setVisibility(View.INVISIBLE);
         }
+
+        viewHolder.descriptionClickFrame.setOnClickListener(dataModel.getDescriptionListener());
 
         return convertView;
     }

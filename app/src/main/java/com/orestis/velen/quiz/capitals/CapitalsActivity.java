@@ -359,6 +359,7 @@ public class CapitalsActivity extends AppCompatActivity implements LoadingBarSta
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         ft.setCustomAnimations(R.anim.bounce_down_animation, R.anim.slide_up_animation);
         ft.replace(R.id.optionScreenPlaceholder, skillUpgradesFragment);
+        ft.addToBackStack("skillUpgrades");
         ft.commit();
     }
 }

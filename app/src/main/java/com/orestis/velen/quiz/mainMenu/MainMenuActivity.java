@@ -329,6 +329,7 @@ public class MainMenuActivity extends AppCompatActivity implements PlayerRecover
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         ft.setCustomAnimations(R.anim.scale_up_animation, R.anim.scale_down_animation);
         ft.replace(R.id.optionScreenPlaceholder, skillUpgradesFragment);
+        ft.addToBackStack("skillUpgrades");
         ft.commit();
     }
 

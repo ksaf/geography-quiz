@@ -27,7 +27,7 @@
     <string name="shield_starting_description">Shields you from the next wrong answer for the next few turns</string>
     <string name="shield_description_part1">Shields you from the next wrong answer for the next</string>
     <string name="shield_description_part2">turn</string>
-    <string name="shield_description_part3">Charges</string>
+    <string name="shield_description_part3">Charges:</string>
     <string name="skip_starting_description">Skip a question without losing your streak bonus.</string>
     <string name="skip_description_part1">bonus points</string>
     <string name="skip_description_part2">Charges:</string>
@@ -54,6 +54,16 @@
     <string name="retry">Retry</string>
     <string name="question">question:</string>
     <string name="bonus">Bonus:</string>
+    <string name="description_turns">Duration (turns)</string>
+    <string name="description_duration">Duration (sec)</string>
+    <string name="description_extra_time">Extra time (sec)</string>
+    <string name="description_charges">Charges</string>
+    <string name="description_bonus">Usage Bonus</string>
+    <string name="description_power_name_skip">Skip Question</string>
+    <string name="description_power_name_fifty_fifty">Fifty-Fifty</string>
+    <string name="description_power_name_shield">Shield</string>
+    <string name="description_power_name_freeze_time">Freeze Time</string>
+    <string name="description_power_name_extra_time">Extra Time</string>
     <string name="bonusButton">Bonus</string>
     <string name="select_language">Select Language</string>
     <string name="sec">sec</string>
@@ -82,6 +92,7 @@
     <string name="credits">Credits</string>
     <string name="termsAndConditions">Privacy Policy</string>
     <string name="close">Close</string>
+    <string name="back">Back</string>
     <string name="creditsTxt">
         Vectors designed by Freepik.com\n\n
         Music and sounds by playonloop.com, noiseforfun.com, freesound.org\n\n

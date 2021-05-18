@@ -54,6 +54,16 @@
     <string name="retry">Ξανά</string>
     <string name="question">Ερώτηση:</string>
     <string name="bonus">Μπόνους:</string>
+    <string name="description_turns">Διάρκεια (γύρους)</string>
+    <string name="description_duration">Διάρκεια (δευτ.)</string>
+    <string name="description_extra_time">Έξτρα χρόνος (δευτ.)</string>
+    <string name="description_charges">Χρήσεις</string>
+    <string name="description_bonus">Μπόνους Χρήσης</string>
+    <string name="description_power_name_skip">Προσπέραση Ερώτησης</string>
+    <string name="description_power_name_fifty_fifty">Πενήντα-Πενήντα</string>
+    <string name="description_power_name_shield">Ασπίδα</string>
+    <string name="description_power_name_freeze_time">Πάγωμα Χρόνου</string>
+    <string name="description_power_name_extra_time">Έξτρα Χρόνος</string>
     <string name="bonusButton">Μπόνους</string>
     <string name="select_language">Επιλογή Γλώσσας</string>
     <string name="sec">δευτ.</string>
@@ -82,6 +92,7 @@
     <string name="credits">Συντελεστές</string>
     <string name="termsAndConditions">Πολιτική Απορρήτου</string>
     <string name="close">Κλείσιμο</string>
+    <string name="back">Επιστροφή</string>
 
     //EASY COUNTRIES
 

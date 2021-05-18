@@ -14,13 +14,15 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.orestis.velen.quiz.R;
+import com.orestis.velen.quiz.credits.CreditsFragment;
 import com.orestis.velen.quiz.player.Player;
+import com.orestis.velen.quiz.settings.SettingsFragment;
 import com.orestis.velen.quiz.sound.SoundPoolHelper;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class SkillUpgradesFragment extends Fragment implements SkillPlusListener, SkillMinusListener {
+public class SkillUpgradesFragment extends Fragment implements SkillPlusListener, SkillMinusListener, SkillDescriptionListener {
 
     private Player player;
     private ListView skillUpgradesListView;
@@ -96,22 +98,27 @@ public class SkillUpgradesFragment extends Fragment implements SkillPlusListener
         ShieldUpgradeItem shieldUpgradeItem = new ShieldUpgradeItem();
         shieldUpgradeItem.setSkillPlusListener(this);
         shieldUpgradeItem.setSkillMinusListener(this);
+        shieldUpgradeItem.setSkillDescriptionListener(this);
         shieldUpgradeItem.setPlayer(player);
         FreezeTimeUpgradeItem freezeTimeUpgradeItem = new FreezeTimeUpgradeItem();
         freezeTimeUpgradeItem.setSkillPlusListener(this);
         freezeTimeUpgradeItem.setSkillMinusListener(this);
+        freezeTimeUpgradeItem.setSkillDescriptionListener(this);
         freezeTimeUpgradeItem.setPlayer(player);
         FiftyFiftyUpgradeItem fiftyFiftyUpgradeItem = new FiftyFiftyUpgradeItem();
         fiftyFiftyUpgradeItem.setSkillPlusListener(this);
         fiftyFiftyUpgradeItem.setSkillMinusListener(this);
+        fiftyFiftyUpgradeItem.setSkillDescriptionListener(this);
         fiftyFiftyUpgradeItem.setPlayer(player);
         SkipUpgradeItem skipUpgradeItem = new SkipUpgradeItem();
         skipUpgradeItem.setSkillPlusListener(this);
         skipUpgradeItem.setSkillMinusListener(this);
+        skipUpgradeItem.setSkillDescriptionListener(this);
         skipUpgradeItem.setPlayer(player);
         ExtraTimeUpgradeItem extraTimeUpgradeItem = new ExtraTimeUpgradeItem();
         extraTimeUpgradeItem.setSkillPlusListener(this);
         extraTimeUpgradeItem.setSkillMinusListener(this);
+        extraTimeUpgradeItem.setSkillDescriptionListener(this);
         extraTimeUpgradeItem.setPlayer(player);
         skills.add(skipUpgradeItem);
         skills.add(fiftyFiftyUpgradeItem);
@@ -171,6 +178,24 @@ public class SkillUpgradesFragment extends Fragment implements SkillPlusListener
                     }
                     break;
                 }
+            }
+        }
+    }
+
+    @Override
+    public void onSkillDescription(String skillType) {
+        soundHelper.playMenuBtnOpenSound();
+        for (SkillUpgradesItem skill : skills) {
+            if(skill.getSkillName().equals(skillType)) {
+                SkillDescriptionFragment skillDescriptionFragment = new SkillDescriptionFragment.Builder()
+                        .withSoundPoolHelper(soundHelper)
+                        .withFallBackFragment(SkillUpgradesFragment.this)
+                        .forSkill(skill)
+                        .build();
+                FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
+                ft.replace(R.id.optionScreenPlaceholder, skillDescriptionFragment, "SkillDescriptionTag");
+                ft.addToBackStack("skillUpgrades");
+                ft.commit();
             }
         }
     }

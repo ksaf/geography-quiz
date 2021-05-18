@@ -360,6 +360,7 @@ public class FlagsActivity extends AppCompatActivity implements LoadingBarStateL
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         ft.setCustomAnimations(R.anim.bounce_down_animation, R.anim.slide_up_animation);
         ft.replace(R.id.optionScreenPlaceholder, skillUpgradesFragment);
+        ft.addToBackStack("skillUpgrades");
         ft.commit();
     }
 }

@@ -54,6 +54,41 @@ public class Power {
         return descriptions.getDescriptionFor(powerType, powerLevel);
     }
 
+    public String descriptionTitle(Context context) {
+        PowerDescriptions descriptions = new PowerDescriptions(context);
+        return descriptions.getDescriptionTitle(powerType);
+    }
+
+    public String bonusForLevel(int powerLevel, Context context) {
+        PowerDescriptions descriptions = new PowerDescriptions(context);
+        return descriptions.getBonus(powerType, powerLevel);
+    }
+
+    public String bonusSignForLevel(int powerLevel, Context context) {
+        PowerDescriptions descriptions = new PowerDescriptions(context);
+        return descriptions.getBonusSign(powerType, powerLevel);
+    }
+
+    public String bonusText(Context context) {
+        PowerDescriptions descriptions = new PowerDescriptions(context);
+        return descriptions.getBonusText(powerType);
+    }
+
+    public int usagesForLevel(int powerLevel, Context context) {
+        PowerDescriptions descriptions = new PowerDescriptions(context);
+        return descriptions.getUsages(powerType, powerLevel);
+    }
+
+    public String usagesText(Context context) {
+        PowerDescriptions descriptions = new PowerDescriptions(context);
+        return descriptions.getUsagesText(powerType);
+    }
+
+    public String displayName(Context context) {
+        PowerDescriptions descriptions = new PowerDescriptions(context);
+        return descriptions.getDisplayName(powerType);
+    }
+
     public NumberAndSign bonusChanges() {
         PowerBonusChanges powerBonusChanges = new PowerBonusChanges();
         return powerBonusChanges.getBonusChangesFor(powerType, powerLevel);
